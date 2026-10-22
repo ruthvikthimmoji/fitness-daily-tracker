@@ -41,12 +41,10 @@ export const Header: React.FC<HeaderProps> = ({
     const d = new Date(dStr);
     if (dStr === todayStr) return 'Today';
     
-    // Check yesterday
     const y = new Date();
     y.setDate(y.getDate() - 1);
     if (dStr === formatDate(y)) return 'Yesterday';
 
-    // Check tomorrow
     const t = new Date();
     t.setDate(t.getDate() + 1);
     if (dStr === formatDate(t)) return 'Tomorrow';
@@ -55,69 +53,77 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-[#0b0f19]/90 backdrop-blur-md border-b border-slate-800/80 px-4 pt-3 pb-3 safe-top">
+    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#BFBFBF] px-4 pt-3 pb-3 safe-top shadow-xs">
       <div className="max-w-md mx-auto flex items-center justify-between">
         
-        {/* App Branding & Sync Status */}
+        {/* Brand Wordmark & Logo */}
         <div className="flex items-center space-x-2.5">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-cyan-500 p-0.5 shadow-lg shadow-emerald-500/20">
-            <div className="w-full h-full bg-[#0b0f19] rounded-[10px] flex items-center justify-center">
-              <span className="text-base font-black bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">F</span>
-            </div>
+          {/* Brand Icon: Progress ring in Deep Teal with tick in Ocean Blue */}
+          <div className="w-9 h-9 rounded-xl bg-[#EAF2F5] border border-[#BFBFBF] flex items-center justify-center p-1.5 shrink-0">
+            <svg viewBox="0 0 40 40" className="w-full h-full">
+              <circle cx="20" cy="20" r="14" fill="none" stroke="#BFBFBF" strokeWidth="2.5" />
+              <circle cx="20" cy="20" r="14" fill="none" stroke="#1F4E5F" strokeWidth="3" strokeDasharray="65 88" strokeLinecap="round" transform="rotate(-90 20 20)" />
+              <path d="M 14 20 L 18 24 L 26 15" fill="none" stroke="#2E75B6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </div>
+
           <div>
-            <h1 className="text-sm font-bold tracking-tight text-white flex items-center gap-1.5">
-              FitDaily
-              <span className="text-[10px] font-medium text-emerald-400 bg-emerald-500/10 px-1.5 py-0.2 rounded-full border border-emerald-500/20">
-                Sheets Sync
+            {/* Wordmark: DAILY in Deep Teal bold + FIT in Ocean Blue bold */}
+            <h1 className="text-base font-bold tracking-tight flex items-baseline gap-1 leading-none">
+              <span className="text-[#1F4E5F] font-black">DAILY</span>
+              <span className="text-[#2E75B6] font-black">/FIT</span>
+              <span className="text-[10px] font-normal italic text-[#595959] ml-1 hidden xs:inline">
+                Show up daily.
               </span>
             </h1>
+
+            {/* Sync status pill using exact Brand Status colours */}
             <button
               onClick={onSync}
-              className="flex items-center space-x-1 text-[11px] text-slate-400 hover:text-slate-200 transition-colors"
+              className="mt-1 flex items-center space-x-1.5 text-[11px] transition-colors"
             >
               {syncStatus === 'syncing' ? (
-                <>
-                  <RefreshCw className="w-3 h-3 text-cyan-400 animate-spin" />
-                  <span className="text-cyan-400 font-medium">Syncing...</span>
-                </>
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#FFEB9C] text-[#7F6000] font-semibold border border-[#FFEB9C]">
+                  <RefreshCw className="w-2.5 h-2.5 animate-spin" />
+                  <span>Syncing...</span>
+                </span>
               ) : syncStatus === 'synced' ? (
-                <>
-                  <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                  <span className="text-emerald-400 font-medium">Synced {lastSyncTime ? `• ${lastSyncTime}` : ''}</span>
-                </>
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#C6EFCE] text-[#2E7D32] font-semibold border border-[#C6EFCE]">
+                  <CheckCircle2 className="w-2.5 h-2.5" />
+                  <span>Synced {lastSyncTime ? `• ${lastSyncTime}` : ''}</span>
+                </span>
               ) : syncStatus === 'offline' ? (
-                <>
-                  <AlertCircle className="w-3 h-3 text-amber-400" />
-                  <span className="text-amber-400 font-medium">Offline (Cached)</span>
-                </>
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#F8CBAD] text-[#C00000] font-semibold border border-[#F8CBAD]">
+                  <AlertCircle className="w-2.5 h-2.5" />
+                  <span>Offline (Cached)</span>
+                </span>
               ) : (
-                <>
-                  <RefreshCw className="w-3 h-3 text-slate-500" />
+                <span className="inline-flex items-center gap-1 text-[#595959] hover:text-[#1F4E5F]">
+                  <RefreshCw className="w-2.5 h-2.5" />
                   <span>Tap to sync</span>
-                </>
+                </span>
               )}
             </button>
           </div>
         </div>
 
-        {/* Action Controls: Install button + Settings */}
+        {/* Action Controls: Install + Settings */}
         <div className="flex items-center space-x-1.5">
           {!isStandalone && (
             <button
               onClick={onOpenInstall}
-              className="flex items-center gap-1 text-[11px] font-semibold text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 px-2.5 py-1.5 rounded-lg transition-all active:scale-95"
+              className="flex items-center gap-1 text-[11px] font-bold text-[#1F4E5F] bg-[#EAF2F5] hover:bg-[#dbe7ec] border border-[#BFBFBF] px-2.5 py-1.5 rounded-lg transition-all active:scale-95"
               title="Install app to phone"
             >
-              <Smartphone className="w-3.5 h-3.5" />
+              <Smartphone className="w-3.5 h-3.5 text-[#2E75B6]" />
               <span>Install</span>
             </button>
           )}
 
           <button
             onClick={onOpenSettings}
-            className="p-2 text-slate-400 hover:text-white bg-slate-800/60 hover:bg-slate-800 rounded-xl transition-colors active:scale-95 border border-slate-700/50"
-            title="Sheet Settings & URL"
+            className="p-2 text-[#595959] hover:text-[#1F4E5F] bg-[#EAF2F5] hover:bg-[#dbe7ec] rounded-xl transition-colors active:scale-95 border border-[#BFBFBF]"
+            title="Settings & Sheet URL"
           >
             <SettingsIcon className="w-4 h-4" />
           </button>
@@ -126,22 +132,22 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* Date Navigator Bar */}
-      <div className="max-w-md mx-auto mt-2.5 pt-2 border-t border-slate-800/50 flex items-center justify-between">
+      <div className="max-w-md mx-auto mt-2.5 pt-2 border-t border-[#BFBFBF]/60 flex items-center justify-between">
         <button
           onClick={handlePrevDay}
-          className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800/60 rounded-lg transition-colors active:scale-95"
+          className="p-1.5 text-[#595959] hover:text-[#1F4E5F] hover:bg-[#EAF2F5] rounded-lg transition-colors active:scale-95"
           title="Previous day"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
 
         <div className="flex items-center space-x-2">
-          <label className="relative cursor-pointer flex items-center space-x-1.5 bg-slate-800/80 hover:bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700/60 transition-colors">
-            <Calendar className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="text-xs font-semibold text-white">
+          <label className="relative cursor-pointer flex items-center space-x-1.5 bg-[#EAF2F5] hover:bg-[#dfeaf0] px-3 py-1.5 rounded-lg border border-[#BFBFBF] transition-colors">
+            <Calendar className="w-3.5 h-3.5 text-[#2E75B6]" />
+            <span className="text-xs font-bold text-[#1F4E5F]">
               {formatDisplayDate(selectedDate)}
             </span>
-            <span className="text-[11px] text-slate-400">
+            <span className="text-[11px] text-[#595959]">
               ({selectedDate})
             </span>
             <input
@@ -155,16 +161,16 @@ export const Header: React.FC<HeaderProps> = ({
           {!isToday && (
             <button
               onClick={() => onSelectDate(todayStr)}
-              className="text-[11px] font-semibold text-cyan-400 hover:text-cyan-300 bg-cyan-950/40 border border-cyan-800/50 px-2 py-1 rounded-full transition-colors active:scale-95"
+              className="text-[11px] font-bold text-[#2E75B6] hover:text-[#1F4E5F] bg-white border border-[#2E75B6]/30 px-2 py-1 rounded-lg transition-colors active:scale-95"
             >
-              Go to Today
+              Today
             </button>
           )}
         </div>
 
         <button
           onClick={handleNextDay}
-          className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800/60 rounded-lg transition-colors active:scale-95"
+          className="p-1.5 text-[#595959] hover:text-[#1F4E5F] hover:bg-[#EAF2F5] rounded-lg transition-colors active:scale-95"
           title="Next day"
         >
           <ChevronRight className="w-4 h-4" />

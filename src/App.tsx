@@ -111,7 +111,6 @@ export function App() {
     // 2. Fetch from Google Apps Script
     setSyncStatus('syncing');
     try {
-      // Also flush any pending actions
       await flushPendingQueue();
 
       const res = await fetchDailySummary(date);
@@ -136,16 +135,13 @@ export function App() {
     }
   }, []);
 
-  // When date changes
   useEffect(() => {
     loadDataForDate(selectedDate);
   }, [selectedDate, loadDataForDate]);
 
-  // Initial prompt to configure URL if not set
   useEffect(() => {
     const url = getScriptUrl();
     if (!url) {
-      // Wait a moment then show helpful tip
       const t = setTimeout(() => {
         showToast('Tip: Link your Google Sheet in Settings to enable sync!');
       }, 1500);
@@ -153,13 +149,14 @@ export function App() {
     }
   }, [showToast]);
 
-  // Daily Score Confetti trigger
+  // Brand-colored confetti trigger
   useEffect(() => {
     if (dailyLog.dailyScore >= 100) {
       try {
         confetti({
           particleCount: 80,
           spread: 60,
+          colors: ['#1F4E5F', '#2E75B6', '#8BC34A', '#2E9E6B'],
           origin: { y: 0.6 }
         });
       } catch {}
@@ -345,7 +342,7 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0b0f19] text-slate-100 flex flex-col font-sans selection:bg-emerald-500 selection:text-white">
+    <div className="min-h-screen bg-[#EAF2F5] text-[#1A1A1A] flex flex-col font-sans selection:bg-[#2E75B6] selection:text-white">
       <Toast message={toastMessage} onClear={() => setToastMessage(null)} />
 
       {/* Top Header */}

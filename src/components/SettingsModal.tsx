@@ -81,49 +81,49 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
     navigator.clipboard.writeText(currentAppUrl);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-    onShowToast('App URL copied to clipboard');
+    onShowToast('App link copied to clipboard');
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="w-full max-w-lg bg-slate-900 rounded-t-3xl sm:rounded-3xl border border-slate-800 p-5 shadow-2xl max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/50 backdrop-blur-xs animate-in fade-in duration-150">
+      <div className="w-full max-w-lg bg-white rounded-t-2xl sm:rounded-2xl border border-[#BFBFBF] p-5 shadow-2xl max-h-[90vh] overflow-y-auto">
         
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+        <div className="flex items-center justify-between pb-3 border-b border-[#BFBFBF]/60">
           <div className="flex items-center space-x-2">
-            <div className="p-2 rounded-xl bg-slate-800 text-slate-300 border border-slate-700">
-              <SettingsIcon className="w-4 h-4" />
+            <div className="p-2 rounded-lg bg-[#EAF2F5] text-[#1F4E5F] border border-[#BFBFBF]/60">
+              <SettingsIcon className="w-4 h-4 stroke-[2.5]" />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-white">Settings & Google Sheets Sync</h2>
-              <div className="text-[11px] text-slate-400">Manage backend connection & personal goals</div>
+              <h2 className="text-sm font-bold text-[#1F4E5F]">Settings & Sheet Connection</h2>
+              <div className="text-[11px] text-[#595959] italic">Manage Google Sheet sync and targets</div>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors"
+            className="p-1.5 text-[#595959] hover:text-[#1A1A1A] rounded-lg hover:bg-[#EAF2F5] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <form onSubmit={handleSaveAll} className="space-y-5 pt-4">
+        <form onSubmit={handleSaveAll} className="space-y-4 pt-3.5">
           
           {/* 1. Google Apps Script Web App URL */}
-          <div className="bg-slate-800/60 p-4 rounded-2xl border border-slate-700/60">
-            <label className="text-xs font-bold text-white flex items-center justify-between mb-1.5">
+          <div className="bg-[#EAF2F5] p-3.5 rounded-xl border border-[#BFBFBF]/80">
+            <label className="text-xs font-bold text-[#1F4E5F] flex items-center justify-between mb-1.5">
               <span className="flex items-center space-x-1.5">
-                <Link2 className="w-3.5 h-3.5 text-emerald-400" />
+                <Link2 className="w-3.5 h-3.5 text-[#2E75B6]" />
                 <span>Google Apps Script Web App URL</span>
               </span>
               <a
                 href="https://docs.google.com/spreadsheets/d/1g-LrMb2Efx4OiISCcNV9r6qosiarYu3hQ_4H4RHRt28/edit"
                 target="_blank"
                 rel="noreferrer"
-                className="text-[10px] text-cyan-400 hover:underline flex items-center gap-1"
+                className="text-[11px] text-[#2E75B6] hover:underline flex items-center gap-1 font-semibold"
               >
                 <span>Open Sheet</span>
-                <ExternalLink className="w-2.5 h-2.5" />
+                <ExternalLink className="w-3 h-3" />
               </a>
             </label>
 
@@ -133,7 +133,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 placeholder="https://script.google.com/macros/s/.../exec"
                 value={scriptUrl}
                 onChange={(e) => setLocalUrl(e.target.value)}
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 font-mono focus:outline-none focus:border-emerald-500"
+                className="w-full bg-[#FFF9DB] border border-[#BFBFBF] rounded-lg px-3 py-2 text-xs text-[#2E75B6] font-mono font-bold placeholder-[#7F7F7F] focus:outline-none focus:border-[#2E75B6]"
               />
 
               <div className="flex items-center gap-2">
@@ -141,11 +141,11 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   type="button"
                   onClick={handleTestConnection}
                   disabled={isTesting || !scriptUrl.trim()}
-                  className="flex-1 py-2 bg-slate-800 hover:bg-slate-700 active:scale-95 disabled:opacity-50 text-white font-semibold text-xs rounded-xl border border-slate-700 transition-all flex items-center justify-center space-x-1.5"
+                  className="flex-1 py-2 bg-[#1F4E5F] hover:bg-[#163a47] active:scale-95 disabled:opacity-50 text-white font-bold text-xs rounded-lg transition-all flex items-center justify-center space-x-1.5"
                 >
                   {isTesting ? (
                     <>
-                      <RefreshCw className="w-3.5 h-3.5 animate-spin text-cyan-400" />
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
                       <span>Testing...</span>
                     </>
                   ) : (
@@ -159,167 +159,163 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
               {testResult && (
                 <div
-                  className={`p-3 rounded-xl text-xs flex items-start space-x-2 border ${
+                  className={`p-2.5 rounded-lg text-xs flex items-start space-x-2 border ${
                     testResult.success
-                      ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
-                      : 'bg-rose-500/10 border-rose-500/30 text-rose-300'
+                      ? 'bg-[#C6EFCE] border-[#2E7D32] text-[#2E7D32]'
+                      : 'bg-[#F8CBAD] border-[#C00000] text-[#C00000]'
                   }`}
                 >
                   {testResult.success ? (
-                    <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
                   ) : (
-                    <AlertCircle className="w-4 h-4 shrink-0 text-rose-400 mt-0.5" />
+                    <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
                   )}
                   <div>
                     <div className="font-bold">
                       {testResult.success ? 'Connected Successfully!' : 'Connection Error'}
                     </div>
-                    <div className="text-[11px] opacity-90 mt-0.5">
+                    <div className="text-[11px] mt-0.5">
                       {testResult.success
-                        ? `Spreadsheet: "${testResult.sheetName}"`
+                        ? `Connected to: "${testResult.sheetName}"`
                         : testResult.error}
                     </div>
                   </div>
                 </div>
               )}
             </div>
-
-            <div className="mt-3 pt-3 border-t border-slate-700/60 text-[11px] text-slate-400">
-              💡 <strong>Quick Setup:</strong> In your Google Sheet, click <em>Extensions &gt; Apps Script</em>, paste the provided <code className="text-emerald-400">Code.gs</code>, click <em>Deploy &gt; New deployment &gt; Web app</em> (Execute as: Me, Who has access: Anyone), and paste the URL here.
-            </div>
           </div>
 
-          {/* 2. Mobile Open / QR Code Section */}
-          <div className="bg-slate-800/60 p-4 rounded-2xl border border-slate-700/60">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center space-x-1.5 text-xs font-bold text-white">
-                <QrCode className="w-4 h-4 text-cyan-400" />
-                <span>Open on Your Phone</span>
+          {/* 2. Open on Phone / QR Code Section */}
+          <div className="bg-[#EAF2F5] p-3.5 rounded-xl border border-[#BFBFBF]/80">
+            <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center space-x-1.5 text-xs font-bold text-[#1F4E5F]">
+                <QrCode className="w-4 h-4 text-[#2E75B6]" />
+                <span>Open on Your Mobile Phone</span>
               </div>
               <button
                 type="button"
                 onClick={() => setShowQr(!showQr)}
-                className="text-[11px] text-cyan-400 font-semibold hover:underline"
+                className="text-[11px] text-[#2E75B6] font-bold hover:underline"
               >
-                {showQr ? 'Hide QR' : 'Show QR Code'}
+                {showQr ? 'Hide QR' : 'Show QR'}
               </button>
             </div>
 
-            <div className="text-xs text-slate-400 mb-3">
-              Scan this QR code with your iPhone Camera or Android scanner to open the app on your mobile device immediately.
+            <div className="text-[11px] text-[#595959] mb-2.5">
+              Scan with your iPhone Camera or Android scanner to open this mobile tracker immediately.
             </div>
 
             {showQr && (
-              <div className="flex flex-col items-center justify-center p-4 bg-white rounded-2xl mb-3 shadow-lg">
-                <QRCodeSVG value={currentAppUrl} size={180} level="M" />
-                <span className="text-[11px] text-slate-800 font-semibold mt-2">Scan with Phone Camera</span>
+              <div className="flex flex-col items-center justify-center p-4 bg-white rounded-xl mb-2.5 border border-[#BFBFBF] shadow-xs">
+                <QRCodeSVG value={currentAppUrl} size={160} level="M" />
+                <span className="text-[11px] text-[#595959] font-bold mt-2">Scan with Phone Camera</span>
               </div>
             )}
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               <input
                 type="text"
                 readOnly
                 value={currentAppUrl}
-                className="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-400 font-mono"
+                className="flex-1 bg-white border border-[#BFBFBF] rounded-lg px-2.5 py-1.5 text-xs text-[#595959] font-mono"
               />
               <button
                 type="button"
                 onClick={copyAppUrl}
-                className="p-2 bg-slate-800 hover:bg-slate-700 active:scale-95 text-white rounded-xl border border-slate-700"
+                className="p-2 bg-[#1F4E5F] text-white hover:bg-[#163a47] rounded-lg transition-all"
                 title="Copy URL"
               >
-                {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                {copied ? <Check className="w-4 h-4 text-[#C6EFCE]" /> : <Copy className="w-4 h-4" />}
               </button>
             </div>
           </div>
 
-          {/* 3. Daily Goals & Targets */}
-          <div className="bg-slate-800/60 p-4 rounded-2xl border border-slate-700/60 space-y-3">
-            <div className="text-xs font-bold text-white">Personal Targets (from Settings Sheet)</div>
+          {/* 3. Personal Goals (from Settings Sheet) */}
+          <div className="bg-[#EAF2F5] p-3.5 rounded-xl border border-[#BFBFBF]/80 space-y-2.5">
+            <div className="text-xs font-bold text-[#1F4E5F]">Personal Targets (from Settings Sheet)</div>
             
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="text-[11px] text-slate-400 block mb-1">Your Name</label>
+                <label className="text-[10px] text-[#595959] font-bold block mb-0.5">Your Name</label>
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white"
+                  className="w-full bg-[#FFF9DB] border border-[#BFBFBF] rounded-lg px-2.5 py-1 text-xs text-[#2E75B6] font-bold"
                 />
               </div>
 
               <div>
-                <label className="text-[11px] text-slate-400 block mb-1">Calorie Target (kcal)</label>
+                <label className="text-[10px] text-[#595959] font-bold block mb-0.5">Daily Calorie Target (kcal)</label>
                 <input
                   type="number"
                   value={calories}
                   onChange={(e) => setCalories(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white"
+                  className="w-full bg-[#FFF9DB] border border-[#BFBFBF] rounded-lg px-2.5 py-1 text-xs text-[#2E75B6] font-bold"
                 />
               </div>
 
               <div>
-                <label className="text-[11px] text-slate-400 block mb-1">Protein Target (g)</label>
+                <label className="text-[10px] text-[#595959] font-bold block mb-0.5">Protein Target (g)</label>
                 <input
                   type="number"
                   value={protein}
                   onChange={(e) => setProtein(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white"
+                  className="w-full bg-[#FFF9DB] border border-[#BFBFBF] rounded-lg px-2.5 py-1 text-xs text-[#2E75B6] font-bold"
                 />
               </div>
 
               <div>
-                <label className="text-[11px] text-slate-400 block mb-1">Water Target (L)</label>
+                <label className="text-[10px] text-[#595959] font-bold block mb-0.5">Water Target (L)</label>
                 <input
                   type="number"
                   step="0.1"
                   value={water}
                   onChange={(e) => setWater(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white"
+                  className="w-full bg-[#FFF9DB] border border-[#BFBFBF] rounded-lg px-2.5 py-1 text-xs text-[#2E75B6] font-bold"
                 />
               </div>
 
               <div>
-                <label className="text-[11px] text-slate-400 block mb-1">Steps Target</label>
+                <label className="text-[10px] text-[#595959] font-bold block mb-0.5">Daily Steps Target</label>
                 <input
                   type="number"
                   value={steps}
                   onChange={(e) => setSteps(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white"
+                  className="w-full bg-[#FFF9DB] border border-[#BFBFBF] rounded-lg px-2.5 py-1 text-xs text-[#2E75B6] font-bold"
                 />
               </div>
 
               <div>
-                <label className="text-[11px] text-slate-400 block mb-1">Sleep Target (hrs)</label>
+                <label className="text-[10px] text-[#595959] font-bold block mb-0.5">Sleep Target (hrs)</label>
                 <input
                   type="number"
                   step="0.5"
                   value={sleep}
                   onChange={(e) => setSleep(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white"
+                  className="w-full bg-[#FFF9DB] border border-[#BFBFBF] rounded-lg px-2.5 py-1 text-xs text-[#2E75B6] font-bold"
                 />
               </div>
 
               <div>
-                <label className="text-[11px] text-slate-400 block mb-1">Starting Weight (kg)</label>
+                <label className="text-[10px] text-[#595959] font-bold block mb-0.5">Starting Weight (kg)</label>
                 <input
                   type="number"
                   step="0.1"
                   value={startWeight}
                   onChange={(e) => setStartWeight(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white"
+                  className="w-full bg-[#FFF9DB] border border-[#BFBFBF] rounded-lg px-2.5 py-1 text-xs text-[#2E75B6] font-bold"
                 />
               </div>
 
               <div>
-                <label className="text-[11px] text-slate-400 block mb-1">Goal Weight (kg)</label>
+                <label className="text-[10px] text-[#595959] font-bold block mb-0.5">Goal Weight (kg)</label>
                 <input
                   type="number"
                   step="0.1"
                   value={goalWeight}
                   onChange={(e) => setGoalWeight(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white"
+                  className="w-full bg-[#FFF9DB] border border-[#BFBFBF] rounded-lg px-2.5 py-1 text-xs text-[#2E75B6] font-bold"
                 />
               </div>
             </div>
@@ -328,7 +324,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           {/* Submit */}
           <button
             type="submit"
-            className="w-full py-3 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 active:scale-95 text-slate-950 font-black text-sm rounded-2xl shadow-lg shadow-emerald-500/25 transition-all"
+            className="w-full py-2.5 bg-[#1F4E5F] hover:bg-[#163a47] active:scale-95 text-white font-bold text-xs rounded-lg shadow-xs transition-all"
           >
             Save Settings & Targets
           </button>

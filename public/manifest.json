@@ -1,12 +1,12 @@
 {
-  "name": "Fitness & Daily Tracker",
-  "short_name": "Fitness",
-  "description": "Personal Fitness and Daily Work Tracker synced with Google Sheets",
+  "name": "DAILY/FIT – Fitness & Daily Tracker",
+  "short_name": "DAILY/FIT",
+  "description": "A private, no-excuses daily log of your body, food, work and habits synced to your Google Sheet.",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0b0f19",
-  "theme_color": "#0b0f19",
+  "background_color": "#EAF2F5",
+  "theme_color": "#1F4E5F",
   "icons": [
     {
       "src": "/icon-192.svg",

@@ -52,44 +52,44 @@ export const AddWorkModal: React.FC<AddWorkModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="w-full max-w-md bg-slate-900 rounded-t-3xl sm:rounded-3xl border border-slate-800 p-5 shadow-2xl max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/50 backdrop-blur-xs animate-in fade-in duration-150">
+      <div className="w-full max-w-md bg-white rounded-t-2xl sm:rounded-2xl border border-[#BFBFBF] p-5 shadow-2xl max-h-[90vh] overflow-y-auto">
         
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+        <div className="flex items-center justify-between pb-3 border-b border-[#BFBFBF]/60">
           <div className="flex items-center space-x-2">
-            <div className="p-2 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-              <Briefcase className="w-4 h-4" />
+            <div className="p-2 rounded-lg bg-[#EAF2F5] text-[#455A64] border border-[#BFBFBF]/60">
+              <Briefcase className="w-4 h-4 stroke-[2.5]" />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-white">Log Work / Activity</h2>
-              <div className="text-[11px] text-slate-400">Syncs to your Work Log sheet</div>
+              <h2 className="text-sm font-bold text-[#1F4E5F]">Log Work / Activity</h2>
+              <div className="text-[11px] text-[#595959] italic">Appends row to your Work Log sheet</div>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors"
+            className="p-1.5 text-[#595959] hover:text-[#1A1A1A] rounded-lg hover:bg-[#EAF2F5] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4 pt-4">
+        <form onSubmit={handleSubmit} className="space-y-3.5 pt-3.5">
           
           {/* Category */}
           <div>
-            <label className="text-xs font-semibold text-slate-300 block mb-1.5">Category</label>
-            <div className="grid grid-cols-3 gap-1.5">
+            <label className="text-xs font-bold text-[#1F4E5F] block mb-1">Category</label>
+            <div className="grid grid-cols-3 gap-1">
               {categories.map((c) => (
                 <button
                   type="button"
                   key={c}
                   onClick={() => setCategory(c)}
-                  className={`py-2 text-[11px] font-semibold rounded-xl border transition-all ${
+                  className={`py-1.5 text-[11px] font-bold rounded-lg border transition-all ${
                     category === c
-                      ? 'bg-indigo-500 text-white border-indigo-400 font-bold shadow-md shadow-indigo-500/20'
-                      : 'bg-slate-800/80 text-slate-400 border-slate-700/60 hover:text-white'
+                      ? 'bg-[#1F4E5F] text-white border-[#1F4E5F]'
+                      : 'bg-[#EAF2F5] text-[#595959] border-[#BFBFBF] hover:bg-[#dfeaf0]'
                   }`}
                 >
                   {c}
@@ -98,23 +98,23 @@ export const AddWorkModal: React.FC<AddWorkModalProps> = ({
             </div>
           </div>
 
-          {/* Task / What I Did */}
+          {/* Task / Description (Sunlight yellow fill) */}
           <div>
-            <label className="text-xs font-semibold text-slate-300 block mb-1.5">Task Description *</label>
+            <label className="text-xs font-bold text-[#1F4E5F] block mb-1">Task / What I Did *</label>
             <input
               type="text"
               required
-              placeholder="e.g. Completed quarterly report presentation"
+              placeholder="e.g. Finish project report"
               value={task}
               onChange={(e) => setTask(e.target.value)}
-              className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+              className="w-full bg-[#FFF9DB] border border-[#BFBFBF] rounded-lg px-3 py-2 text-xs text-[#2E75B6] font-bold placeholder-[#7F7F7F] focus:outline-none focus:border-[#2E75B6]"
             />
           </div>
 
           {/* Hours and Status */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="text-xs font-semibold text-slate-300 block mb-1.5">Hours Spent</label>
+              <label className="text-xs font-bold text-[#1F4E5F] block mb-1">Hours Spent</label>
               <input
                 type="number"
                 step="0.25"
@@ -122,22 +122,22 @@ export const AddWorkModal: React.FC<AddWorkModalProps> = ({
                 placeholder="1.5"
                 value={hours}
                 onChange={(e) => setHours(e.target.value)}
-                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-white font-bold focus:outline-none focus:border-indigo-500"
+                className="w-full bg-[#FFF9DB] border border-[#BFBFBF] rounded-lg px-3 py-1.5 text-xs text-[#2E75B6] font-black focus:outline-none focus:border-[#2E75B6]"
               />
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-slate-300 block mb-1.5">Status</label>
+              <label className="text-xs font-bold text-[#1F4E5F] block mb-1">Status</label>
               <div className="flex gap-1">
                 {statuses.map((s) => (
                   <button
                     type="button"
                     key={s}
                     onClick={() => setStatus(s)}
-                    className={`flex-1 py-2 text-[11px] font-bold rounded-xl border transition-all ${
+                    className={`flex-1 py-1.5 text-[11px] font-bold rounded-lg border transition-all ${
                       status === s
-                        ? 'bg-emerald-500 text-slate-950 border-emerald-400'
-                        : 'bg-slate-800 text-slate-400 border-slate-700'
+                        ? s === 'Done' ? 'bg-[#C6EFCE] text-[#2E7D32] border-[#2E7D32]' : 'bg-[#FFEB9C] text-[#7F6000] border-[#7F6000]'
+                        : 'bg-[#EAF2F5] text-[#595959] border-[#BFBFBF]'
                     }`}
                   >
                     {s}
@@ -149,23 +149,23 @@ export const AddWorkModal: React.FC<AddWorkModalProps> = ({
 
           {/* Notes */}
           <div>
-            <label className="text-xs font-semibold text-slate-300 block mb-1.5">Notes (optional)</label>
+            <label className="text-xs font-bold text-[#1F4E5F] block mb-1">Notes (optional)</label>
             <input
               type="text"
-              placeholder="e.g. Sent via email to team"
+              placeholder="e.g. Sent via email"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+              className="w-full bg-[#FFF9DB] border border-[#BFBFBF] rounded-lg px-3 py-1.5 text-xs text-[#2E75B6] font-bold placeholder-[#7F7F7F] focus:outline-none focus:border-[#2E75B6]"
             />
           </div>
 
           {/* Submit */}
           <button
             type="submit"
-            className="w-full mt-2 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-400 hover:to-purple-400 active:scale-95 text-white font-black text-sm rounded-2xl shadow-lg shadow-indigo-500/25 transition-all flex items-center justify-center space-x-2"
+            className="w-full mt-2 py-2.5 bg-[#1F4E5F] hover:bg-[#163a47] active:scale-95 text-white font-bold text-xs rounded-lg shadow-xs transition-all flex items-center justify-center space-x-1.5"
           >
             <Plus className="w-4 h-4 stroke-[3]" />
-            <span>Add to Work Log</span>
+            <span>Add to Work Log Sheet</span>
           </button>
         </form>
 
