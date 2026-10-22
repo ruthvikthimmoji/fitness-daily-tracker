@@ -20,13 +20,22 @@
     <title>DAILY/FIT – Daily Tracker</title>
   </head>
   <body class="bg-[#EAF2F5] text-[#1A1A1A] antialiased selection:bg-[#2E75B6] selection:text-white overscroll-none min-h-screen">
-    <div id="root"></div>
+    <div id="root">
+      <div style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: -apple-system, sans-serif; background-color: #EAF2F5; color: #1F4E5F;">
+        <div style="width: 48px; height: 48px; border: 4px solid #BFBFBF; border-top-color: #1F4E5F; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+        <div style="margin-top: 16px; font-weight: 700; font-size: 14px; letter-spacing: -0.2px;">DAILY/FIT</div>
+        <div style="margin-top: 4px; font-size: 11px; color: #595959; font-style: italic;">Loading your tracker...</div>
+        <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js').catch((err) => {
-            console.log('SW registration error:', err);
+          navigator.serviceWorker.register('/sw.js').then((reg) => {
+            reg.update();
+          }).catch((err) => {
+            console.warn('SW registration failed:', err);
           });
         });
       }

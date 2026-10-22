@@ -149,7 +149,7 @@ export const TodayTab: React.FC<TodayTabProps> = ({
           <div className="bg-[#EAF2F5] rounded-lg p-2.5 border border-[#BFBFBF]/60">
             <div className="text-[11px] font-bold text-[#D32F2F]">Burned</div>
             <div className="text-lg font-black text-[#D32F2F] mt-0.5">+{caloriesBurned}</div>
-            <div className="text-[10px] text-[#595959]">{dailyLog.workoutVolume.toLocaleString()} kg vol</div>
+            <div className="text-[10px] text-[#595959]">{(dailyLog.workoutVolume || 0).toLocaleString()} kg vol</div>
           </div>
 
           <div className="bg-[#EAF2F5] rounded-lg p-2.5 border border-[#BFBFBF]/60">
@@ -452,7 +452,7 @@ export const TodayTab: React.FC<TodayTabProps> = ({
               <div className="text-xs font-bold text-[#1F4E5F]">Workout Activity</div>
               <div className="text-[11px] text-[#595959]">
                 {dailyLog.workoutDone
-                  ? `Completed • ${dailyLog.workoutVolume.toLocaleString()} kg volume`
+                  ? `Completed • ${(dailyLog.workoutVolume || 0).toLocaleString()} kg volume`
                   : 'No workout logged yet'}
               </div>
             </div>

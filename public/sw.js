@@ -1,19 +1,6 @@
-const CACHE_NAME = 'fitness-tracker-v1';
+const CACHE_NAME = 'daily-fit-v3';
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll([
-        '/',
-        '/index.html',
-        '/manifest.json',
-        '/icon-192.svg',
-        '/icon-512.svg'
-      ]).catch(() => {
-        // Cache best-effort
-      });
-    })
-  );
   self.skipWaiting();
 });
 
@@ -33,18 +20,35 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // Let Google Script API requests pass through without caching
-  if (event.request.url.includes('script.google.com')) {
+  if (event.request.method !== 'GET') return;
+  if (event.request.url.includes('script.google.com')) return;
+
+  // 1. Navigation requests (HTML pages): Network-first
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          return response;
+        })
+        .catch(() => {
+          return caches.match(event.request).then((res) => res || caches.match('/index.html'));
+        })
+    );
     return;
   }
 
+  // 2. Static assets: Cache-first, fallback to network
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request).catch(() => {
-        // If offline and requesting navigation, return index.html
-        if (event.request.mode === 'navigate') {
-          return caches.match('/index.html');
+    caches.match(event.request).then((cached) => {
+      if (cached) return cached;
+      return fetch(event.request).then((response) => {
+        if (response.status === 200) {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
         }
+        return response;
       });
     })
   );

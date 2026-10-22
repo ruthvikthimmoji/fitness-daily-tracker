@@ -27,37 +27,40 @@ export const DEFAULT_SETTINGS: UserSettings = {
 };
 
 export function getScriptUrl(): string {
-  return localStorage.getItem(STORAGE_KEYS.SCRIPT_URL) || '';
+  try {
+    return localStorage.getItem(STORAGE_KEYS.SCRIPT_URL) || '';
+  } catch {
+    return '';
+  }
 }
 
 export function setScriptUrl(url: string): void {
-  localStorage.setItem(STORAGE_KEYS.SCRIPT_URL, url.trim());
+  try {
+    localStorage.setItem(STORAGE_KEYS.SCRIPT_URL, url.trim());
+  } catch {}
 }
 
 export function getStoredSettings(): UserSettings {
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.SETTINGS);
-    return raw ? JSON.parse(raw) : DEFAULT_SETTINGS;
+    return raw ? { ...DEFAULT_SETTINGS, ...JSON.parse(raw) } : DEFAULT_SETTINGS;
   } catch {
     return DEFAULT_SETTINGS;
   }
 }
 
 export function saveStoredSettings(settings: UserSettings): void {
-  localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
+  try {
+    localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
+  } catch {}
 }
 
 export function getStoredDailyLog(date: string): DailyLog {
-  try {
-    const logs = JSON.parse(localStorage.getItem(STORAGE_KEYS.DAILY_LOGS) || '{}');
-    if (logs[date]) return logs[date];
-  } catch {}
-
   const settings = getStoredSettings();
   const d = new Date(date);
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-  return {
+  const fallback: DailyLog = {
     date,
     day: isNaN(d.getDay()) ? 'Today' : days[d.getDay()],
     weight: null,
@@ -72,13 +75,40 @@ export function getStoredDailyLog(date: string): DailyLog {
     workoutVolume: 0,
     caloriesBurned: 0,
     netCalories: 0,
-    calorieTarget: settings.dailyCalorieTarget,
+    calorieTarget: settings.dailyCalorieTarget || 2200,
     workHours: 0,
     mood: 3,
     photoTaken: false,
     dailyScore: 0,
     notes: ''
   };
+
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.DAILY_LOGS);
+    if (raw) {
+      const logs = JSON.parse(raw);
+      if (logs && logs[date]) {
+        return {
+          ...fallback,
+          ...logs[date],
+          workoutVolume: Number(logs[date].workoutVolume || 0),
+          caloriesIn: Number(logs[date].caloriesIn || 0),
+          caloriesBurned: Number(logs[date].caloriesBurned || 0),
+          netCalories: Number(logs[date].netCalories || 0),
+          dailyScore: Number(logs[date].dailyScore || 0),
+          steps: Number(logs[date].steps || 0),
+          water: Number(logs[date].water || 0),
+          sleep: Number(logs[date].sleep || 0),
+          protein: Number(logs[date].protein || 0),
+          carbs: Number(logs[date].carbs || 0),
+          fat: Number(logs[date].fat || 0),
+          workHours: Number(logs[date].workHours || 0)
+        };
+      }
+    }
+  } catch {}
+
+  return fallback;
 }
 
 export function saveStoredDailyLog(date: string, log: DailyLog): void {
@@ -94,7 +124,7 @@ export function saveStoredDailyLog(date: string, log: DailyLog): void {
 export function getStoredFoodItems(date: string): FoodItem[] {
   try {
     const all = JSON.parse(localStorage.getItem(STORAGE_KEYS.FOOD_ITEMS) || '{}');
-    return all[date] || [];
+    return Array.isArray(all[date]) ? all[date] : [];
   } catch {
     return [];
   }
@@ -113,7 +143,7 @@ export function saveStoredFoodItems(date: string, items: FoodItem[]): void {
 export function getStoredWorkoutItems(date: string): WorkoutItem[] {
   try {
     const all = JSON.parse(localStorage.getItem(STORAGE_KEYS.WORKOUT_ITEMS) || '{}');
-    return all[date] || [];
+    return Array.isArray(all[date]) ? all[date] : [];
   } catch {
     return [];
   }
@@ -132,7 +162,7 @@ export function saveStoredWorkoutItems(date: string, items: WorkoutItem[]): void
 export function getStoredWorkItems(date: string): WorkItem[] {
   try {
     const all = JSON.parse(localStorage.getItem(STORAGE_KEYS.WORK_ITEMS) || '{}');
-    return all[date] || [];
+    return Array.isArray(all[date]) ? all[date] : [];
   } catch {
     return [];
   }
@@ -149,32 +179,28 @@ export function saveStoredWorkItems(date: string, items: WorkItem[]): void {
 }
 
 export function getStoredDashboardKpis(): DashboardKpis {
+  const fallback = {
+    currentWeight: 78.0,
+    startingWeight: 78.0,
+    goalWeight: 72.0,
+    changeSoFar: 0,
+    remainingToGoal: 6.0,
+    bmi: 27.0,
+    goalProgress: 0
+  };
+
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.DASHBOARD_KPIS);
-    return raw ? JSON.parse(raw) : {
-      currentWeight: 78.0,
-      startingWeight: 78.0,
-      goalWeight: 72.0,
-      changeSoFar: 0,
-      remainingToGoal: 6.0,
-      bmi: 27.0,
-      goalProgress: 0
-    };
+    return raw ? { ...fallback, ...JSON.parse(raw) } : fallback;
   } catch {
-    return {
-      currentWeight: 78.0,
-      startingWeight: 78.0,
-      goalWeight: 72.0,
-      changeSoFar: 0,
-      remainingToGoal: 6.0,
-      bmi: 27.0,
-      goalProgress: 0
-    };
+    return fallback;
   }
 }
 
 export function saveStoredDashboardKpis(kpis: DashboardKpis): void {
-  localStorage.setItem(STORAGE_KEYS.DASHBOARD_KPIS, JSON.stringify(kpis));
+  try {
+    localStorage.setItem(STORAGE_KEYS.DASHBOARD_KPIS, JSON.stringify(kpis));
+  } catch {}
 }
 
 export function getStoredHistory(): DailyHistoryItem[] {
@@ -187,18 +213,25 @@ export function getStoredHistory(): DailyHistoryItem[] {
 }
 
 export function saveStoredHistory(history: DailyHistoryItem[]): void {
-  localStorage.setItem(STORAGE_KEYS.HISTORY, JSON.stringify(history));
+  try {
+    localStorage.setItem(STORAGE_KEYS.HISTORY, JSON.stringify(history));
+  } catch {}
 }
 
 export function getLastSyncTime(): string | null {
-  return localStorage.getItem(STORAGE_KEYS.LAST_SYNC_TIME);
+  try {
+    return localStorage.getItem(STORAGE_KEYS.LAST_SYNC_TIME);
+  } catch {
+    return null;
+  }
 }
 
 export function setLastSyncTime(time: string): void {
-  localStorage.setItem(STORAGE_KEYS.LAST_SYNC_TIME, time);
+  try {
+    localStorage.setItem(STORAGE_KEYS.LAST_SYNC_TIME, time);
+  } catch {}
 }
 
-// Pending offline queue
 export interface PendingAction {
   id: string;
   type: string;
@@ -215,15 +248,19 @@ export function getPendingQueue(): PendingAction[] {
 }
 
 export function addToPendingQueue(action: Omit<PendingAction, 'id' | 'timestamp'>): void {
-  const queue = getPendingQueue();
-  queue.push({
-    ...action,
-    id: Math.random().toString(36).substring(2, 9),
-    timestamp: Date.now()
-  });
-  localStorage.setItem(STORAGE_KEYS.PENDING_QUEUE, JSON.stringify(queue));
+  try {
+    const queue = getPendingQueue();
+    queue.push({
+      ...action,
+      id: Math.random().toString(36).substring(2, 9),
+      timestamp: Date.now()
+    });
+    localStorage.setItem(STORAGE_KEYS.PENDING_QUEUE, JSON.stringify(queue));
+  } catch {}
 }
 
 export function clearPendingQueue(): void {
-  localStorage.setItem(STORAGE_KEYS.PENDING_QUEUE, '[]');
+  try {
+    localStorage.setItem(STORAGE_KEYS.PENDING_QUEUE, '[]');
+  } catch {}
 }
