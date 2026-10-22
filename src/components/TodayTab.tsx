@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import { Droplets, Footprints, Moon, Scale, Smile, Dumbbell, Briefcase, Plus, Minus, Check, ArrowRight } from 'lucide-react';
-import { DailyLog, UserSettings, TabType } from '../types';
+import { DailyLog, UserSettings, TabType, GamificationState } from '../types';
+import { QuestsWidget } from './QuestsWidget';
 
 interface TodayTabProps {
   dailyLog: DailyLog;
   settings: UserSettings;
+  gamification: GamificationState;
+  onClaimQuest: (questId: string) => void;
+  onClaimChest: () => void;
+  onOpenBadgesModal: () => void;
   onUpdateDailyLog: (updates: Partial<DailyLog>) => void;
   onNavigateTab: (tab: TabType) => void;
   onShowToast: (msg: string) => void;
@@ -13,6 +18,10 @@ interface TodayTabProps {
 export const TodayTab: React.FC<TodayTabProps> = ({
   dailyLog,
   settings,
+  gamification,
+  onClaimQuest,
+  onClaimChest,
+  onOpenBadgesModal,
   onUpdateDailyLog,
   onNavigateTab,
   onShowToast
@@ -207,7 +216,16 @@ export const TodayTab: React.FC<TodayTabProps> = ({
         </div>
       </div>
 
-      {/* 2. Water Intake Card */}
+      {/* 2. Duolingo Daily Quests Widget & Mystery Chest */}
+      <QuestsWidget
+        quests={gamification.quests}
+        onClaimQuest={onClaimQuest}
+        onClaimChest={onClaimChest}
+        chestClaimed={gamification.chestClaimedDate === dailyLog.date}
+        onOpenBadgesModal={onOpenBadgesModal}
+      />
+
+      {/* 3. Water Intake Card */}
       <div className="bg-white rounded-xl p-4 border border-[#BFBFBF] shadow-xs">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center space-x-2">
@@ -235,37 +253,37 @@ export const TodayTab: React.FC<TodayTabProps> = ({
           ></div>
         </div>
 
-        {/* Quick tap buttons */}
+        {/* Tactile 3D Quick Tap Buttons */}
         <div className="flex items-center gap-1.5">
           <button
             onClick={() => handleAddWater(-0.25)}
-            className="p-2 bg-[#EAF2F5] hover:bg-[#dbe8ee] active:scale-95 text-[#595959] rounded-lg border border-[#BFBFBF] transition-all"
+            className="p-2 btn-3d-mist rounded-xl font-bold transition-all"
             title="Subtract 250ml"
           >
-            <Minus className="w-3.5 h-3.5" />
+            <Minus className="w-3.5 h-3.5 text-[#595959]" />
           </button>
           <button
             onClick={() => handleAddWater(0.25)}
-            className="flex-1 py-2 bg-[#EAF2F5] hover:bg-[#dbe8ee] active:scale-95 text-[#1F4E5F] font-bold text-xs rounded-lg border border-[#BFBFBF] transition-all flex items-center justify-center gap-1"
+            className="flex-1 py-2 btn-3d-mist rounded-xl font-black text-xs flex items-center justify-center gap-1 text-[#1F4E5F]"
           >
-            <Plus className="w-3.5 h-3.5 text-[#29B6F6]" /> 250 ml
+            <Plus className="w-3 h-3 text-[#29B6F6]" /> 250 ml
           </button>
           <button
             onClick={() => handleAddWater(0.5)}
-            className="flex-1 py-2 bg-[#EAF2F5] hover:bg-[#dbe8ee] active:scale-95 text-[#1F4E5F] font-bold text-xs rounded-lg border border-[#BFBFBF] transition-all flex items-center justify-center gap-1"
+            className="flex-1 py-2 btn-3d-mist rounded-xl font-black text-xs flex items-center justify-center gap-1 text-[#1F4E5F]"
           >
-            <Plus className="w-3.5 h-3.5 text-[#29B6F6]" /> 500 ml
+            <Plus className="w-3 h-3 text-[#29B6F6]" /> 500 ml
           </button>
           <button
             onClick={() => handleAddWater(1.0)}
-            className="flex-1 py-2 bg-[#EAF2F5] hover:bg-[#dbe8ee] active:scale-95 text-[#1F4E5F] font-bold text-xs rounded-lg border border-[#BFBFBF] transition-all flex items-center justify-center gap-1"
+            className="flex-1 py-2 btn-3d-teal rounded-xl font-black text-xs flex items-center justify-center gap-1"
           >
-            <Plus className="w-3.5 h-3.5 text-[#29B6F6]" /> 1.0 L
+            <Plus className="w-3 h-3 text-white" /> 1.0 L
           </button>
         </div>
       </div>
 
-      {/* 3. Steps Counter Card */}
+      {/* 4. Steps Counter Card */}
       <div className="bg-white rounded-xl p-4 border border-[#BFBFBF] shadow-xs">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center space-x-2">
@@ -293,23 +311,23 @@ export const TodayTab: React.FC<TodayTabProps> = ({
           ></div>
         </div>
 
-        {/* Quick step additions */}
-        <div className="flex items-center gap-1.5 mb-2">
+        {/* Tactile 3D Quick Step Additions */}
+        <div className="flex items-center gap-1.5 mb-2.5">
           <button
             onClick={() => handleAddSteps(1000)}
-            className="flex-1 py-2 bg-[#EAF2F5] hover:bg-[#dbe8ee] active:scale-95 text-[#1F4E5F] font-bold text-xs rounded-lg border border-[#BFBFBF] transition-all"
+            className="flex-1 py-2 btn-3d-mist rounded-xl font-black text-xs text-[#1F4E5F]"
           >
             +1,000
           </button>
           <button
             onClick={() => handleAddSteps(2500)}
-            className="flex-1 py-2 bg-[#EAF2F5] hover:bg-[#dbe8ee] active:scale-95 text-[#1F4E5F] font-bold text-xs rounded-lg border border-[#BFBFBF] transition-all"
+            className="flex-1 py-2 btn-3d-mist rounded-xl font-black text-xs text-[#1F4E5F]"
           >
             +2,500
           </button>
           <button
             onClick={() => handleAddSteps(5000)}
-            className="flex-1 py-2 bg-[#EAF2F5] hover:bg-[#dbe8ee] active:scale-95 text-[#1F4E5F] font-bold text-xs rounded-lg border border-[#BFBFBF] transition-all"
+            className="flex-1 py-2 btn-3d-orange rounded-xl font-black text-xs"
           >
             +5,000
           </button>
@@ -326,14 +344,14 @@ export const TodayTab: React.FC<TodayTabProps> = ({
           />
           <button
             onClick={handleSaveStepsInput}
-            className="px-3.5 py-2 bg-[#1F4E5F] hover:bg-[#163a47] active:scale-95 text-white font-bold text-xs rounded-lg transition-all"
+            className="px-4 py-2 btn-3d-teal font-black text-xs rounded-lg"
           >
             Set
           </button>
         </div>
       </div>
 
-      {/* 4. Weight & Sleep Two-Column Grid */}
+      {/* 5. Weight & Sleep Two-Column Grid */}
       <div className="grid grid-cols-2 gap-3">
         
         {/* Morning Weight */}
@@ -357,7 +375,7 @@ export const TodayTab: React.FC<TodayTabProps> = ({
             />
             <button
               onClick={handleSaveWeight}
-              className="p-2 bg-[#1F4E5F] hover:bg-[#163a47] active:scale-95 text-white rounded-lg transition-all"
+              className="p-2 btn-3d-teal rounded-lg text-white flex items-center justify-center"
               title="Save weight"
             >
               <Check className="w-4 h-4 stroke-[3]" />
@@ -387,10 +405,10 @@ export const TodayTab: React.FC<TodayTabProps> = ({
               <button
                 key={h}
                 onClick={() => handleSetSleep(h)}
-                className={`flex-1 py-1 text-[11px] font-bold rounded-md border transition-all ${
+                className={`flex-1 py-1 text-[11px] font-bold rounded-lg transition-all ${
                   dailyLog.sleep === h
-                    ? 'bg-[#1F4E5F] text-white border-[#1F4E5F]'
-                    : 'bg-[#EAF2F5] text-[#595959] border-[#BFBFBF] hover:bg-[#dfeaf0]'
+                    ? 'btn-3d-teal'
+                    : 'btn-3d-mist text-[#595959]'
                 }`}
               >
                 {h}h
@@ -401,7 +419,7 @@ export const TodayTab: React.FC<TodayTabProps> = ({
 
       </div>
 
-      {/* 5. Daily Mood Selector */}
+      {/* 6. Daily Mood Selector */}
       <div className="bg-white rounded-xl p-4 border border-[#BFBFBF] shadow-xs">
         <div className="flex items-center space-x-2 mb-3">
           <div className="p-1.5 rounded-lg bg-[#EAF2F5] text-[#EC407A] border border-[#BFBFBF]/60">
@@ -436,7 +454,7 @@ export const TodayTab: React.FC<TodayTabProps> = ({
         </div>
       </div>
 
-      {/* 6. Quick Jump Activity Cards */}
+      {/* 7. Quick Jump Activity Cards */}
       <div className="space-y-2">
         
         {/* Workout quick card */}
@@ -483,7 +501,7 @@ export const TodayTab: React.FC<TodayTabProps> = ({
 
       </div>
 
-      {/* 7. Daily Notes Card (Column T in Sheet) */}
+      {/* 8. Daily Notes Card (Column T in Sheet) */}
       <div className="bg-white rounded-xl p-4 border border-[#BFBFBF] shadow-xs">
         <div className="flex items-center justify-between mb-2">
           <div className="text-xs font-bold text-[#1F4E5F]">Daily Notes & Reflections</div>

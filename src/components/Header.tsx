@@ -1,5 +1,6 @@
 import React from 'react';
 import { Calendar, ChevronLeft, ChevronRight, Settings as SettingsIcon, RefreshCw, CheckCircle2, AlertCircle, Smartphone } from 'lucide-react';
+import { GamificationState } from '../types';
 
 interface HeaderProps {
   selectedDate: string;
@@ -10,6 +11,8 @@ interface HeaderProps {
   onOpenInstall: () => void;
   isStandalone: boolean;
   lastSyncTime: string | null;
+  gamification?: GamificationState;
+  onOpenBadgesModal?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -20,7 +23,9 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenSettings,
   onOpenInstall,
   isStandalone,
-  lastSyncTime
+  lastSyncTime,
+  gamification,
+  onOpenBadgesModal
 }) => {
   const todayStr = getTodayString();
   const isToday = selectedDate === todayStr;
@@ -107,22 +112,48 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
 
-        {/* Action Controls: Install + Settings */}
+        {/* Action Controls & Gamification Pill Bar */}
         <div className="flex items-center space-x-1.5">
+          {gamification && onOpenBadgesModal && (
+            <div className="flex items-center space-x-1">
+              {/* Duolingo Streak Flame */}
+              <button
+                onClick={onOpenBadgesModal}
+                className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-[#EAF2F5] hover:bg-[#dbe7ec] border border-[#BFBFBF] text-[#F28E2B] font-black text-xs transition-all active:scale-95 shadow-2xs"
+                title={`Active Streak: ${gamification.streak} days. Tap for achievements.`}
+              >
+                <span className="text-sm leading-none">🔥</span>
+                <span className="text-[#1F4E5F] font-black">{gamification.streak}</span>
+              </button>
+
+              {/* XP & Level Pill */}
+              <button
+                onClick={onOpenBadgesModal}
+                className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-[#EAF2F5] hover:bg-[#dbe7ec] border border-[#BFBFBF] text-[#1F4E5F] font-black text-xs transition-all active:scale-95 shadow-2xs"
+                title={`Level ${gamification.level}: ${gamification.levelTitle} (${gamification.totalXp} XP)`}
+              >
+                <span className="text-sm leading-none text-[#7F6000]">⚡</span>
+                <span className="text-[10px] bg-[#2E75B6] text-white px-1.5 py-0.5 rounded font-black leading-none">
+                  Lv {gamification.level}
+                </span>
+              </button>
+            </div>
+          )}
+
           {!isStandalone && (
             <button
               onClick={onOpenInstall}
-              className="flex items-center gap-1 text-[11px] font-bold text-[#1F4E5F] bg-[#EAF2F5] hover:bg-[#dbe7ec] border border-[#BFBFBF] px-2.5 py-1.5 rounded-lg transition-all active:scale-95"
+              className="flex items-center gap-1 text-[11px] font-bold text-[#1F4E5F] bg-[#EAF2F5] hover:bg-[#dbe7ec] border border-[#BFBFBF] px-2 py-1.5 rounded-lg transition-all active:scale-95"
               title="Install app to phone"
             >
               <Smartphone className="w-3.5 h-3.5 text-[#2E75B6]" />
-              <span>Install</span>
+              <span className="hidden sm:inline">Install</span>
             </button>
           )}
 
           <button
             onClick={onOpenSettings}
-            className="p-2 text-[#595959] hover:text-[#1F4E5F] bg-[#EAF2F5] hover:bg-[#dbe7ec] rounded-xl transition-colors active:scale-95 border border-[#BFBFBF]"
+            className="p-2 text-[#595959] hover:text-[#1F4E5F] bg-[#EAF2F5] hover:bg-[#dbe7ec] rounded-lg transition-colors active:scale-95 border border-[#BFBFBF]"
             title="Settings & Sheet URL"
           >
             <SettingsIcon className="w-4 h-4" />

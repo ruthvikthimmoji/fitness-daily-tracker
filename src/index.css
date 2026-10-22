@@ -84,13 +84,110 @@
   scrollbar-width: none;
 }
 
-/* Card standard from brand guideline:
-   White or Mist background, 1px #BFBFBF border, rounded corners, 16px inner padding */
+/* Brand card */
 .brand-card {
   background-color: #FFFFFF;
   border: 1px solid #BFBFBF;
   border-radius: 12px;
   padding: 16px;
+}
+
+/* ==========================================================================
+   DUOLINGO TACTILE 3D BUTTONS & GAMIFIED PROGRESS STYLES
+   ========================================================================== */
+
+/* 3D Pressable Teal Button */
+.btn-3d-teal {
+  background-color: #1F4E5F;
+  color: #FFFFFF;
+  border-bottom: 3px solid #13333E;
+  transition: all 0.08s ease-in-out;
+}
+.btn-3d-teal:active {
+  transform: translateY(2px);
+  border-bottom-width: 1px;
+}
+
+/* 3D Pressable Ocean Blue Button */
+.btn-3d-blue {
+  background-color: #2E75B6;
+  color: #FFFFFF;
+  border-bottom: 3px solid #1C4D78;
+  transition: all 0.08s ease-in-out;
+}
+.btn-3d-blue:active {
+  transform: translateY(2px);
+  border-bottom-width: 1px;
+}
+
+/* 3D Pressable Mist / Grey Button */
+.btn-3d-mist {
+  background-color: #EAF2F5;
+  color: #1F4E5F;
+  border: 1px solid #BFBFBF;
+  border-bottom: 3px solid #A8B9C0;
+  transition: all 0.08s ease-in-out;
+}
+.btn-3d-mist:active {
+  transform: translateY(2px);
+  border-bottom-width: 1px;
+}
+
+/* 3D Pressable Flame / Orange Button */
+.btn-3d-orange {
+  background-color: #F28E2B;
+  color: #FFFFFF;
+  border-bottom: 3px solid #B76616;
+  transition: all 0.08s ease-in-out;
+}
+.btn-3d-orange:active {
+  transform: translateY(2px);
+  border-bottom-width: 1px;
+}
+
+/* 3D Pressable Green Button */
+.btn-3d-green {
+  background-color: #2E7D32;
+  color: #FFFFFF;
+  border-bottom: 3px solid #1B4E1F;
+  transition: all 0.08s ease-in-out;
+}
+.btn-3d-green:active {
+  transform: translateY(2px);
+  border-bottom-width: 1px;
+}
+
+/* Floating XP Keyframe */
+@keyframes floatUpFade {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 10px) scale(0.85);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -10px) scale(1.1);
+  }
+  80% {
+    opacity: 1;
+    transform: translate(-50%, -30px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50px) scale(0.9);
+  }
+}
+
+.animate-float-xp {
+  animation: floatUpFade 1.6s ease-out forwards;
+}
+
+/* Chest Bounce */
+@keyframes chestBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.animate-chest-bounce {
+  animation: chestBounce 1.5s ease-in-out infinite;
 }
 
 /* Custom scrollbars */

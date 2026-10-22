@@ -12,6 +12,7 @@ import { InstallModal } from './components/InstallModal';
 import { AddFoodModal } from './components/AddFoodModal';
 import { AddWorkoutModal } from './components/AddWorkoutModal';
 import { AddWorkModal } from './components/AddWorkModal';
+import { BadgesModal } from './components/BadgesModal';
 import { Toast } from './components/Toast';
 
 import {
@@ -23,7 +24,8 @@ import {
   UserSettings,
   DashboardKpis,
   DailyHistoryItem,
-  Measurement
+  Measurement,
+  GamificationState
 } from './types';
 
 import {
@@ -52,6 +54,14 @@ import {
   getScriptUrl
 } from './services/storage';
 
+import {
+  getStoredGamification,
+  saveStoredGamification,
+  awardXp,
+  syncQuestsWithDailyData,
+  evaluateStreak
+} from './services/gamification';
+
 export function App() {
   const [currentTab, setCurrentTab] = useState<TabType>('today');
   const [selectedDate, setSelectedDate] = useState<string>(getTodayString());
@@ -67,6 +77,10 @@ export function App() {
   const [workItems, setWorkItems] = useState<WorkItem[]>(getStoredWorkItems(selectedDate));
   const [kpis, setKpis] = useState<DashboardKpis>(getStoredDashboardKpis());
   const [history, setHistory] = useState<DailyHistoryItem[]>(getStoredHistory());
+
+  // Duolingo Gamification State
+  const [gamification, setGamification] = useState<GamificationState>(getStoredGamification());
+  const [isBadgesModalOpen, setIsBadgesModalOpen] = useState(false);
 
   // Modals state
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -91,6 +105,96 @@ export function App() {
   const showToast = useCallback((msg: string) => {
     setToastMessage(msg);
   }, []);
+
+  // Award XP with Duolingo-style celebration and level advancement
+  const awardActionXp = useCallback((amount: number, reason: string) => {
+    setGamification((prev) => {
+      const res = awardXp(amount, prev);
+      const withStreak = evaluateStreak(res.nextState, selectedDate);
+      saveStoredGamification(withStreak);
+
+      if (res.leveledUp) {
+        try {
+          confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.5 },
+            colors: ['#FFD700', '#F28E2B', '#2E75B6', '#1F4E5F']
+          });
+        } catch {}
+        showToast(`🎉 LEVEL UP! You reached Level ${res.newLevel}: ${res.nextState.levelTitle}!`);
+      } else {
+        showToast(`+${amount} XP: ${reason}!`);
+      }
+      return withStreak;
+    });
+  }, [selectedDate, showToast]);
+
+  // Sync daily quests whenever logs or items change
+  useEffect(() => {
+    setGamification((prev) => {
+      const updated = syncQuestsWithDailyData(prev, dailyLog, foodItems, workoutItems, workItems);
+      return updated;
+    });
+  }, [dailyLog, foodItems, workoutItems, workItems]);
+
+  // Duolingo Quest Claim Handler
+  const handleClaimQuest = useCallback((questId: string) => {
+    setGamification((prev) => {
+      const quest = prev.quests.find((q) => q.id === questId);
+      if (!quest || quest.claimed) return prev;
+
+      const xpEarned = quest.xp || 25;
+      const res = awardXp(xpEarned, prev);
+      const updatedQuests = res.nextState.quests.map((q) =>
+        q.id === questId ? { ...q, claimed: true } : q
+      );
+
+      const nextState = {
+        ...res.nextState,
+        quests: updatedQuests
+      };
+      saveStoredGamification(nextState);
+
+      try {
+        confetti({
+          particleCount: 60,
+          spread: 60,
+          origin: { y: 0.6 },
+          colors: ['#2E7D32', '#8BC34A', '#2E75B6', '#FFD700']
+        });
+      } catch {}
+
+      showToast(`⚡ Quest Claimed! +${xpEarned} XP!`);
+      return nextState;
+    });
+  }, [showToast]);
+
+  // Duolingo Mystery Chest Bonus Handler
+  const handleClaimChest = useCallback(() => {
+    setGamification((prev) => {
+      if (prev.chestClaimedDate === selectedDate) return prev;
+
+      const res = awardXp(50, prev);
+      const nextState = {
+        ...res.nextState,
+        chestClaimedDate: selectedDate
+      };
+      saveStoredGamification(nextState);
+
+      try {
+        confetti({
+          particleCount: 130,
+          spread: 85,
+          origin: { y: 0.5 },
+          colors: ['#FFD700', '#F28E2B', '#2E75B6', '#2E7D32', '#EC407A']
+        });
+      } catch {}
+
+      showToast(`🎁 Mystery Chest Unlocked! +50 XP Bonus!`);
+      return nextState;
+    });
+  }, [selectedDate, showToast]);
 
   // Load and refresh summary for date
   const loadDataForDate = useCallback(async (date: string, _forceSync = false) => {
@@ -168,6 +272,19 @@ export function App() {
     const nextLog = { ...dailyLog, ...updates };
     setDailyLog(nextLog);
 
+    // Duolingo XP Rewards for Daily Tracking Actions
+    if (updates.water !== undefined && (updates.water > (dailyLog.water || 0))) {
+      awardActionXp(5, 'Hydration logged');
+    } else if (updates.steps !== undefined && (updates.steps > (dailyLog.steps || 0))) {
+      awardActionXp(10, 'Steps logged');
+    } else if (updates.weight !== undefined) {
+      awardActionXp(15, 'Morning weight recorded');
+    } else if (updates.sleep !== undefined) {
+      awardActionXp(10, 'Sleep logged');
+    } else if (updates.mood !== undefined) {
+      awardActionXp(5, 'Daily check-in');
+    }
+
     setSyncStatus('syncing');
     const res = await syncDailyLogUpdate(selectedDate, updates);
     if (res.success) {
@@ -194,6 +311,7 @@ export function App() {
       fat: prev.fat + (food.fat || 0)
     }));
     showToast(`Added ${food.foodItem}!`);
+    awardActionXp(20, 'Meal tracked');
 
     setSyncStatus('syncing');
     const res = await syncAddFood(food);
@@ -245,6 +363,7 @@ export function App() {
       caloriesBurned: prev.caloriesBurned + (workout.caloriesBurned || 0)
     }));
     showToast(`Logged ${workout.exercise}!`);
+    awardActionXp(30, 'Workout logged');
 
     setSyncStatus('syncing');
     const res = await syncAddWorkout(workout);
@@ -291,6 +410,7 @@ export function App() {
       workHours: prev.workHours + (work.hours || 0)
     }));
     showToast(`Logged task!`);
+    awardActionXp(15, 'Task logged');
 
     setSyncStatus('syncing');
     const res = await syncAddWork(work);
@@ -345,7 +465,7 @@ export function App() {
     <div className="min-h-screen bg-[#EAF2F5] text-[#1A1A1A] flex flex-col font-sans selection:bg-[#2E75B6] selection:text-white">
       <Toast message={toastMessage} onClear={() => setToastMessage(null)} />
 
-      {/* Top Header */}
+      {/* Top Header with Duolingo Gamification Pill Bar */}
       <Header
         selectedDate={selectedDate}
         onSelectDate={setSelectedDate}
@@ -355,6 +475,8 @@ export function App() {
         onOpenInstall={() => setIsInstallOpen(true)}
         isStandalone={isStandalone}
         lastSyncTime={lastSyncTime}
+        gamification={gamification}
+        onOpenBadgesModal={() => setIsBadgesModalOpen(true)}
       />
 
       {/* Main Tab Screen Content */}
@@ -363,6 +485,10 @@ export function App() {
           <TodayTab
             dailyLog={dailyLog}
             settings={settings}
+            gamification={gamification}
+            onClaimQuest={handleClaimQuest}
+            onClaimChest={handleClaimChest}
+            onOpenBadgesModal={() => setIsBadgesModalOpen(true)}
             onUpdateDailyLog={handleUpdateDailyLog}
             onNavigateTab={setCurrentTab}
             onShowToast={showToast}
@@ -424,6 +550,12 @@ export function App() {
       <InstallModal
         isOpen={isInstallOpen}
         onClose={() => setIsInstallOpen(false)}
+      />
+
+      <BadgesModal
+        isOpen={isBadgesModalOpen}
+        onClose={() => setIsBadgesModalOpen(false)}
+        gamification={gamification}
       />
 
       <AddFoodModal

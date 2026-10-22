@@ -109,4 +109,48 @@ export interface DailyHistoryItem {
   hasData: boolean;
 }
 
+// ==========================================
+// DUOLINGO GAMIFICATION SYSTEM TYPES
+// ==========================================
+
+export interface DailyQuest {
+  id: string;
+  title: string;
+  target: number;
+  current: number;
+  unit: string;
+  xp: number;
+  completed: boolean;
+  claimed: boolean;
+  icon: 'water' | 'steps' | 'food' | 'workout' | 'work';
+}
+
+export interface Badge {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  category: 'streak' | 'workout' | 'steps' | 'nutrition' | 'discipline';
+  unlocked: boolean;
+  unlockedAt?: string;
+  progress: number; // Current count
+  maxProgress: number; // Target needed
+}
+
+export interface GamificationState {
+  streak: number;
+  bestStreak: number;
+  streakLastDate: string;
+  streakFreezes: number;
+  totalXp: number;
+  level: number;
+  levelTitle: string;
+  currentLevelXp: number;
+  nextLevelXp: number;
+  questsDate: string;
+  quests: DailyQuest[];
+  chestClaimedDate: string;
+  badges: Badge[];
+}
+
 export type TabType = 'today' | 'food' | 'workout' | 'work' | 'dashboard';
