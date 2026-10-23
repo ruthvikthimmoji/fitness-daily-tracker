@@ -2,30 +2,24 @@
 
 @layer base {
   :root {
-    --font-sans: 'Inter', Arial, system-ui, -apple-system, sans-serif;
-    --font-heading: 'Poppins', Arial, sans-serif;
+    --font-sans: 'Inter', -apple-system, sans-serif;
+    --font-display: 'Space Grotesk', 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
 
-    /* Core brand palette */
-    --color-primary: #1F4E5F;       /* Deep Teal */
-    --color-secondary: #2E75B6;     /* Ocean Blue */
-    --color-slate: #595959;         /* Slate Grey */
-    --color-mist: #EAF2F5;          /* Mist */
-    --color-sunlight: #FFF9DB;      /* Sunlight Yellow for inputs */
-    --color-border: #BFBFBF;        /* Border */
-    --color-body: #1A1A1A;          /* Body text */
+    /* Editorial Palette from References */
+    --color-terracotta: #C34811;    /* Burnt Terracotta */
+    --color-gallery-blue: #0B369A;  /* Gallery Blue */
+    --color-stone-linen: #D9D1CA;   /* Stone Linen */
+    --color-linen-bg: #F3EFEA;      /* Warm Stone Linen Background */
+    --color-obsidian: #141414;      /* Deep Obsidian Text */
+    --color-muted: #6E6A63;         /* Specimen Label Slate */
     
-    /* Category / Metric palette */
-    --color-weight: #1F77B4;
-    --color-calories: #4472C4;
-    --color-protein: #2E9E6B;
-    --color-water: #29B6F6;
-    --color-steps: #F28E2B;
-    --color-sleep: #7E57C2;
-    --color-workout: #D32F2F;
-    --color-work: #455A64;
-    --color-score: #8BC34A;
-    --color-mood: #EC407A;
-    --color-target: #C00000;
+    /* Category Accent Plates (from Greek Specimen Cards) */
+    --plate-ochre: #E5B338;
+    --plate-coral: #E66858;
+    --plate-lime: #B4DF5B;
+    --plate-lilac: #8E78C9;
+    --plate-azure: #4FA8DC;
   }
 
   body {
@@ -33,26 +27,28 @@
     -webkit-tap-highlight-color: transparent;
     user-select: none;
     -webkit-user-select: none;
-    background-color: var(--color-mist);
-    color: var(--color-body);
+    background-color: var(--color-linen-bg);
+    color: var(--color-obsidian);
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading);
-    color: var(--color-primary);
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
   }
 
-  /* Excel-like Sunlight Yellow input fields */
+  /* Editorial Technical Inputs */
   input[type="text"],
   input[type="number"],
   input[type="date"],
   input[type="url"],
+  input[type="password"],
   textarea {
     user-select: text;
     -webkit-user-select: text;
-    background-color: var(--color-sunlight);
-    color: var(--color-secondary);
-    border: 1px solid var(--color-border);
+    background-color: #FFFFFF;
+    color: #141414;
+    border: 1px solid var(--color-stone-linen);
+    font-family: var(--font-sans);
     font-weight: 600;
   }
 
@@ -60,10 +56,11 @@
   input[type="number"]:focus,
   input[type="date"]:focus,
   input[type="url"]:focus,
+  input[type="password"]:focus,
   textarea:focus {
     outline: none;
-    border-color: var(--color-secondary);
-    box-shadow: 0 0 0 2px rgba(46, 117, 182, 0.2);
+    border-color: var(--color-gallery-blue);
+    box-shadow: 0 0 0 2px rgba(11, 54, 154, 0.15);
   }
 }
 
@@ -75,7 +72,6 @@
   padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
 }
 
-/* Hide scrollbars for pill navigation */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -84,121 +80,185 @@
   scrollbar-width: none;
 }
 
-/* Brand card */
-.brand-card {
-  background-color: #FFFFFF;
-  border: 1px solid #BFBFBF;
-  border-radius: 12px;
-  padding: 16px;
-}
-
 /* ==========================================================================
-   DUOLINGO TACTILE 3D BUTTONS & GAMIFIED PROGRESS STYLES
+   EDITORIAL SPECIMEN CARD STYLING (Swiss/Archive Aesthetic)
    ========================================================================== */
 
-/* 3D Pressable Teal Button */
-.btn-3d-teal {
-  background-color: #1F4E5F;
-  color: #FFFFFF;
-  border-bottom: 3px solid #13333E;
-  transition: all 0.08s ease-in-out;
+.specimen-card {
+  background-color: #FFFFFF;
+  border: 1px solid #D9D1CA;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03), 0 6px 16px rgba(0, 0, 0, 0.02);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
 }
-.btn-3d-teal:active {
+
+.specimen-card:active {
+  transform: scale(0.99);
+}
+
+/* Specimen Technical Indicator Track */
+.spec-track {
+  position: relative;
+  height: 2px;
+  background-color: #E6E1DC;
+  border-radius: 9999px;
+  width: 100%;
+}
+
+.spec-dot {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: #141414;
+}
+
+/* Buttons from Reference Palette */
+.btn-terracotta {
+  background-color: #C34811;
+  color: #FFFFFF;
+  border: 1px solid #A33A0B;
+  transition: all 0.12s ease;
+}
+.btn-terracotta:active {
+  transform: scale(0.97);
+  background-color: #A33A0B;
+}
+
+.btn-gallery-blue {
+  background-color: #0B369A;
+  color: #FFFFFF;
+  border: 1px solid #082977;
+  transition: all 0.12s ease;
+}
+.btn-gallery-blue:active {
+  transform: scale(0.97);
+  background-color: #082977;
+}
+
+.btn-stone {
+  background-color: #EFEBE5;
+  color: #141414;
+  border: 1px solid #D9D1CA;
+  transition: all 0.12s ease;
+}
+.btn-stone:active {
+  transform: scale(0.97);
+  background-color: #E2DDD6;
+}
+
+.btn-dark {
+  background-color: #141414;
+  color: #FFFFFF;
+  border: 1px solid #000000;
+  transition: all 0.12s ease;
+}
+.btn-dark:active {
+  transform: scale(0.97);
+  background-color: #262626;
+}
+
+/* Duolingo tactile feel with editorial colors */
+.btn-3d-terracotta {
+  background-color: #C34811;
+  color: #FFFFFF;
+  border-bottom: 3px solid #8E2D07;
+  transition: all 0.08s ease;
+}
+.btn-3d-terracotta:active {
   transform: translateY(2px);
   border-bottom-width: 1px;
 }
 
-/* 3D Pressable Ocean Blue Button */
 .btn-3d-blue {
-  background-color: #2E75B6;
+  background-color: #0B369A;
   color: #FFFFFF;
-  border-bottom: 3px solid #1C4D78;
-  transition: all 0.08s ease-in-out;
+  border-bottom: 3px solid #061F59;
+  transition: all 0.08s ease;
 }
 .btn-3d-blue:active {
   transform: translateY(2px);
   border-bottom-width: 1px;
 }
 
-/* 3D Pressable Mist / Grey Button */
+.btn-3d-stone {
+  background-color: #FFFFFF;
+  color: #141414;
+  border: 1px solid #D9D1CA;
+  border-bottom: 3px solid #B8AEA5;
+  transition: all 0.08s ease;
+}
+.btn-3d-stone:active {
+  transform: translateY(2px);
+  border-bottom-width: 1px;
+}
+
+/* Backward compatibility for previous classes */
+.btn-3d-teal {
+  background-color: #0B369A;
+  color: #FFFFFF;
+  border-bottom: 3px solid #061F59;
+  transition: all 0.08s ease;
+}
+.btn-3d-teal:active {
+  transform: translateY(2px);
+  border-bottom-width: 1px;
+}
+
 .btn-3d-mist {
-  background-color: #EAF2F5;
-  color: #1F4E5F;
-  border: 1px solid #BFBFBF;
-  border-bottom: 3px solid #A8B9C0;
-  transition: all 0.08s ease-in-out;
+  background-color: #FFFFFF;
+  color: #141414;
+  border: 1px solid #D9D1CA;
+  border-bottom: 3px solid #B8AEA5;
+  transition: all 0.08s ease;
 }
 .btn-3d-mist:active {
   transform: translateY(2px);
   border-bottom-width: 1px;
 }
 
-/* 3D Pressable Flame / Orange Button */
 .btn-3d-orange {
-  background-color: #F28E2B;
+  background-color: #C34811;
   color: #FFFFFF;
-  border-bottom: 3px solid #B76616;
-  transition: all 0.08s ease-in-out;
+  border-bottom: 3px solid #8E2D07;
+  transition: all 0.08s ease;
 }
 .btn-3d-orange:active {
   transform: translateY(2px);
   border-bottom-width: 1px;
 }
 
-/* 3D Pressable Green Button */
 .btn-3d-green {
   background-color: #2E7D32;
   color: #FFFFFF;
   border-bottom: 3px solid #1B4E1F;
-  transition: all 0.08s ease-in-out;
+  transition: all 0.08s ease;
 }
 .btn-3d-green:active {
   transform: translateY(2px);
   border-bottom-width: 1px;
 }
 
-/* Floating XP Keyframe */
-@keyframes floatUpFade {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, 10px) scale(0.85);
-  }
-  20% {
-    opacity: 1;
-    transform: translate(-50%, -10px) scale(1.1);
-  }
-  80% {
-    opacity: 1;
-    transform: translate(-50%, -30px) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50px) scale(0.9);
-  }
-}
-
-.animate-float-xp {
-  animation: floatUpFade 1.6s ease-out forwards;
-}
-
-/* Chest Bounce */
+/* Keyframes */
 @keyframes chestBounce {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+  50% { transform: translateY(-5px); }
 }
 .animate-chest-bounce {
   animation: chestBounce 1.5s ease-in-out infinite;
 }
 
-/* Custom scrollbars */
+/* Custom Scrollbars */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #BFBFBF;
+  background: #D9D1CA;
   border-radius: 9999px;
 }

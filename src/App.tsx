@@ -13,6 +13,9 @@ import { AddFoodModal } from './components/AddFoodModal';
 import { AddWorkoutModal } from './components/AddWorkoutModal';
 import { AddWorkModal } from './components/AddWorkModal';
 import { BadgesModal } from './components/BadgesModal';
+import { VaultTab } from './components/VaultTab';
+import { SpecimenDetailModal, LogDetailType } from './components/SpecimenDetailModal';
+import { PhotoUploaderModal } from './components/PhotoUploaderModal';
 import { Toast } from './components/Toast';
 
 import {
@@ -25,7 +28,8 @@ import {
   DashboardKpis,
   DailyHistoryItem,
   Measurement,
-  GamificationState
+  GamificationState,
+  StoredPhoto
 } from './types';
 
 import {
@@ -81,6 +85,15 @@ export function App() {
   // Duolingo Gamification State
   const [gamification, setGamification] = useState<GamificationState>(getStoredGamification());
   const [isBadgesModalOpen, setIsBadgesModalOpen] = useState(false);
+
+  // Specimen Detail Inspection Modal State
+  const [selectedLogDetail, setSelectedLogDetail] = useState<LogDetailType | null>(null);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+
+  // Photo Uploader Modal State
+  const [isPhotoUploaderOpen, setIsPhotoUploaderOpen] = useState(false);
+  const [photoUploaderCategory, setPhotoUploaderCategory] = useState<'workout' | 'physique' | 'food' | 'scale' | 'other'>('workout');
+  const [photoLinkedLogId, setPhotoLinkedLogId] = useState<string | undefined>(undefined);
 
   // Modals state
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -195,6 +208,40 @@ export function App() {
       return nextState;
     });
   }, [selectedDate, showToast]);
+
+  // Photo Uploader Handlers
+  const handleOpenPhotoUploader = useCallback((category: 'workout' | 'physique' | 'food' | 'scale' | 'other' = 'workout', logId?: string) => {
+    setPhotoUploaderCategory(category);
+    setPhotoLinkedLogId(logId);
+    setIsPhotoUploaderOpen(true);
+  }, []);
+
+  const handlePhotoSaved = useCallback((_photo: StoredPhoto) => {
+    awardActionXp(25, 'Specimen photo archived');
+    showToast('Photo secured in private Vault!');
+    // If daily photo hasn't been recorded in sheet, record it
+    if (!dailyLog.photoTaken) {
+      handleUpdateDailyLog({ photoTaken: true });
+    }
+  }, [awardActionXp, dailyLog.photoTaken, showToast]);
+
+  // Specimen Detail Modal Handlers
+  const handleSelectLogDetail = useCallback((detail: LogDetailType) => {
+    setSelectedLogDetail(detail);
+    setIsDetailModalOpen(true);
+  }, []);
+
+  const handleDeleteCurrentDetail = useCallback(() => {
+    if (!selectedLogDetail) return;
+    if (selectedLogDetail.type === 'workout') {
+      handleDeleteWorkout(selectedLogDetail.item);
+    } else if (selectedLogDetail.type === 'food') {
+      handleDeleteFood(selectedLogDetail.item);
+    } else if (selectedLogDetail.type === 'work') {
+      handleDeleteWork(selectedLogDetail.item);
+    }
+    setIsDetailModalOpen(false);
+  }, [selectedLogDetail]);
 
   // Load and refresh summary for date
   const loadDataForDate = useCallback(async (date: string, _forceSync = false) => {
@@ -462,7 +509,7 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#EAF2F5] text-[#1A1A1A] flex flex-col font-sans selection:bg-[#2E75B6] selection:text-white">
+    <div className="min-h-screen bg-[#F3EFEA] text-[#141414] flex flex-col font-sans selection:bg-[#0B369A] selection:text-white">
       <Toast message={toastMessage} onClear={() => setToastMessage(null)} />
 
       {/* Top Header with Duolingo Gamification Pill Bar */}
@@ -492,6 +539,19 @@ export function App() {
             onUpdateDailyLog={handleUpdateDailyLog}
             onNavigateTab={setCurrentTab}
             onShowToast={showToast}
+            onSelectDetail={handleSelectLogDetail}
+            onOpenPhotoUploader={handleOpenPhotoUploader}
+          />
+        )}
+
+        {currentTab === 'workout' && (
+          <WorkoutTab
+            workoutItems={workoutItems}
+            onOpenAddModal={handleOpenAddWorkout}
+            onDeleteWorkout={handleDeleteWorkout}
+            onQuickAdd={handleQuickAddWorkout}
+            onSelectDetail={(item) => handleSelectLogDetail({ type: 'workout', item })}
+            onOpenPhotoUploader={handleOpenPhotoUploader}
           />
         )}
 
@@ -502,15 +562,17 @@ export function App() {
             onOpenAddModal={handleOpenAddFood}
             onDeleteFood={handleDeleteFood}
             onQuickAdd={handleQuickAddFood}
+            onSelectDetail={(item) => handleSelectLogDetail({ type: 'food', item })}
+            onOpenPhotoUploader={handleOpenPhotoUploader}
           />
         )}
 
-        {currentTab === 'workout' && (
-          <WorkoutTab
-            workoutItems={workoutItems}
-            onOpenAddModal={handleOpenAddWorkout}
-            onDeleteWorkout={handleDeleteWorkout}
-            onQuickAdd={handleQuickAddWorkout}
+        {currentTab === 'vault' && (
+          <VaultTab
+            onOpenPhotoUploader={handleOpenPhotoUploader}
+            onShowToast={showToast}
+            onSelectPhotoDetail={(photo) => handleSelectLogDetail({ type: 'photo', item: photo })}
+            selectedDate={selectedDate}
           />
         )}
 
@@ -539,6 +601,23 @@ export function App() {
       <BottomNav currentTab={currentTab} onSelectTab={setCurrentTab} />
 
       {/* Modals */}
+      <SpecimenDetailModal
+        isOpen={isDetailModalOpen}
+        onClose={() => setIsDetailModalOpen(false)}
+        detail={selectedLogDetail}
+        onDelete={handleDeleteCurrentDetail}
+        onOpenPhotoUploader={handleOpenPhotoUploader}
+      />
+
+      <PhotoUploaderModal
+        isOpen={isPhotoUploaderOpen}
+        onClose={() => setIsPhotoUploaderOpen(false)}
+        onPhotoSaved={handlePhotoSaved}
+        defaultCategory={photoUploaderCategory}
+        selectedDate={selectedDate}
+        linkedLogId={photoLinkedLogId}
+      />
+
       <SettingsModal
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}

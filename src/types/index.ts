@@ -153,4 +153,18 @@ export interface GamificationState {
   badges: Badge[];
 }
 
-export type TabType = 'today' | 'food' | 'workout' | 'work' | 'dashboard';
+export interface StoredPhoto {
+  id: string;
+  date: string;
+  timestamp: number;
+  category: 'workout' | 'physique' | 'food' | 'scale' | 'other';
+  dataUrl: string;
+  caption?: string;
+  tags?: string[];
+  logId?: string;
+  fileName?: string;
+  width?: number;
+  height?: number;
+}
+
+export type TabType = 'today' | 'workout' | 'food' | 'vault' | 'work' | 'dashboard';

@@ -58,54 +58,49 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#BFBFBF] px-4 pt-3 pb-3 safe-top shadow-xs">
+    <header className="sticky top-0 z-40 bg-[#FFFFFF]/95 backdrop-blur-md border-b border-[#D9D1CA] px-4 pt-3 pb-3 safe-top shadow-xs">
       <div className="max-w-md mx-auto flex items-center justify-between">
         
-        {/* Brand Wordmark & Logo */}
+        {/* Editorial Wordmark & Logo */}
         <div className="flex items-center space-x-2.5">
-          {/* Brand Icon: Progress ring in Deep Teal with tick in Ocean Blue */}
-          <div className="w-9 h-9 rounded-xl bg-[#EAF2F5] border border-[#BFBFBF] flex items-center justify-center p-1.5 shrink-0">
-            <svg viewBox="0 0 40 40" className="w-full h-full">
-              <circle cx="20" cy="20" r="14" fill="none" stroke="#BFBFBF" strokeWidth="2.5" />
-              <circle cx="20" cy="20" r="14" fill="none" stroke="#1F4E5F" strokeWidth="3" strokeDasharray="65 88" strokeLinecap="round" transform="rotate(-90 20 20)" />
-              <path d="M 14 20 L 18 24 L 26 15" fill="none" stroke="#2E75B6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+          {/* Logo badge */}
+          <div className="w-8 h-8 rounded-xl bg-[#0B369A] text-white flex items-center justify-center font-display font-black text-xs shadow-xs tracking-tighter">
+            DF
           </div>
 
           <div>
-            {/* Wordmark: DAILY in Deep Teal bold + FIT in Ocean Blue bold */}
-            <h1 className="text-base font-bold tracking-tight flex items-baseline gap-1 leading-none">
-              <span className="text-[#1F4E5F] font-black">DAILY</span>
-              <span className="text-[#2E75B6] font-black">/FIT</span>
-              <span className="text-[10px] font-normal italic text-[#595959] ml-1 hidden xs:inline">
-                Show up daily.
+            <h1 className="text-sm font-display font-black tracking-tight flex items-baseline gap-1.5 leading-none">
+              <span className="text-[#141414] uppercase">DAILY</span>
+              <span className="text-[#0B369A] uppercase">/ FIT</span>
+              <span className="font-mono text-[9px] text-[#C34811] font-bold uppercase tracking-widest hidden xs:inline">
+                SPECIMEN
               </span>
             </h1>
 
-            {/* Sync status pill using exact Brand Status colours */}
+            {/* Sync status pill */}
             <button
               onClick={onSync}
-              className="mt-1 flex items-center space-x-1.5 text-[11px] transition-colors"
+              className="mt-1 flex items-center space-x-1.5 text-[10px] font-mono transition-colors"
             >
               {syncStatus === 'syncing' ? (
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#FFEB9C] text-[#7F6000] font-semibold border border-[#FFEB9C]">
+                <span className="inline-flex items-center gap-1 text-[#C34811] font-bold">
                   <RefreshCw className="w-2.5 h-2.5 animate-spin" />
-                  <span>Syncing...</span>
+                  <span>SYNCING...</span>
                 </span>
               ) : syncStatus === 'synced' ? (
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#C6EFCE] text-[#2E7D32] font-semibold border border-[#C6EFCE]">
+                <span className="inline-flex items-center gap-1 text-[#2E7D32] font-bold">
                   <CheckCircle2 className="w-2.5 h-2.5" />
-                  <span>Synced {lastSyncTime ? `• ${lastSyncTime}` : ''}</span>
+                  <span>SYNCED {lastSyncTime ? `[${lastSyncTime}]` : ''}</span>
                 </span>
               ) : syncStatus === 'offline' ? (
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#F8CBAD] text-[#C00000] font-semibold border border-[#F8CBAD]">
+                <span className="inline-flex items-center gap-1 text-[#C34811] font-bold">
                   <AlertCircle className="w-2.5 h-2.5" />
-                  <span>Offline (Cached)</span>
+                  <span>OFFLINE CACHED</span>
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1 text-[#595959] hover:text-[#1F4E5F]">
+                <span className="inline-flex items-center gap-1 text-[#6E6A63] hover:text-[#0B369A]">
                   <RefreshCw className="w-2.5 h-2.5" />
-                  <span>Tap to sync</span>
+                  <span>TAP TO SYNC</span>
                 </span>
               )}
             </button>
@@ -116,25 +111,25 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center space-x-1.5">
           {gamification && onOpenBadgesModal && (
             <div className="flex items-center space-x-1">
-              {/* Duolingo Streak Flame */}
+              {/* Active Streak Flame */}
               <button
                 onClick={onOpenBadgesModal}
-                className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-[#EAF2F5] hover:bg-[#dbe7ec] border border-[#BFBFBF] text-[#F28E2B] font-black text-xs transition-all active:scale-95 shadow-2xs"
-                title={`Active Streak: ${gamification.streak} days. Tap for achievements.`}
+                className="flex items-center gap-1 px-2 py-1.5 rounded-xl bg-[#F3EFEA] hover:bg-[#EAE5DE] border border-[#D9D1CA] text-[#C34811] font-mono font-bold text-xs transition-all active:scale-95 shadow-2xs"
+                title={`Active Streak: ${gamification.streak} days`}
               >
-                <span className="text-sm leading-none">🔥</span>
-                <span className="text-[#1F4E5F] font-black">{gamification.streak}</span>
+                <span className="text-xs leading-none">🔥</span>
+                <span className="text-[#141414]">{gamification.streak}</span>
               </button>
 
-              {/* XP & Level Pill */}
+              {/* XP Level Pill */}
               <button
                 onClick={onOpenBadgesModal}
-                className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-[#EAF2F5] hover:bg-[#dbe7ec] border border-[#BFBFBF] text-[#1F4E5F] font-black text-xs transition-all active:scale-95 shadow-2xs"
+                className="flex items-center gap-1 px-2 py-1.5 rounded-xl bg-[#F3EFEA] hover:bg-[#EAE5DE] border border-[#D9D1CA] text-[#0B369A] font-mono font-bold text-xs transition-all active:scale-95 shadow-2xs"
                 title={`Level ${gamification.level}: ${gamification.levelTitle} (${gamification.totalXp} XP)`}
               >
-                <span className="text-sm leading-none text-[#7F6000]">⚡</span>
-                <span className="text-[10px] bg-[#2E75B6] text-white px-1.5 py-0.5 rounded font-black leading-none">
-                  Lv {gamification.level}
+                <span className="text-xs leading-none text-[#C34811]">⚡</span>
+                <span className="text-[10px] bg-[#0B369A] text-white px-1.5 py-0.5 rounded font-mono font-bold leading-none">
+                  L{gamification.level}
                 </span>
               </button>
             </div>
@@ -143,18 +138,17 @@ export const Header: React.FC<HeaderProps> = ({
           {!isStandalone && (
             <button
               onClick={onOpenInstall}
-              className="flex items-center gap-1 text-[11px] font-bold text-[#1F4E5F] bg-[#EAF2F5] hover:bg-[#dbe7ec] border border-[#BFBFBF] px-2 py-1.5 rounded-lg transition-all active:scale-95"
+              className="p-2 text-[#6E6A63] hover:text-[#141414] bg-[#F3EFEA] hover:bg-[#EAE5DE] rounded-xl transition-all active:scale-95 border border-[#D9D1CA]"
               title="Install app to phone"
             >
-              <Smartphone className="w-3.5 h-3.5 text-[#2E75B6]" />
-              <span className="hidden sm:inline">Install</span>
+              <Smartphone className="w-4 h-4 text-[#0B369A]" />
             </button>
           )}
 
           <button
             onClick={onOpenSettings}
-            className="p-2 text-[#595959] hover:text-[#1F4E5F] bg-[#EAF2F5] hover:bg-[#dbe7ec] rounded-lg transition-colors active:scale-95 border border-[#BFBFBF]"
-            title="Settings & Sheet URL"
+            className="p-2 text-[#6E6A63] hover:text-[#141414] bg-[#F3EFEA] hover:bg-[#EAE5DE] rounded-xl transition-colors active:scale-95 border border-[#D9D1CA]"
+            title="Settings & Sheet Link"
           >
             <SettingsIcon className="w-4 h-4" />
           </button>
@@ -163,23 +157,23 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* Date Navigator Bar */}
-      <div className="max-w-md mx-auto mt-2.5 pt-2 border-t border-[#BFBFBF]/60 flex items-center justify-between">
+      <div className="max-w-md mx-auto mt-2.5 pt-2 border-t border-[#D9D1CA]/70 flex items-center justify-between">
         <button
           onClick={handlePrevDay}
-          className="p-1.5 text-[#595959] hover:text-[#1F4E5F] hover:bg-[#EAF2F5] rounded-lg transition-colors active:scale-95"
+          className="p-1.5 text-[#6E6A63] hover:text-[#141414] hover:bg-[#F3EFEA] rounded-lg transition-colors active:scale-95"
           title="Previous day"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
 
         <div className="flex items-center space-x-2">
-          <label className="relative cursor-pointer flex items-center space-x-1.5 bg-[#EAF2F5] hover:bg-[#dfeaf0] px-3 py-1.5 rounded-lg border border-[#BFBFBF] transition-colors">
-            <Calendar className="w-3.5 h-3.5 text-[#2E75B6]" />
-            <span className="text-xs font-bold text-[#1F4E5F]">
+          <label className="relative cursor-pointer flex items-center space-x-1.5 bg-[#F3EFEA] hover:bg-[#EAE5DE] px-3 py-1.5 rounded-xl border border-[#D9D1CA] transition-colors">
+            <Calendar className="w-3.5 h-3.5 text-[#0B369A]" />
+            <span className="text-xs font-display font-bold text-[#141414]">
               {formatDisplayDate(selectedDate)}
             </span>
-            <span className="text-[11px] text-[#595959]">
-              ({selectedDate})
+            <span className="font-mono text-[10px] text-[#6E6A63]">
+              [{selectedDate}]
             </span>
             <input
               type="date"
@@ -192,16 +186,16 @@ export const Header: React.FC<HeaderProps> = ({
           {!isToday && (
             <button
               onClick={() => onSelectDate(todayStr)}
-              className="text-[11px] font-bold text-[#2E75B6] hover:text-[#1F4E5F] bg-white border border-[#2E75B6]/30 px-2 py-1 rounded-lg transition-colors active:scale-95"
+              className="text-[10px] font-mono font-bold text-[#0B369A] hover:text-[#C34811] bg-white border border-[#D9D1CA] px-2 py-1 rounded-lg transition-colors active:scale-95"
             >
-              Today
+              TODAY
             </button>
           )}
         </div>
 
         <button
           onClick={handleNextDay}
-          className="p-1.5 text-[#595959] hover:text-[#1F4E5F] hover:bg-[#EAF2F5] rounded-lg transition-colors active:scale-95"
+          className="p-1.5 text-[#6E6A63] hover:text-[#141414] hover:bg-[#F3EFEA] rounded-lg transition-colors active:scale-95"
           title="Next day"
         >
           <ChevronRight className="w-4 h-4" />
