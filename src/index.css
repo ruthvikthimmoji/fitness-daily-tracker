@@ -6,20 +6,15 @@
     --font-display: 'Space Grotesk', 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
 
-    /* Editorial Palette from References */
-    --color-terracotta: #C34811;    /* Burnt Terracotta */
-    --color-gallery-blue: #0B369A;  /* Gallery Blue */
-    --color-stone-linen: #D9D1CA;   /* Stone Linen */
-    --color-linen-bg: #F3EFEA;      /* Warm Stone Linen Background */
-    --color-obsidian: #141414;      /* Deep Obsidian Text */
-    --color-muted: #6E6A63;         /* Specimen Label Slate */
+    /* DIGITAL WARM NEUTRALS PALETTE (Exact Swatches) */
+    --color-santiago: #EB5E28;      /* Santiago Orange */
+    --color-cold-foam: #EFECE3;     /* Cold Foam Background */
+    --color-gold-black: #2C2324;    /* Gold Black Text/Surfaces */
+    --color-landmark: #766754;      /* Landmark Taupe/Slate */
     
-    /* Category Accent Plates (from Greek Specimen Cards) */
-    --plate-ochre: #E5B338;
-    --plate-coral: #E66858;
-    --plate-lime: #B4DF5B;
-    --plate-lilac: #8E78C9;
-    --plate-azure: #4FA8DC;
+    /* Structure & Dividers */
+    --color-surface: #FFFFFF;       /* Pure White Cards */
+    --color-border: #D8D3C8;        /* Soft Warm Border */
   }
 
   body {
@@ -27,16 +22,17 @@
     -webkit-tap-highlight-color: transparent;
     user-select: none;
     -webkit-user-select: none;
-    background-color: var(--color-linen-bg);
-    color: var(--color-obsidian);
+    background-color: var(--color-cold-foam);
+    color: var(--color-gold-black);
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
     letter-spacing: -0.02em;
+    color: var(--color-gold-black);
   }
 
-  /* Editorial Technical Inputs */
+  /* Editorial Inputs */
   input[type="text"],
   input[type="number"],
   input[type="date"],
@@ -46,8 +42,8 @@
     user-select: text;
     -webkit-user-select: text;
     background-color: #FFFFFF;
-    color: #141414;
-    border: 1px solid var(--color-stone-linen);
+    color: #2C2324;
+    border: 1px solid var(--color-border);
     font-family: var(--font-sans);
     font-weight: 600;
   }
@@ -59,8 +55,8 @@
   input[type="password"]:focus,
   textarea:focus {
     outline: none;
-    border-color: var(--color-gallery-blue);
-    box-shadow: 0 0 0 2px rgba(11, 54, 154, 0.15);
+    border-color: var(--color-santiago);
+    box-shadow: 0 0 0 2px rgba(235, 94, 40, 0.2);
   }
 }
 
@@ -69,7 +65,7 @@
 }
 
 .safe-bottom {
-  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -81,14 +77,14 @@
 }
 
 /* ==========================================================================
-   EDITORIAL SPECIMEN CARD STYLING (Swiss/Archive Aesthetic)
+   SPECIMEN CARD STYLING (Digital Warm Neutrals)
    ========================================================================== */
 
 .specimen-card {
   background-color: #FFFFFF;
-  border: 1px solid #D9D1CA;
-  border-radius: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03), 0 6px 16px rgba(0, 0, 0, 0.02);
+  border: 1px solid #D8D3C8;
+  border-radius: 18px;
+  box-shadow: 0 1px 3px rgba(44, 35, 36, 0.04), 0 6px 18px rgba(44, 35, 36, 0.02);
   transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
 }
 
@@ -96,75 +92,113 @@
   transform: scale(0.99);
 }
 
-/* Specimen Technical Indicator Track */
-.spec-track {
-  position: relative;
-  height: 2px;
-  background-color: #E6E1DC;
-  border-radius: 9999px;
-  width: 100%;
-}
-
-.spec-dot {
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 6px;
-  height: 6px;
-  border-radius: 9999px;
-  background-color: #141414;
-}
-
-/* Buttons from Reference Palette */
-.btn-terracotta {
-  background-color: #C34811;
+/* Buttons */
+.btn-santiago {
+  background-color: #EB5E28;
   color: #FFFFFF;
-  border: 1px solid #A33A0B;
+  border: 1px solid #D14B17;
   transition: all 0.12s ease;
 }
-.btn-terracotta:active {
+.btn-santiago:active {
   transform: scale(0.97);
-  background-color: #A33A0B;
+  background-color: #B83C0A;
 }
 
-.btn-gallery-blue {
-  background-color: #0B369A;
+.btn-gold-black {
+  background-color: #2C2324;
   color: #FFFFFF;
-  border: 1px solid #082977;
+  border: 1px solid #161112;
+  transition: all 0.12s ease;
+}
+.btn-gold-black:active {
+  transform: scale(0.97);
+  background-color: #161112;
+}
+
+.btn-cold-foam {
+  background-color: #EFECE3;
+  color: #2C2324;
+  border: 1px solid #D8D3C8;
+  transition: all 0.12s ease;
+}
+.btn-cold-foam:active {
+  transform: scale(0.97);
+  background-color: #E2DDD0;
+}
+
+/* Duolingo 3D Tactile Buttons */
+.btn-3d-santiago {
+  background-color: #EB5E28;
+  color: #FFFFFF;
+  border-bottom: 3px solid #B83C0A;
+  transition: all 0.08s ease;
+}
+.btn-3d-santiago:active {
+  transform: translateY(2px);
+  border-bottom-width: 1px;
+}
+
+.btn-3d-gold {
+  background-color: #2C2324;
+  color: #FFFFFF;
+  border-bottom: 3px solid #161112;
+  transition: all 0.08s ease;
+}
+.btn-3d-gold:active {
+  transform: translateY(2px);
+  border-bottom-width: 1px;
+}
+
+.btn-3d-foam {
+  background-color: #FFFFFF;
+  color: #2C2324;
+  border: 1px solid #D8D3C8;
+  border-bottom: 3px solid #B8AEA0;
+  transition: all 0.08s ease;
+}
+.btn-3d-foam:active {
+  transform: translateY(2px);
+  border-bottom-width: 1px;
+}
+
+/* Compatibility aliases for previous theme */
+.btn-gallery-blue {
+  background-color: #2C2324;
+  color: #FFFFFF;
+  border: 1px solid #161112;
   transition: all 0.12s ease;
 }
 .btn-gallery-blue:active {
   transform: scale(0.97);
-  background-color: #082977;
+  background-color: #161112;
+}
+
+.btn-terracotta {
+  background-color: #EB5E28;
+  color: #FFFFFF;
+  border: 1px solid #D14B17;
+  transition: all 0.12s ease;
+}
+.btn-terracotta:active {
+  transform: scale(0.97);
+  background-color: #B83C0A;
 }
 
 .btn-stone {
-  background-color: #EFEBE5;
-  color: #141414;
-  border: 1px solid #D9D1CA;
+  background-color: #EFECE3;
+  color: #2C2324;
+  border: 1px solid #D8D3C8;
   transition: all 0.12s ease;
 }
 .btn-stone:active {
   transform: scale(0.97);
-  background-color: #E2DDD6;
+  background-color: #E2DDD0;
 }
 
-.btn-dark {
-  background-color: #141414;
-  color: #FFFFFF;
-  border: 1px solid #000000;
-  transition: all 0.12s ease;
-}
-.btn-dark:active {
-  transform: scale(0.97);
-  background-color: #262626;
-}
-
-/* Duolingo tactile feel with editorial colors */
 .btn-3d-terracotta {
-  background-color: #C34811;
+  background-color: #EB5E28;
   color: #FFFFFF;
-  border-bottom: 3px solid #8E2D07;
+  border-bottom: 3px solid #B83C0A;
   transition: all 0.08s ease;
 }
 .btn-3d-terracotta:active {
@@ -173,9 +207,9 @@
 }
 
 .btn-3d-blue {
-  background-color: #0B369A;
+  background-color: #2C2324;
   color: #FFFFFF;
-  border-bottom: 3px solid #061F59;
+  border-bottom: 3px solid #161112;
   transition: all 0.08s ease;
 }
 .btn-3d-blue:active {
@@ -185,9 +219,9 @@
 
 .btn-3d-stone {
   background-color: #FFFFFF;
-  color: #141414;
-  border: 1px solid #D9D1CA;
-  border-bottom: 3px solid #B8AEA5;
+  color: #2C2324;
+  border: 1px solid #D8D3C8;
+  border-bottom: 3px solid #B8AEA0;
   transition: all 0.08s ease;
 }
 .btn-3d-stone:active {
@@ -195,11 +229,10 @@
   border-bottom-width: 1px;
 }
 
-/* Backward compatibility for previous classes */
 .btn-3d-teal {
-  background-color: #0B369A;
+  background-color: #2C2324;
   color: #FFFFFF;
-  border-bottom: 3px solid #061F59;
+  border-bottom: 3px solid #161112;
   transition: all 0.08s ease;
 }
 .btn-3d-teal:active {
@@ -209,9 +242,9 @@
 
 .btn-3d-mist {
   background-color: #FFFFFF;
-  color: #141414;
-  border: 1px solid #D9D1CA;
-  border-bottom: 3px solid #B8AEA5;
+  color: #2C2324;
+  border: 1px solid #D8D3C8;
+  border-bottom: 3px solid #B8AEA0;
   transition: all 0.08s ease;
 }
 .btn-3d-mist:active {
@@ -220,9 +253,9 @@
 }
 
 .btn-3d-orange {
-  background-color: #C34811;
+  background-color: #EB5E28;
   color: #FFFFFF;
-  border-bottom: 3px solid #8E2D07;
+  border-bottom: 3px solid #B83C0A;
   transition: all 0.08s ease;
 }
 .btn-3d-orange:active {
@@ -241,7 +274,7 @@
   border-bottom-width: 1px;
 }
 
-/* Keyframes */
+/* Chest Bounce */
 @keyframes chestBounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-5px); }
@@ -259,6 +292,6 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D9D1CA;
+  background: #D8D3C8;
   border-radius: 9999px;
 }

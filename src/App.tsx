@@ -132,7 +132,7 @@ export function App() {
             particleCount: 100,
             spread: 70,
             origin: { y: 0.5 },
-            colors: ['#FFD700', '#F28E2B', '#2E75B6', '#1F4E5F']
+            colors: ['#EB5E28', '#2C2324', '#766754', '#EFECE3', '#FFD700']
           });
         } catch {}
         showToast(`🎉 LEVEL UP! You reached Level ${res.newLevel}: ${res.nextState.levelTitle}!`);
@@ -307,7 +307,7 @@ export function App() {
         confetti({
           particleCount: 80,
           spread: 60,
-          colors: ['#1F4E5F', '#2E75B6', '#8BC34A', '#2E9E6B'],
+          colors: ['#EB5E28', '#2C2324', '#766754', '#EFECE3', '#FFD700'],
           origin: { y: 0.6 }
         });
       } catch {}
@@ -509,7 +509,7 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F3EFEA] text-[#141414] flex flex-col font-sans selection:bg-[#0B369A] selection:text-white">
+    <div className="min-h-screen bg-[#EFECE3] text-[#2C2324] flex flex-col font-sans selection:bg-[#EB5E28] selection:text-white">
       <Toast message={toastMessage} onClear={() => setToastMessage(null)} />
 
       {/* Top Header with Duolingo Gamification Pill Bar */}
@@ -567,15 +567,6 @@ export function App() {
           />
         )}
 
-        {currentTab === 'vault' && (
-          <VaultTab
-            onOpenPhotoUploader={handleOpenPhotoUploader}
-            onShowToast={showToast}
-            onSelectPhotoDetail={(photo) => handleSelectLogDetail({ type: 'photo', item: photo })}
-            selectedDate={selectedDate}
-          />
-        )}
-
         {currentTab === 'work' && (
           <WorkTab
             workItems={workItems}
@@ -583,6 +574,16 @@ export function App() {
             onDeleteWork={handleDeleteWork}
             onToggleStatus={handleToggleWorkStatus}
             onQuickAdd={handleQuickAddWork}
+            onSelectDetail={(item) => handleSelectLogDetail({ type: 'work', item })}
+          />
+        )}
+
+        {currentTab === 'vault' && (
+          <VaultTab
+            onOpenPhotoUploader={handleOpenPhotoUploader}
+            onShowToast={showToast}
+            onSelectPhotoDetail={(photo) => handleSelectLogDetail({ type: 'photo', item: photo })}
+            selectedDate={selectedDate}
           />
         )}
 

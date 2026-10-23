@@ -52,23 +52,27 @@ export const AddWorkModal: React.FC<AddWorkModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/50 backdrop-blur-xs animate-in fade-in duration-150">
-      <div className="w-full max-w-md bg-white rounded-t-2xl sm:rounded-2xl border border-[#BFBFBF] p-5 shadow-2xl max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
+      <div className="w-full max-w-md bg-white rounded-t-2xl sm:rounded-2xl border border-[#D8D3C8] p-5 shadow-2xl max-h-[90vh] overflow-y-auto">
         
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-[#BFBFBF]/60">
+        <div className="flex items-center justify-between pb-3 border-b border-[#D8D3C8]/70">
           <div className="flex items-center space-x-2">
-            <div className="p-2 rounded-lg bg-[#EAF2F5] text-[#455A64] border border-[#BFBFBF]/60">
+            <div className="p-2 rounded-xl bg-[#EFECE3] text-[#EB5E28] border border-[#D8D3C8]">
               <Briefcase className="w-4 h-4 stroke-[2.5]" />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-[#1F4E5F]">Log Work / Activity</h2>
-              <div className="text-[11px] text-[#595959] italic">Appends row to your Work Log sheet</div>
+              <div className="font-mono text-[9px] uppercase tracking-wider text-[#EB5E28] font-bold">
+                // ARCHIVE // FOCUS & WORK SPECIMEN
+              </div>
+              <h2 className="text-sm font-display font-black text-[#2C2324] uppercase tracking-tight">
+                Log Work / Activity
+              </h2>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-[#595959] hover:text-[#1A1A1A] rounded-lg hover:bg-[#EAF2F5] transition-colors"
+            className="p-1.5 text-[#766754] hover:text-[#2C2324] rounded-lg hover:bg-[#EFECE3] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -79,17 +83,17 @@ export const AddWorkModal: React.FC<AddWorkModalProps> = ({
           
           {/* Category */}
           <div>
-            <label className="text-xs font-bold text-[#1F4E5F] block mb-1">Category</label>
+            <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#766754] block mb-1">Category</label>
             <div className="grid grid-cols-3 gap-1">
               {categories.map((c) => (
                 <button
                   type="button"
                   key={c}
                   onClick={() => setCategory(c)}
-                  className={`py-1.5 text-[11px] font-bold rounded-lg border transition-all ${
+                  className={`py-1.5 text-[11px] font-mono font-bold rounded-xl border transition-all ${
                     category === c
-                      ? 'bg-[#1F4E5F] text-white border-[#1F4E5F]'
-                      : 'bg-[#EAF2F5] text-[#595959] border-[#BFBFBF] hover:bg-[#dfeaf0]'
+                      ? 'bg-[#2C2324] text-white border-[#2C2324] shadow-xs'
+                      : 'bg-[#EFECE3] text-[#766754] border-[#D8D3C8] hover:bg-[#E5E0D5]'
                   }`}
                 >
                   {c}
@@ -98,23 +102,23 @@ export const AddWorkModal: React.FC<AddWorkModalProps> = ({
             </div>
           </div>
 
-          {/* Task / Description (Sunlight yellow fill) */}
+          {/* Task / Description */}
           <div>
-            <label className="text-xs font-bold text-[#1F4E5F] block mb-1">Task / What I Did *</label>
+            <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#766754] block mb-1">Task / What I Did *</label>
             <input
               type="text"
               required
               placeholder="e.g. Finish project report"
               value={task}
               onChange={(e) => setTask(e.target.value)}
-              className="w-full bg-[#FFF9DB] border border-[#BFBFBF] rounded-lg px-3 py-2 text-xs text-[#2E75B6] font-bold placeholder-[#7F7F7F] focus:outline-none focus:border-[#2E75B6]"
+              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-2 text-xs text-[#2C2324] font-bold placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
             />
           </div>
 
           {/* Hours and Status */}
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="text-xs font-bold text-[#1F4E5F] block mb-1">Hours Spent</label>
+              <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#766754] block mb-1">Hours Spent</label>
               <input
                 type="number"
                 step="0.25"
@@ -122,22 +126,22 @@ export const AddWorkModal: React.FC<AddWorkModalProps> = ({
                 placeholder="1.5"
                 value={hours}
                 onChange={(e) => setHours(e.target.value)}
-                className="w-full bg-[#FFF9DB] border border-[#BFBFBF] rounded-lg px-3 py-1.5 text-xs text-[#2E75B6] font-black focus:outline-none focus:border-[#2E75B6]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-1.5 text-xs text-[#2C2324] font-mono font-black focus:outline-none focus:border-[#EB5E28]"
               />
             </div>
 
             <div>
-              <label className="text-xs font-bold text-[#1F4E5F] block mb-1">Status</label>
+              <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#766754] block mb-1">Status</label>
               <div className="flex gap-1">
                 {statuses.map((s) => (
                   <button
                     type="button"
                     key={s}
                     onClick={() => setStatus(s)}
-                    className={`flex-1 py-1.5 text-[11px] font-bold rounded-lg border transition-all ${
+                    className={`flex-1 py-1.5 text-[11px] font-mono font-bold rounded-xl border transition-all ${
                       status === s
-                        ? s === 'Done' ? 'bg-[#C6EFCE] text-[#2E7D32] border-[#2E7D32]' : 'bg-[#FFEB9C] text-[#7F6000] border-[#7F6000]'
-                        : 'bg-[#EAF2F5] text-[#595959] border-[#BFBFBF]'
+                        ? s === 'Done' ? 'bg-[#2C2324] text-white border-[#2C2324]' : 'bg-[#EB5E28] text-white border-[#EB5E28]'
+                        : 'bg-[#EFECE3] text-[#766754] border-[#D8D3C8]'
                     }`}
                   >
                     {s}
@@ -149,20 +153,20 @@ export const AddWorkModal: React.FC<AddWorkModalProps> = ({
 
           {/* Notes */}
           <div>
-            <label className="text-xs font-bold text-[#1F4E5F] block mb-1">Notes (optional)</label>
+            <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#766754] block mb-1">Notes (optional)</label>
             <input
               type="text"
-              placeholder="e.g. Sent via email"
+              placeholder="e.g. Deep focus session, completed all milestones"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full bg-[#FFF9DB] border border-[#BFBFBF] rounded-lg px-3 py-1.5 text-xs text-[#2E75B6] font-bold placeholder-[#7F7F7F] focus:outline-none focus:border-[#2E75B6]"
+              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-1.5 text-xs text-[#2C2324] font-sans placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
             />
           </div>
 
           {/* Submit */}
           <button
             type="submit"
-            className="w-full mt-2 py-2.5 bg-[#1F4E5F] hover:bg-[#163a47] active:scale-95 text-white font-bold text-xs rounded-lg shadow-xs transition-all flex items-center justify-center space-x-1.5"
+            className="w-full mt-2 py-3 btn-santiago active:scale-95 text-white font-display font-bold text-xs uppercase tracking-wider rounded-xl shadow-xs transition-all flex items-center justify-center space-x-1.5"
           >
             <Plus className="w-4 h-4 stroke-[3]" />
             <span>Add to Work Log Sheet</span>

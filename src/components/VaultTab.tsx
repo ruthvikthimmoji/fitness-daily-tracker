@@ -136,22 +136,22 @@ export const VaultTab: React.FC<VaultTabProps> = ({
   // ==========================================
   if (!isUnlocked) {
     return (
-      <div className="space-y-6 pb-24 max-w-sm mx-auto pt-6 animate-in fade-in duration-200">
+      <div className="space-y-6 pb-28 max-w-sm mx-auto pt-6 animate-in fade-in duration-200">
         <div className="text-center">
-          <div className="w-16 h-16 rounded-2xl bg-white border border-[#D9D1CA] mx-auto flex items-center justify-center text-[#0B369A] shadow-xs mb-3">
-            <Shield className="w-8 h-8 stroke-[2]" />
+          <div className="w-16 h-16 rounded-2xl bg-white border border-[#D8D3C8] mx-auto flex items-center justify-center text-[#2C2324] shadow-xs mb-3">
+            <Shield className="w-8 h-8 stroke-[1.8] text-[#EB5E28]" />
           </div>
-          <span className="font-mono text-[10px] text-[#C34811] uppercase tracking-wider font-bold block">
+          <span className="font-mono text-[10px] text-[#EB5E28] uppercase tracking-wider font-bold block">
             PRIVATE VAULT ARCHIVE
           </span>
-          <h2 className="text-xl font-display font-black text-[#141414] uppercase tracking-tight mt-1">
+          <h2 className="text-xl font-display font-black text-[#2C2324] uppercase tracking-tight mt-1">
             {isSettingUpPin
               ? confirmPin
                 ? 'Confirm Passcode'
                 : 'Create 4-Digit Passcode'
               : 'Enter Vault Passcode'}
           </h2>
-          <p className="text-xs text-[#6E6A63] font-sans mt-1">
+          <p className="text-xs text-[#766754] font-sans mt-1">
             {isSettingUpPin
               ? confirmPin
                 ? 'Re-enter your 4 digits to confirm security'
@@ -169,8 +169,8 @@ export const VaultTab: React.FC<VaultTabProps> = ({
                 key={idx}
                 className={`w-3.5 h-3.5 rounded-full border transition-all duration-150 ${
                   isFilled
-                    ? 'bg-[#0B369A] border-[#0B369A] scale-110'
-                    : 'bg-white border-[#D9D1CA]'
+                    ? 'bg-[#EB5E28] border-[#EB5E28] scale-110 shadow-xs'
+                    : 'bg-white border-[#D8D3C8]'
                 }`}
               />
             );
@@ -178,7 +178,7 @@ export const VaultTab: React.FC<VaultTabProps> = ({
         </div>
 
         {pinError && (
-          <div className="text-center text-xs font-mono font-bold text-[#C34811] flex items-center justify-center gap-1">
+          <div className="text-center text-xs font-mono font-bold text-[#EB5E28] flex items-center justify-center gap-1">
             <AlertCircle className="w-3.5 h-3.5" />
             <span>{pinError}</span>
           </div>
@@ -190,7 +190,7 @@ export const VaultTab: React.FC<VaultTabProps> = ({
             <button
               key={digit}
               onClick={() => handleKeyClick(digit)}
-              className="h-14 rounded-2xl bg-white border border-[#D9D1CA] text-xl font-display font-bold text-[#141414] shadow-xs hover:bg-[#F3EFEA] active:scale-95 transition-all flex items-center justify-center"
+              className="h-14 rounded-2xl bg-white border border-[#D8D3C8] text-xl font-display font-bold text-[#2C2324] shadow-xs hover:bg-[#EFECE3] active:scale-95 transition-all flex items-center justify-center"
             >
               {digit}
             </button>
@@ -201,19 +201,19 @@ export const VaultTab: React.FC<VaultTabProps> = ({
               setConfirmPin('');
               setPinError(null);
             }}
-            className="h-14 rounded-2xl bg-[#F3EFEA] border border-[#D9D1CA] text-xs font-mono font-bold text-[#6E6A63] hover:bg-[#EAE5DE] active:scale-95 transition-all flex items-center justify-center"
+            className="h-14 rounded-2xl bg-[#EFECE3] border border-[#D8D3C8] text-xs font-mono font-bold text-[#766754] hover:bg-[#e6e2d7] active:scale-95 transition-all flex items-center justify-center"
           >
             CLEAR
           </button>
           <button
             onClick={() => handleKeyClick('0')}
-            className="h-14 rounded-2xl bg-white border border-[#D9D1CA] text-xl font-display font-bold text-[#141414] shadow-xs hover:bg-[#F3EFEA] active:scale-95 transition-all flex items-center justify-center"
+            className="h-14 rounded-2xl bg-white border border-[#D8D3C8] text-xl font-display font-bold text-[#2C2324] shadow-xs hover:bg-[#EFECE3] active:scale-95 transition-all flex items-center justify-center"
           >
             0
           </button>
           <button
             onClick={handleBackspace}
-            className="h-14 rounded-2xl bg-[#F3EFEA] border border-[#D9D1CA] text-xs font-mono font-bold text-[#6E6A63] hover:bg-[#EAE5DE] active:scale-95 transition-all flex items-center justify-center"
+            className="h-14 rounded-2xl bg-[#EFECE3] border border-[#D8D3C8] text-xs font-mono font-bold text-[#766754] hover:bg-[#e6e2d7] active:scale-95 transition-all flex items-center justify-center"
           >
             ⌫
           </button>
@@ -232,7 +232,7 @@ export const VaultTab: React.FC<VaultTabProps> = ({
                   setConfirmPin('');
                 }
               }}
-              className="text-[11px] font-mono text-[#6E6A63] hover:text-[#0B369A] underline"
+              className="text-[11px] font-mono text-[#766754] hover:text-[#EB5E28] underline"
             >
               Reset Passcode
             </button>
@@ -246,16 +246,16 @@ export const VaultTab: React.FC<VaultTabProps> = ({
   // 2. UNLOCKED GALLERY & SPECIMEN ARCHIVE
   // ==========================================
   return (
-    <div className="space-y-4 pb-24 animate-in fade-in duration-150">
+    <div className="space-y-4 pb-28 animate-in fade-in duration-150">
       
       {/* Top Vault Header */}
-      <div className="bg-white rounded-2xl p-4 border border-[#D9D1CA] shadow-xs flex items-center justify-between">
+      <div className="bg-white rounded-2xl p-4 border border-[#D8D3C8] shadow-xs flex items-center justify-between">
         <div>
-          <div className="font-mono text-[10px] text-[#0B369A] font-bold uppercase tracking-wider flex items-center gap-1.5">
+          <div className="font-mono text-[10px] text-[#EB5E28] font-bold uppercase tracking-wider flex items-center gap-1.5">
             <Unlock className="w-3.5 h-3.5 text-[#2E7D32]" />
             <span>ENCRYPTED VAULT // {photos.length} SPECIMENS</span>
           </div>
-          <h2 className="text-lg font-display font-black text-[#141414] uppercase tracking-tight mt-0.5">
+          <h2 className="text-lg font-display font-black text-[#2C2324] uppercase tracking-tight mt-0.5">
             Photo Archive
           </h2>
         </div>
@@ -263,7 +263,7 @@ export const VaultTab: React.FC<VaultTabProps> = ({
         <div className="flex items-center space-x-2">
           <button
             onClick={() => onOpenPhotoUploader('workout')}
-            className="px-3 py-2 rounded-xl btn-gallery-blue text-xs font-display font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-xs"
+            className="px-3.5 py-2 rounded-xl btn-santiago text-xs font-display font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-xs"
           >
             <Camera className="w-3.5 h-3.5" />
             <span>Upload</span>
@@ -271,7 +271,7 @@ export const VaultTab: React.FC<VaultTabProps> = ({
 
           <button
             onClick={handleLockVault}
-            className="p-2 rounded-xl btn-stone text-[#6E6A63] hover:text-[#141414] transition-colors"
+            className="p-2 rounded-xl btn-cold-foam text-[#766754] hover:text-[#2C2324] transition-colors"
             title="Lock Vault"
           >
             <Lock className="w-4 h-4 stroke-[2.5]" />
@@ -289,8 +289,8 @@ export const VaultTab: React.FC<VaultTabProps> = ({
               onClick={() => setActiveCategory(cat)}
               className={`px-3 py-1.5 rounded-xl text-xs font-mono uppercase tracking-wider font-bold transition-all shrink-0 ${
                 isSelected
-                  ? 'bg-[#141414] text-white shadow-xs'
-                  : 'bg-white text-[#6E6A63] border border-[#D9D1CA] hover:bg-[#F3EFEA]'
+                  ? 'bg-[#2C2324] text-white shadow-xs'
+                  : 'bg-white text-[#766754] border border-[#D8D3C8] hover:bg-[#EFECE3]'
               }`}
             >
               {cat}
@@ -301,23 +301,23 @@ export const VaultTab: React.FC<VaultTabProps> = ({
 
       {/* Photos Grid */}
       {isLoading ? (
-        <div className="py-12 text-center text-[#6E6A63] font-mono text-xs">
+        <div className="py-12 text-center text-[#766754] font-mono text-xs">
           Loading archive...
         </div>
       ) : filteredPhotos.length === 0 ? (
-        <div className="bg-white rounded-2xl p-8 border border-[#D9D1CA] text-center">
-          <div className="w-12 h-12 rounded-xl bg-[#F3EFEA] border border-[#D9D1CA] mx-auto flex items-center justify-center text-[#6E6A63] mb-3">
+        <div className="bg-white rounded-2xl p-8 border border-[#D8D3C8] text-center">
+          <div className="w-12 h-12 rounded-xl bg-[#EFECE3] border border-[#D8D3C8] mx-auto flex items-center justify-center text-[#766754] mb-3">
             <ImageIcon className="w-6 h-6 stroke-[1.5]" />
           </div>
-          <div className="text-sm font-display font-bold text-[#141414] uppercase">
+          <div className="text-sm font-display font-bold text-[#2C2324] uppercase">
             No {activeCategory !== 'All' ? activeCategory : ''} Photos Yet
           </div>
-          <p className="text-xs text-[#6E6A63] font-sans mt-1 max-w-xs mx-auto">
+          <p className="text-xs text-[#766754] font-sans mt-1 max-w-xs mx-auto">
             Take or upload your workout pump, physique progress, meals, or scale weigh-ins to keep a private visual log.
           </p>
           <button
             onClick={() => onOpenPhotoUploader('workout')}
-            className="mt-4 px-4 py-2.5 rounded-xl btn-gallery-blue text-xs font-display font-bold uppercase tracking-wider inline-flex items-center gap-1.5 shadow-sm"
+            className="mt-4 px-4 py-2.5 rounded-xl btn-santiago text-xs font-display font-bold uppercase tracking-wider inline-flex items-center gap-1.5 shadow-sm"
           >
             <Camera className="w-4 h-4" />
             <span>Upload First Photo</span>
@@ -329,10 +329,10 @@ export const VaultTab: React.FC<VaultTabProps> = ({
             <div
               key={photo.id}
               onClick={() => onSelectPhotoDetail(photo)}
-              className="bg-white rounded-2xl border border-[#D9D1CA] overflow-hidden shadow-xs cursor-pointer group hover:border-[#0B369A] transition-all"
+              className="bg-white rounded-2xl border border-[#D8D3C8] overflow-hidden shadow-xs cursor-pointer group hover:border-[#EB5E28] transition-all"
             >
               {/* Photo Thumbnail */}
-              <div className="relative aspect-4/3 bg-[#141414] overflow-hidden">
+              <div className="relative aspect-4/3 bg-[#2C2324] overflow-hidden">
                 <img
                   src={photo.dataUrl}
                   alt={photo.caption || photo.category}
@@ -349,7 +349,7 @@ export const VaultTab: React.FC<VaultTabProps> = ({
                 {/* Quick Phone Download Action */}
                 <button
                   onClick={(e) => handleDownload(photo, e)}
-                  className="absolute bottom-2 right-2 p-1.5 rounded-lg bg-black/60 backdrop-blur-md text-white hover:bg-[#0B369A] transition-colors"
+                  className="absolute bottom-2 right-2 p-1.5 rounded-lg bg-black/60 backdrop-blur-md text-white hover:bg-[#EB5E28] transition-colors"
                   title="Download to phone"
                 >
                   <Download className="w-3.5 h-3.5 stroke-[2.5]" />
@@ -358,18 +358,18 @@ export const VaultTab: React.FC<VaultTabProps> = ({
 
               {/* Card Footer / Spec Label */}
               <div className="p-2.5">
-                <div className="flex items-center justify-between text-[10px] font-mono text-[#6E6A63]">
+                <div className="flex items-center justify-between text-[10px] font-mono text-[#766754]">
                   <span>{photo.date}</span>
                   <button
                     onClick={(e) => handleDelete(photo, e)}
-                    className="text-[#C34811] hover:text-red-700 p-0.5"
+                    className="text-[#EB5E28] hover:text-red-700 p-0.5"
                     title="Delete photo"
                   >
                     <Trash2 className="w-3 h-3" />
                   </button>
                 </div>
                 {photo.caption && (
-                  <div className="text-xs font-sans font-bold text-[#141414] truncate mt-1">
+                  <div className="text-xs font-sans font-bold text-[#2C2324] truncate mt-1">
                     {photo.caption}
                   </div>
                 )}

@@ -65,23 +65,27 @@ export const AddWorkoutModal: React.FC<AddWorkoutModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/50 backdrop-blur-xs animate-in fade-in duration-150">
-      <div className="w-full max-w-md bg-white rounded-t-2xl sm:rounded-2xl border border-[#BFBFBF] p-5 shadow-2xl max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
+      <div className="w-full max-w-md bg-white rounded-t-2xl sm:rounded-2xl border border-[#D8D3C8] p-5 shadow-2xl max-h-[90vh] overflow-y-auto">
         
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-[#BFBFBF]/60">
+        <div className="flex items-center justify-between pb-3 border-b border-[#D8D3C8]/70">
           <div className="flex items-center space-x-2">
-            <div className="p-2 rounded-lg bg-[#EAF2F5] text-[#D32F2F] border border-[#BFBFBF]/60">
+            <div className="p-2 rounded-xl bg-[#EFECE3] text-[#EB5E28] border border-[#D8D3C8]">
               <Dumbbell className="w-4 h-4 stroke-[2.5]" />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-[#1F4E5F]">Log Workout Exercise</h2>
-              <div className="text-[11px] text-[#595959] italic">Appends to your Workout Log sheet</div>
+              <div className="font-mono text-[9px] uppercase tracking-wider text-[#EB5E28] font-bold">
+                // ARCHIVE // EXERCISE SPECIMEN
+              </div>
+              <h2 className="text-sm font-display font-black text-[#2C2324] uppercase tracking-tight">
+                Log Workout Exercise
+              </h2>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-[#595959] hover:text-[#1A1A1A] rounded-lg hover:bg-[#EAF2F5] transition-colors"
+            className="p-1.5 text-[#766754] hover:text-[#2C2324] rounded-lg hover:bg-[#EFECE3] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -92,17 +96,17 @@ export const AddWorkoutModal: React.FC<AddWorkoutModalProps> = ({
           
           {/* Workout Type */}
           <div>
-            <label className="text-xs font-bold text-[#1F4E5F] block mb-1">Workout Split / Type</label>
+            <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#766754] block mb-1">Workout Split / Type</label>
             <div className="grid grid-cols-4 gap-1">
               {workoutTypes.map((t) => (
                 <button
                   type="button"
                   key={t}
                   onClick={() => setWorkoutType(t)}
-                  className={`py-1.5 text-[11px] font-bold rounded-lg border transition-all ${
+                  className={`py-1.5 text-[11px] font-mono font-bold rounded-xl border transition-all ${
                     workoutType === t
-                      ? 'bg-[#1F4E5F] text-white border-[#1F4E5F]'
-                      : 'bg-[#EAF2F5] text-[#595959] border-[#BFBFBF] hover:bg-[#dfeaf0]'
+                      ? 'bg-[#2C2324] text-white border-[#2C2324] shadow-xs'
+                      : 'bg-[#EFECE3] text-[#766754] border-[#D8D3C8] hover:bg-[#E5E0D5]'
                   }`}
                 >
                   {t}
@@ -111,102 +115,102 @@ export const AddWorkoutModal: React.FC<AddWorkoutModalProps> = ({
             </div>
           </div>
 
-          {/* Exercise Name (Sunlight yellow fill) */}
+          {/* Exercise Name */}
           <div>
-            <label className="text-xs font-bold text-[#1F4E5F] block mb-1">Exercise Name *</label>
+            <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#766754] block mb-1">Exercise Name *</label>
             <input
               type="text"
               required
               placeholder="e.g. Bench Press or Squats"
               value={exercise}
               onChange={(e) => setExercise(e.target.value)}
-              className="w-full bg-[#FFF9DB] border border-[#BFBFBF] rounded-lg px-3 py-2 text-xs text-[#2E75B6] font-bold placeholder-[#7F7F7F] focus:outline-none focus:border-[#2E75B6]"
+              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-2 text-xs text-[#2C2324] font-bold placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
             />
           </div>
 
           {/* Sets, Reps, Weight */}
           <div className="grid grid-cols-3 gap-1.5">
             <div>
-              <label className="text-[11px] font-bold text-[#595959] block mb-0.5">Sets</label>
+              <label className="text-[10px] font-mono font-bold text-[#766754] uppercase block mb-0.5">Sets</label>
               <input
                 type="number"
                 placeholder="4"
                 value={sets}
                 onChange={(e) => setSets(e.target.value)}
-                className="w-full bg-[#FFF9DB] border border-[#BFBFBF] rounded-lg px-2.5 py-1.5 text-xs text-[#2E75B6] font-black focus:outline-none focus:border-[#2E75B6]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 text-xs text-[#2C2324] font-mono font-black focus:outline-none focus:border-[#EB5E28]"
               />
             </div>
             <div>
-              <label className="text-[11px] font-bold text-[#595959] block mb-0.5">Reps</label>
+              <label className="text-[10px] font-mono font-bold text-[#766754] uppercase block mb-0.5">Reps</label>
               <input
                 type="number"
                 placeholder="10"
                 value={reps}
                 onChange={(e) => setReps(e.target.value)}
-                className="w-full bg-[#FFF9DB] border border-[#BFBFBF] rounded-lg px-2.5 py-1.5 text-xs text-[#2E75B6] font-black focus:outline-none focus:border-[#2E75B6]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 text-xs text-[#2C2324] font-mono font-black focus:outline-none focus:border-[#EB5E28]"
               />
             </div>
             <div>
-              <label className="text-[11px] font-bold text-[#1F77B4] block mb-0.5">Weight (kg)</label>
+              <label className="text-[10px] font-mono font-bold text-[#EB5E28] uppercase block mb-0.5">Weight (kg)</label>
               <input
                 type="number"
                 step="0.5"
                 placeholder="kg"
                 value={weightKg}
                 onChange={(e) => setWeightKg(e.target.value)}
-                className="w-full bg-[#FFF9DB] border border-[#BFBFBF] rounded-lg px-2.5 py-1.5 text-xs text-[#2E75B6] font-black focus:outline-none focus:border-[#2E75B6]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 text-xs text-[#2C2324] font-mono font-black focus:outline-none focus:border-[#EB5E28]"
               />
             </div>
           </div>
 
           {/* Volume preview banner */}
           {calculatedVolume > 0 && (
-            <div className="bg-[#EAF2F5] border border-[#BFBFBF] rounded-lg p-2.5 flex items-center justify-between text-xs">
-              <span className="text-[#595959] font-medium">Volume (Sets × Reps × Weight):</span>
-              <span className="text-[#1F4E5F] font-black text-sm">{calculatedVolume.toLocaleString()} kg</span>
+            <div className="bg-[#EFECE3] border border-[#D8D3C8] rounded-xl p-2.5 flex items-center justify-between text-xs">
+              <span className="text-[#766754] font-mono text-[11px]">Volume (Sets × Reps × Weight):</span>
+              <span className="text-[#2C2324] font-display font-black text-sm">{calculatedVolume.toLocaleString()} kg</span>
             </div>
           )}
 
           {/* Cardio / Additional fields */}
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="text-[11px] font-bold text-[#595959] block mb-0.5">Duration (min)</label>
+              <label className="text-[10px] font-mono font-bold text-[#766754] uppercase block mb-0.5">Duration (min)</label>
               <input
                 type="number"
                 placeholder="e.g. 45"
                 value={durationMin}
                 onChange={(e) => setDurationMin(e.target.value)}
-                className="w-full bg-[#FFF9DB] border border-[#BFBFBF] rounded-lg px-2.5 py-1.5 text-xs text-[#2E75B6] font-bold focus:outline-none focus:border-[#2E75B6]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 text-xs text-[#2C2324] font-mono font-bold focus:outline-none focus:border-[#EB5E28]"
               />
             </div>
             <div>
-              <label className="text-[11px] font-bold text-[#D32F2F] block mb-0.5">Calories Burned</label>
+              <label className="text-[10px] font-mono font-bold text-[#EB5E28] uppercase block mb-0.5">Calories Burned</label>
               <input
                 type="number"
                 placeholder="e.g. 300"
                 value={caloriesBurned}
                 onChange={(e) => setCaloriesBurned(e.target.value)}
-                className="w-full bg-[#FFF9DB] border border-[#BFBFBF] rounded-lg px-2.5 py-1.5 text-xs text-[#2E75B6] font-bold focus:outline-none focus:border-[#2E75B6]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 text-xs text-[#2C2324] font-mono font-bold focus:outline-none focus:border-[#EB5E28]"
               />
             </div>
           </div>
 
           {/* Notes */}
           <div>
-            <label className="text-xs font-bold text-[#1F4E5F] block mb-1">Notes</label>
+            <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#766754] block mb-1">Notes</label>
             <input
               type="text"
               placeholder="e.g. RPE 8, felt strong"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full bg-[#FFF9DB] border border-[#BFBFBF] rounded-lg px-3 py-1.5 text-xs text-[#2E75B6] font-bold placeholder-[#7F7F7F] focus:outline-none focus:border-[#2E75B6]"
+              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-1.5 text-xs text-[#2C2324] font-sans placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
             />
           </div>
 
           {/* Submit */}
           <button
             type="submit"
-            className="w-full mt-2 py-2.5 bg-[#1F4E5F] hover:bg-[#163a47] active:scale-95 text-white font-bold text-xs rounded-lg shadow-xs transition-all flex items-center justify-center space-x-1.5"
+            className="w-full mt-2 py-3 btn-santiago active:scale-95 text-white font-display font-bold text-xs uppercase tracking-wider rounded-xl shadow-xs transition-all flex items-center justify-center space-x-1.5"
           >
             <Plus className="w-4 h-4 stroke-[3]" />
             <span>Add to Workout Log Sheet</span>

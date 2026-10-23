@@ -91,21 +91,21 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
-      <div className="w-full max-w-md bg-[#FFFFFF] rounded-t-2xl sm:rounded-2xl border border-[#D9D1CA] p-5 shadow-2xl max-h-[92vh] overflow-y-auto">
+      <div className="w-full max-w-md bg-[#FFFFFF] rounded-t-2xl sm:rounded-2xl border border-[#D8D3C8] p-5 shadow-2xl max-h-[92vh] overflow-y-auto">
         
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-[#D9D1CA]/80">
+        <div className="flex items-center justify-between pb-3 border-b border-[#D8D3C8]/80">
           <div>
-            <div className="font-mono text-[10px] text-[#C34811] uppercase tracking-wider font-bold">
+            <div className="font-mono text-[10px] text-[#EB5E28] uppercase tracking-wider font-bold">
               VAULT SPECIMEN CAPTURE // {selectedDate}
             </div>
-            <h2 className="text-base font-bold text-[#141414] font-display uppercase tracking-tight mt-0.5">
+            <h2 className="text-base font-bold text-[#2C2324] font-display uppercase tracking-tight mt-0.5">
               Archive Photo
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-[#6E6A63] hover:text-[#141414] rounded-lg hover:bg-[#F3EFEA] transition-colors"
+            className="p-1.5 text-[#766754] hover:text-[#2C2324] rounded-lg hover:bg-[#EFECE3] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -121,7 +121,7 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
         <div className="mt-4 space-y-4">
           
           {/* Photo Preview / Picker Box */}
-          <div className="w-full aspect-4/3 rounded-xl border-2 border-dashed border-[#D9D1CA] overflow-hidden bg-[#F3EFEA] flex flex-col items-center justify-center relative">
+          <div className="w-full aspect-4/3 rounded-xl border-2 border-dashed border-[#D8D3C8] overflow-hidden bg-[#EFECE3] flex flex-col items-center justify-center relative">
             {previewUrl ? (
               <div className="relative w-full h-full group">
                 <img
@@ -132,15 +132,15 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                   <button
                     onClick={() => fileInputRef.current?.click()}
-                    className="px-3 py-1.5 bg-white text-[#141414] rounded-lg text-xs font-bold font-mono shadow-md"
+                    className="px-3 py-1.5 bg-white text-[#2C2324] rounded-lg text-xs font-bold font-mono shadow-md"
                   >
                     Change Photo
                   </button>
                 </div>
               </div>
             ) : isProcessing ? (
-              <div className="flex flex-col items-center text-[#6E6A63]">
-                <div className="w-8 h-8 border-2 border-[#D9D1CA] border-t-[#C34811] rounded-full animate-spin"></div>
+              <div className="flex flex-col items-center text-[#766754]">
+                <div className="w-8 h-8 border-2 border-[#D8D3C8] border-t-[#EB5E28] rounded-full animate-spin"></div>
                 <span className="text-xs font-mono mt-2">Compressing specimen...</span>
               </div>
             ) : (
@@ -149,7 +149,7 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
                   <button
                     type="button"
                     onClick={() => cameraInputRef.current?.click()}
-                    className="p-3.5 rounded-full bg-white text-[#0B369A] border border-[#D9D1CA] shadow-sm hover:scale-105 active:scale-95 transition-all"
+                    className="p-3.5 rounded-full bg-white text-[#EB5E28] border border-[#D8D3C8] shadow-sm hover:scale-105 active:scale-95 transition-all"
                     title="Take photo with camera"
                   >
                     <Camera className="w-5 h-5" />
@@ -157,14 +157,14 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="p-3.5 rounded-full bg-white text-[#C34811] border border-[#D9D1CA] shadow-sm hover:scale-105 active:scale-95 transition-all"
+                    className="p-3.5 rounded-full bg-white text-[#2C2324] border border-[#D8D3C8] shadow-sm hover:scale-105 active:scale-95 transition-all"
                     title="Upload from gallery"
                   >
                     <Upload className="w-5 h-5" />
                   </button>
                 </div>
-                <div className="text-xs font-bold text-[#141414]">Take Photo or Upload</div>
-                <div className="text-[10px] text-[#6E6A63] mt-0.5 font-mono">
+                <div className="text-xs font-bold text-[#2C2324]">Take Photo or Upload</div>
+                <div className="text-[10px] text-[#766754] mt-0.5 font-mono">
                   Compressed & saved to your private encrypted vault
                 </div>
               </div>
@@ -190,7 +190,7 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
 
           {/* Category Selector */}
           <div>
-            <label className="block text-[10px] font-mono font-bold uppercase tracking-wider text-[#6E6A63] mb-1.5">
+            <label className="block text-[10px] font-mono font-bold uppercase tracking-wider text-[#766754] mb-1.5">
               Specimen Category
             </label>
             <div className="grid grid-cols-5 gap-1.5">
@@ -203,8 +203,8 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
                     onClick={() => setCategory(c.id)}
                     className={`py-2 px-1 rounded-xl text-center border font-mono transition-all ${
                       isSelected
-                        ? 'bg-[#141414] text-white border-[#141414] font-bold shadow-xs'
-                        : 'bg-[#F3EFEA] text-[#6E6A63] border-[#D9D1CA] hover:bg-[#EAE5DE]'
+                        ? 'bg-[#2C2324] text-white border-[#2C2324] font-bold shadow-xs'
+                        : 'bg-[#EFECE3] text-[#766754] border-[#D8D3C8] hover:bg-[#E5E0D5]'
                     }`}
                   >
                     <div className="text-[11px] leading-tight font-bold">{c.label}</div>
@@ -217,7 +217,7 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
 
           {/* Caption / Notes Input */}
           <div>
-            <label className="block text-[10px] font-mono font-bold uppercase tracking-wider text-[#6E6A63] mb-1.5">
+            <label className="block text-[10px] font-mono font-bold uppercase tracking-wider text-[#766754] mb-1.5">
               Specimen Notes / Caption (Optional)
             </label>
             <input
@@ -225,7 +225,7 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
               placeholder="e.g. Post-workout pump, bench PR 90kg, healthy lunch..."
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
-              className="w-full px-3 py-2.5 rounded-xl text-xs font-sans text-[#141414] border border-[#D9D1CA] focus:border-[#0B369A] bg-[#FFFFFF]"
+              className="w-full px-3 py-2.5 rounded-xl text-xs font-sans text-[#2C2324] border border-[#D8D3C8] focus:border-[#EB5E28] bg-[#FFFFFF]"
             />
           </div>
 
@@ -236,8 +236,8 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
               disabled={!previewUrl || isProcessing}
               className={`w-full py-3 rounded-xl font-display font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all ${
                 previewUrl && !isProcessing
-                  ? 'btn-3d-terracotta'
-                  : 'bg-[#EAE5DE] text-[#A39E98] border border-[#D9D1CA] cursor-not-allowed'
+                  ? 'btn-3d-santiago'
+                  : 'bg-[#EFECE3] text-[#766754]/50 border border-[#D8D3C8] cursor-not-allowed'
               }`}
             >
               <Check className="w-4 h-4 stroke-[2.5]" />
