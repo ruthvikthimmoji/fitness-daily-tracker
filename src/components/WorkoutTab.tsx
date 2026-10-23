@@ -52,12 +52,12 @@ export const WorkoutTab: React.FC<WorkoutTabProps> = ({
       <div className="specimen-card p-4 border border-[#D8D3C8]">
         <div className="flex items-center justify-between pb-3 border-b border-[#D8D3C8]/70">
           <div>
-            <div className="font-mono text-[10px] uppercase tracking-wider text-[#EB5E28] font-bold">
+            <div className="font-label text-[10px] text-[#EB5E28]">
               // ARCHIVE // STRENGTH & LOAD
             </div>
-            <div className="text-xl font-display font-black text-[#2C2324] uppercase tracking-tight mt-0.5">
+            <div className="font-h2 text-[#2C2324] uppercase tracking-tight mt-0.5">
               {workoutItems.length > 0 ? (
-                <span>{totalVolume.toLocaleString()} <span className="font-mono text-xs font-normal text-[#766754]">KG VOL</span></span>
+                <span><span className="font-score-m text-2xl tabular-nums">{totalVolume.toLocaleString()}</span> <span className="font-caption font-normal text-[#766754]">KG VOL</span></span>
               ) : (
                 'WORKOUT SPECIMEN'
               )}
@@ -75,7 +75,7 @@ export const WorkoutTab: React.FC<WorkoutTabProps> = ({
 
             <button
               onClick={() => onOpenAddModal(activeFilter !== 'All' ? activeFilter : 'Push')}
-              className="flex items-center gap-1 px-3.5 py-2 btn-santiago text-white font-display font-bold text-xs uppercase tracking-wider rounded-xl shadow-xs"
+              className="flex items-center gap-1 px-3.5 py-2 btn-santiago text-white font-button-s text-xs uppercase tracking-wider rounded-xl shadow-xs"
             >
               <Plus className="w-4 h-4 stroke-[2.5]" />
               <span>Log</span>
@@ -86,30 +86,30 @@ export const WorkoutTab: React.FC<WorkoutTabProps> = ({
         {/* 3 Metrics Grid */}
         <div className="grid grid-cols-3 gap-2 pt-3">
           <div className="bg-[#EFECE3] rounded-xl p-2.5 border border-[#D8D3C8]">
-            <div className="flex items-center space-x-1 font-mono text-[9px] uppercase tracking-wider text-[#766754] mb-0.5">
+            <div className="flex items-center space-x-1 font-label text-[9px] text-[#766754] mb-0.5">
               <Award className="w-3 h-3 text-[#2C2324]" />
               <span>EXERCISES</span>
             </div>
-            <div className="text-lg font-display font-black text-[#2C2324]">{workoutItems.length}</div>
-            <div className="font-mono text-[9px] text-[#766754]">Logged today</div>
+            <div className="font-score-m text-lg text-[#2C2324] tabular-nums">{workoutItems.length}</div>
+            <div className="font-caption text-[#766754]">Logged today</div>
           </div>
 
           <div className="bg-[#EFECE3] rounded-xl p-2.5 border border-[#D8D3C8]">
-            <div className="flex items-center space-x-1 font-mono text-[9px] uppercase tracking-wider text-[#766754] mb-0.5">
+            <div className="flex items-center space-x-1 font-label text-[9px] text-[#766754] mb-0.5">
               <Flame className="w-3 h-3 text-[#EB5E28]" />
               <span>BURNED</span>
             </div>
-            <div className="text-lg font-display font-black text-[#EB5E28]">+{totalCaloriesBurned}</div>
-            <div className="font-mono text-[9px] text-[#766754]">kcal burned</div>
+            <div className="font-score-m text-lg text-[#EB5E28] tabular-nums">+{totalCaloriesBurned}</div>
+            <div className="font-caption text-[#766754]">kcal burned</div>
           </div>
 
           <div className="bg-[#EFECE3] rounded-xl p-2.5 border border-[#D8D3C8]">
-            <div className="flex items-center space-x-1 font-mono text-[9px] uppercase tracking-wider text-[#766754] mb-0.5">
+            <div className="flex items-center space-x-1 font-label text-[9px] text-[#766754] mb-0.5">
               <Clock className="w-3 h-3 text-[#2C2324]" />
               <span>DURATION</span>
             </div>
-            <div className="text-lg font-display font-black text-[#2C2324]">{totalDuration}m</div>
-            <div className="font-mono text-[9px] text-[#766754]">Total time</div>
+            <div className="font-score-m text-lg text-[#2C2324] tabular-nums">{totalDuration}m</div>
+            <div className="font-caption text-[#766754]">Total time</div>
           </div>
         </div>
       </div>
@@ -120,7 +120,7 @@ export const WorkoutTab: React.FC<WorkoutTabProps> = ({
           <button
             key={filter}
             onClick={() => setActiveFilter(filter)}
-            className={`px-3 py-1.5 text-xs font-mono uppercase tracking-wider font-bold rounded-xl whitespace-nowrap transition-all active:scale-95 ${
+            className={`px-3 py-1.5 font-button-s text-xs uppercase tracking-wider rounded-xl whitespace-nowrap transition-all active:scale-95 ${
               activeFilter === filter
                 ? 'bg-[#2C2324] text-white shadow-xs'
                 : 'bg-white text-[#766754] hover:text-[#2C2324] border border-[#D8D3C8]'
@@ -174,16 +174,16 @@ export const WorkoutTab: React.FC<WorkoutTabProps> = ({
                 {/* Top Catalog & Category Header */}
                 <div className="flex items-center justify-between pb-2 border-b border-[#D8D3C8]/60 mb-2">
                   <div className="flex items-center space-x-2">
-                    <span className="font-mono text-[9px] bg-[#2C2324] text-white px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">
+                    <span className="font-label text-[9px] bg-[#2C2324] text-white px-1.5 py-0.5 rounded">
                       SPECIMEN #W-0{idx + 1}
                     </span>
-                    <span className="font-mono text-[9px] text-[#EB5E28] font-bold uppercase tracking-wide">
+                    <span className="font-badge text-[10px] text-[#EB5E28] uppercase">
                       {item.workoutType}
                     </span>
                   </div>
 
                   <div className="flex items-center space-x-2">
-                    <span className="text-[10px] font-mono text-[#766754] flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform">
+                    <span className="font-caption text-[#766754] flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform">
                       <span>SPECS</span>
                       <ChevronRight className="w-3 h-3" />
                     </span>
@@ -201,7 +201,7 @@ export const WorkoutTab: React.FC<WorkoutTabProps> = ({
                 </div>
 
                 {/* Bold Exercise Title */}
-                <h3 className="text-sm font-display font-black text-[#2C2324] uppercase tracking-tight">
+                <h3 className="font-h3 text-base text-[#2C2324] uppercase tracking-tight">
                   {item.exercise}
                 </h3>
 

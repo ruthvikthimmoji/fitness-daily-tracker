@@ -20,10 +20,10 @@ export const InstallModal: React.FC<InstallModalProps> = ({ isOpen, onClose }) =
               <Smartphone className="w-4 h-4 stroke-[2.5]" />
             </div>
             <div>
-              <div className="font-mono text-[9px] uppercase tracking-wider text-[#EB5E28] font-bold">
+              <div className="font-label text-[#EB5E28]">
                 // SYSTEM // PWA CLIENT
               </div>
-              <h2 className="text-sm font-display font-black text-[#2C2324] uppercase tracking-tight">
+              <h2 className="font-h2 text-[#2C2324]">
                 Install to Your Phone
               </h2>
             </div>
@@ -40,29 +40,29 @@ export const InstallModal: React.FC<InstallModalProps> = ({ isOpen, onClose }) =
           
           {/* iOS Instructions */}
           <div className="bg-[#EFECE3] p-3.5 rounded-xl border border-[#D8D3C8]">
-            <div className="flex items-center space-x-2 text-xs font-mono font-bold text-[#2C2324] mb-2 uppercase">
+            <div className="flex items-center space-x-2 font-label text-[#2C2324] mb-2">
               <span className="text-sm">🍎</span>
               <span>iPhone & iPad (Safari)</span>
             </div>
-            <ol className="space-y-1.5 text-xs text-[#2C2324]">
+            <ol className="space-y-1.5 font-body-m text-xs text-[#2C2324]">
               <li className="flex items-start space-x-2">
-                <span className="w-4 h-4 rounded-full bg-[#2C2324] text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 font-mono font-bold">1</span>
+                <span className="w-4 h-4 rounded-full bg-[#2C2324] text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 font-stat tabular-nums">1</span>
                 <span>Open this link in <strong>Safari</strong> on your iPhone.</span>
               </li>
               <li className="flex items-start space-x-2">
-                <span className="w-4 h-4 rounded-full bg-[#2C2324] text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 font-mono font-bold">2</span>
+                <span className="w-4 h-4 rounded-full bg-[#2C2324] text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 font-stat tabular-nums">2</span>
                 <span className="flex items-center gap-1 flex-wrap">
                   Tap the <Share className="w-3.5 h-3.5 text-[#EB5E28] inline" /> <strong>Share</strong> button at bottom center.
                 </span>
               </li>
               <li className="flex items-start space-x-2">
-                <span className="w-4 h-4 rounded-full bg-[#2C2324] text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 font-mono font-bold">3</span>
+                <span className="w-4 h-4 rounded-full bg-[#2C2324] text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 font-stat tabular-nums">3</span>
                 <span className="flex items-center gap-1 flex-wrap">
                   Scroll and tap <PlusSquare className="w-3.5 h-3.5 text-[#EB5E28] inline" /> <strong>Add to Home Screen</strong>.
                 </span>
               </li>
               <li className="flex items-start space-x-2">
-                <span className="w-4 h-4 rounded-full bg-[#2C2324] text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 font-mono font-bold">4</span>
+                <span className="w-4 h-4 rounded-full bg-[#2C2324] text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 font-stat tabular-nums">4</span>
                 <span>Tap <strong>Add</strong>. The DAILY/FIT icon appears on your home screen!</span>
               </li>
             </ol>
@@ -70,29 +70,29 @@ export const InstallModal: React.FC<InstallModalProps> = ({ isOpen, onClose }) =
 
           {/* Android Instructions */}
           <div className="bg-[#EFECE3] p-3.5 rounded-xl border border-[#D8D3C8]">
-            <div className="flex items-center space-x-2 text-xs font-mono font-bold text-[#2C2324] mb-2 uppercase">
+            <div className="flex items-center space-x-2 font-label text-[#2C2324] mb-2">
               <span className="text-sm">🤖</span>
               <span>Android (Google Chrome)</span>
             </div>
-            <ol className="space-y-1.5 text-xs text-[#2C2324]">
+            <ol className="space-y-1.5 font-body-m text-xs text-[#2C2324]">
               <li className="flex items-start space-x-2">
-                <span className="w-4 h-4 rounded-full bg-[#2C2324] text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 font-mono font-bold">1</span>
+                <span className="w-4 h-4 rounded-full bg-[#2C2324] text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 font-stat tabular-nums">1</span>
                 <span>Open this link in <strong>Chrome</strong> on your phone.</span>
               </li>
               <li className="flex items-start space-x-2">
-                <span className="w-4 h-4 rounded-full bg-[#2C2324] text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 font-mono font-bold">2</span>
+                <span className="w-4 h-4 rounded-full bg-[#2C2324] text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 font-stat tabular-nums">2</span>
                 <span className="flex items-center gap-1 flex-wrap">
                   Tap the <MoreVertical className="w-3.5 h-3.5 text-[#EB5E28] inline" /> <strong>three dots</strong> menu (top right).
                 </span>
               </li>
               <li className="flex items-start space-x-2">
-                <span className="w-4 h-4 rounded-full bg-[#2C2324] text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 font-mono font-bold">3</span>
+                <span className="w-4 h-4 rounded-full bg-[#2C2324] text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 font-stat tabular-nums">3</span>
                 <span className="flex items-center gap-1 flex-wrap">
                   Tap <Download className="w-3.5 h-3.5 text-[#EB5E28] inline" /> <strong>Install App</strong> or <strong>Add to Home screen</strong>.
                 </span>
               </li>
               <li className="flex items-start space-x-2">
-                <span className="w-4 h-4 rounded-full bg-[#2C2324] text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 font-mono font-bold">4</span>
+                <span className="w-4 h-4 rounded-full bg-[#2C2324] text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5 font-stat tabular-nums">4</span>
                 <span>Confirm and tap <strong>Install</strong>.</span>
               </li>
             </ol>
@@ -100,7 +100,7 @@ export const InstallModal: React.FC<InstallModalProps> = ({ isOpen, onClose }) =
 
           <button
             onClick={onClose}
-            className="w-full py-2.5 btn-gold-black font-display font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-xs"
+            className="w-full py-2.5 btn-gold-black font-button-l rounded-xl transition-all shadow-xs"
           >
             Got it!
           </button>

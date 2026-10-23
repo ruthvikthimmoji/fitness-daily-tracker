@@ -132,10 +132,10 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
         {/* Specimen Header bar */}
         <div className="flex items-center justify-between pb-3 border-b border-[#D8D3C8]">
           <div className="flex items-center space-x-2">
-            <span className="font-mono text-[10px] bg-[#2C2324] text-white px-2 py-0.5 rounded font-bold uppercase tracking-wider">
+            <span className="font-label text-[10px] bg-[#2C2324] text-white px-2 py-0.5 rounded uppercase tracking-wider">
               {getCatalogCode()}
             </span>
-            <span className="font-mono text-[11px] text-[#766754] flex items-center gap-1">
+            <span className="font-caption text-[#766754] flex items-center gap-1">
               <Calendar className="w-3 h-3 text-[#EB5E28]" />
               {detail.type === 'photo' ? detail.item.date : (detail.item as any).date}
             </span>
@@ -183,7 +183,7 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
               <div className="absolute bottom-2 right-2 flex items-center gap-1.5">
                 <button
                   onClick={handleDownload}
-                  className="px-2.5 py-1 rounded-lg bg-[#2C2324]/85 backdrop-blur-md text-white font-mono text-[10px] font-bold flex items-center gap-1 shadow-md hover:bg-[#2C2324]"
+                  className="px-2.5 py-1 rounded-lg bg-[#2C2324]/85 backdrop-blur-md text-white font-button-s text-xs flex items-center gap-1 shadow-md hover:bg-[#2C2324]"
                 >
                   <Download className="w-3 h-3 text-[#EB5E28]" />
                   <span>Save to Phone</span>
@@ -193,10 +193,10 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
           ) : (
             <div className="w-full h-24 rounded-xl border border-[#D8D3C8] bg-[#EFECE3] flex items-center justify-between px-5">
               <div>
-                <span className="font-mono text-[9px] uppercase tracking-wider text-[#766754] block">
+                <span className="font-label text-[9px] uppercase tracking-wider text-[#766754] block">
                   {getSubtitle()}
                 </span>
-                <span className="font-display font-black text-xl text-[#2C2324] tracking-tight uppercase block mt-0.5">
+                <span className="font-h2 text-[#2C2324] tracking-tight block mt-0.5">
                   {getTitle()}
                 </span>
               </div>
@@ -214,7 +214,7 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
                         : 'other';
                     onOpenPhotoUploader(cat);
                   }}
-                  className="p-2.5 rounded-xl bg-white border border-[#D8D3C8] text-[#2C2324] shadow-xs hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5 text-xs font-mono font-bold"
+                  className="p-2.5 rounded-xl bg-white border border-[#D8D3C8] text-[#2C2324] shadow-xs hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5 font-button-s text-xs"
                   title="Attach Photo to this specimen"
                 >
                   <Camera className="w-4 h-4 text-[#EB5E28]" />
@@ -228,16 +228,16 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
         {/* Specimen Title & Classification */}
         <div className="mt-3 pb-2 border-b border-[#D8D3C8]/60 flex items-baseline justify-between">
           <div>
-            <h1 className="text-xl font-black font-display text-[#2C2324] uppercase tracking-tight">
+            <h1 className="font-h2 text-[#2C2324] tracking-tight">
               {getTitle()}
             </h1>
-            <div className="text-xs font-mono text-[#766754] mt-0.5">
+            <div className="font-caption text-[#766754] mt-0.5">
               {getSubtitle()}
             </div>
           </div>
 
           <div className="text-right">
-            <span className="font-mono text-[10px] text-[#EB5E28] font-bold px-2 py-0.5 bg-[#EFECE3] border border-[#D8D3C8] rounded">
+            <span className="font-badge text-[#EB5E28] px-2 py-0.5 bg-[#EFECE3] border border-[#D8D3C8] rounded">
               VERIFIED LOG
             </span>
           </div>
@@ -245,7 +245,7 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
 
         {/* Technical Data Specification Sheet */}
         <div className="mt-3 space-y-0.5">
-          <div className="text-[10px] font-mono font-bold text-[#EB5E28] uppercase tracking-wider pb-1">
+          <div className="font-label text-[#EB5E28] pb-1">
             // SPECIMEN TECHNICAL SPECS
           </div>
 
@@ -316,10 +316,10 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
         (detail.type === 'work' && detail.item.notes) ||
         (detail.type === 'photo' && detail.item.caption) ? (
           <div className="mt-3.5 p-3 rounded-xl bg-[#EFECE3] border border-[#D8D3C8]">
-            <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#766754] mb-1">
+            <div className="font-label text-[#766754] mb-1">
               Specimen Notes & Observations
             </div>
-            <div className="text-xs text-[#2C2324] font-sans whitespace-pre-wrap">
+            <div className="font-body-m text-[#2C2324] whitespace-pre-wrap">
               {detail.type === 'photo'
                 ? detail.item.caption
                 : (detail.item as any).notes}
@@ -330,7 +330,7 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
         {/* Gallery thumbnails strip if more photos exist for this specimen date */}
         {associatedPhotos.length > 1 && (
           <div className="mt-3.5 pt-3 border-t border-[#D8D3C8]">
-            <div className="text-[10px] font-mono font-bold text-[#766754] uppercase tracking-wider mb-2 flex items-center gap-1">
+            <div className="font-label text-[#766754] mb-2 flex items-center gap-1">
               <Tag className="w-3 h-3 text-[#EB5E28]" />
               <span>Related Specimen Photos ({associatedPhotos.length})</span>
             </div>
@@ -357,7 +357,7 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
           {selectedPhoto && (
             <button
               onClick={handleDownload}
-              className="flex-1 py-2.5 rounded-xl btn-santiago font-display font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-sm"
+              className="flex-1 py-2.5 rounded-xl btn-santiago font-button-l flex items-center justify-center gap-1.5 shadow-sm"
             >
               <Download className="w-4 h-4 stroke-[2.5]" />
               <span>Download to Phone</span>
@@ -366,7 +366,7 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
 
           <button
             onClick={onClose}
-            className={`py-2.5 px-5 rounded-xl btn-cold-foam font-display font-bold text-xs uppercase tracking-wider ${
+            className={`py-2.5 px-5 rounded-xl btn-cold-foam font-button-l ${
               !selectedPhoto ? 'flex-1' : ''
             }`}
           >

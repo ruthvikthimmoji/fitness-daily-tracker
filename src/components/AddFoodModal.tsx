@@ -70,10 +70,10 @@ export const AddFoodModal: React.FC<AddFoodModalProps> = ({
               <UtensilsCrossed className="w-4 h-4 stroke-[2.5]" />
             </div>
             <div>
-              <div className="font-mono text-[9px] uppercase tracking-wider text-[#EB5E28] font-bold">
+              <div className="font-label text-[#EB5E28]">
                 // ARCHIVE // NUTRITION SPECIMEN
               </div>
-              <h2 className="text-sm font-display font-black text-[#2C2324] uppercase tracking-tight">
+              <h2 className="font-h2 text-[#2C2324]">
                 Log Food Item
               </h2>
             </div>
@@ -91,14 +91,14 @@ export const AddFoodModal: React.FC<AddFoodModalProps> = ({
           
           {/* Meal selector */}
           <div>
-            <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#766754] block mb-1">Meal</label>
+            <label className="font-label text-[#766754] block mb-1">Meal</label>
             <div className="grid grid-cols-4 gap-1">
               {meals.map((m) => (
                 <button
                   type="button"
                   key={m}
                   onClick={() => setMeal(m)}
-                  className={`py-1.5 text-xs font-mono font-bold rounded-xl border transition-all ${
+                  className={`py-1.5 font-button-s text-xs rounded-xl border transition-all ${
                     meal === m
                       ? 'bg-[#2C2324] text-white border-[#2C2324] shadow-xs'
                       : 'bg-[#EFECE3] text-[#766754] border-[#D8D3C8] hover:bg-[#E5E0D5]'
@@ -112,92 +112,92 @@ export const AddFoodModal: React.FC<AddFoodModalProps> = ({
 
           {/* Food Item Name */}
           <div>
-            <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#766754] block mb-1">Food / Meal Item *</label>
+            <label className="font-label text-[#766754] block mb-1">Food / Meal Item *</label>
             <input
               type="text"
               required
               placeholder="e.g. Oats with banana"
               value={foodItem}
               onChange={(e) => setFoodItem(e.target.value)}
-              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-2 text-xs text-[#2C2324] font-bold placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
+              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-2 font-body-m text-[#2C2324] font-bold placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
             />
           </div>
 
           {/* Quantity */}
           <div>
-            <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#766754] block mb-1">Portion / Quantity</label>
+            <label className="font-label text-[#766754] block mb-1">Portion / Quantity</label>
             <input
               type="text"
               placeholder="e.g. 1 bowl, 200g, 2 eggs"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
-              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-1.5 text-xs text-[#2C2324] font-bold placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
+              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-1.5 font-body-m text-[#2C2324] font-bold placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
             />
           </div>
 
           {/* Calories and Macros Grid */}
           <div className="grid grid-cols-4 gap-1.5">
             <div>
-              <label className="text-[10px] font-mono font-bold text-[#EB5E28] uppercase block mb-0.5">Calories</label>
+              <label className="font-label text-[#EB5E28] block mb-0.5">Calories</label>
               <input
                 type="number"
                 placeholder="kcal"
                 value={calories}
                 onChange={(e) => setCalories(e.target.value)}
-                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2 py-1.5 text-xs text-[#2C2324] font-mono font-bold focus:outline-none focus:border-[#EB5E28]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#EB5E28]"
               />
             </div>
             <div>
-              <label className="text-[10px] font-mono font-bold text-[#2C2324] uppercase block mb-0.5">Protein (g)</label>
+              <label className="font-label text-[#2C2324] block mb-0.5">Protein (g)</label>
               <input
                 type="number"
                 step="0.5"
                 placeholder="g"
                 value={protein}
                 onChange={(e) => setProtein(e.target.value)}
-                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2 py-1.5 text-xs text-[#2C2324] font-mono font-bold focus:outline-none focus:border-[#EB5E28]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#EB5E28]"
               />
             </div>
             <div>
-              <label className="text-[10px] font-mono font-bold text-[#EB5E28] uppercase block mb-0.5">Carbs (g)</label>
+              <label className="font-label text-[#EB5E28] block mb-0.5">Carbs (g)</label>
               <input
                 type="number"
                 step="0.5"
                 placeholder="g"
                 value={carbs}
                 onChange={(e) => setCarbs(e.target.value)}
-                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2 py-1.5 text-xs text-[#2C2324] font-mono font-bold focus:outline-none focus:border-[#EB5E28]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#EB5E28]"
               />
             </div>
             <div>
-              <label className="text-[10px] font-mono font-bold text-[#766754] uppercase block mb-0.5">Fat (g)</label>
+              <label className="font-label text-[#766754] block mb-0.5">Fat (g)</label>
               <input
                 type="number"
                 step="0.5"
                 placeholder="g"
                 value={fat}
                 onChange={(e) => setFat(e.target.value)}
-                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2 py-1.5 text-xs text-[#2C2324] font-mono font-bold focus:outline-none focus:border-[#EB5E28]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#EB5E28]"
               />
             </div>
           </div>
 
           {/* Notes */}
           <div>
-            <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#766754] block mb-1">Notes (optional)</label>
+            <label className="font-label text-[#766754] block mb-1">Notes (optional)</label>
             <input
               type="text"
               placeholder="e.g. post-workout breakfast"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-1.5 text-xs text-[#2C2324] font-sans placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
+              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-1.5 font-body-m text-[#2C2324] placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
             />
           </div>
 
           {/* Submit */}
           <button
             type="submit"
-            className="w-full mt-2 py-3 btn-santiago active:scale-95 text-white font-display font-bold text-xs uppercase tracking-wider rounded-xl shadow-xs transition-all flex items-center justify-center space-x-1.5"
+            className="w-full mt-2 py-3 btn-santiago active:scale-95 text-white font-button-l rounded-xl shadow-xs transition-all flex items-center justify-center space-x-1.5"
           >
             <Plus className="w-4 h-4 stroke-[3]" />
             <span>Add to Food Log Sheet</span>

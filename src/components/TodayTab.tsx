@@ -132,10 +132,10 @@ export const TodayTab: React.FC<TodayTabProps> = ({
         {/* Top Catalog & Category Header */}
         <div className="flex items-center justify-between pb-3 border-b border-[#D8D3C8]/70 mb-3">
           <div className="flex items-center space-x-2">
-            <span className="font-mono text-[9px] bg-[#2C2324] text-white px-2 py-0.5 rounded font-bold uppercase tracking-wider">
+            <span className="font-label text-[10px] bg-[#2C2324] text-white px-2 py-0.5 rounded">
               SPECIMEN // {dailyLog.date}
             </span>
-            <span className="font-mono text-[10px] text-[#EB5E28] font-bold uppercase">
+            <span className="font-badge text-[11px] text-[#EB5E28] uppercase">
               {dailyLog.day}
             </span>
           </div>
@@ -151,7 +151,7 @@ export const TodayTab: React.FC<TodayTabProps> = ({
 
             <button
               onClick={() => onSelectDetail({ type: 'daily', item: dailyLog })}
-              className="font-mono text-[10px] text-[#EB5E28] hover:underline font-bold flex items-center gap-0.5"
+              className="font-button-s text-[11px] text-[#EB5E28] hover:underline flex items-center gap-0.5"
             >
               <span>INSPECT</span>
               <ChevronRight className="w-3.5 h-3.5" />
@@ -162,16 +162,16 @@ export const TodayTab: React.FC<TodayTabProps> = ({
         {/* Score & Subtitle */}
         <div className="flex items-baseline justify-between mb-3">
           <div>
-            <div className="text-xl font-display font-black text-[#2C2324] uppercase tracking-tight">
+            <div className="font-h2 text-[#2C2324] uppercase tracking-tight">
               {dailyLog.dailyScore > 0 ? `${dailyLog.dailyScore}% Daily Score` : 'Log Daily Specimen'}
             </div>
-            <div className="text-xs font-sans text-[#766754] mt-0.5">
+            <div className="font-body-s text-[#766754] mt-0.5">
               {dailyLog.dailyScore >= 80 ? 'Consistency over intensity. On track.' : 'Show up daily. Progress, not perfection.'}
             </div>
           </div>
 
           <div className="px-3 py-1.5 rounded-xl bg-[#EFECE3] border border-[#D8D3C8] text-center">
-            <span className="text-lg font-display font-black text-[#2C2324]">
+            <span className="font-score-m text-[#2C2324] tabular-nums">
               {dailyLog.dailyScore > 0 ? `${dailyLog.dailyScore}%` : '--'}
             </span>
           </div>
@@ -203,21 +203,21 @@ export const TodayTab: React.FC<TodayTabProps> = ({
         </div>
 
         {/* Macros Breakdown pill bar */}
-        <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-[#D8D3C8]/60 text-xs font-mono">
+        <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-[#D8D3C8]/60 text-xs">
           <div className="bg-[#EFECE3] p-2 rounded-xl border border-[#D8D3C8]">
-            <span className="text-[10px] text-[#2E7D32] uppercase font-bold block">Protein</span>
-            <strong className="text-[#2C2324] text-sm font-display">{dailyLog.protein}g</strong>
-            <span className="text-[9px] text-[#766754] block">/{settings.dailyProteinTarget}g</span>
+            <span className="font-label text-[10px] text-[#2E7D32] block">Protein</span>
+            <strong className="text-[#2C2324] font-score-m text-base tabular-nums block">{dailyLog.protein}g</strong>
+            <span className="font-caption text-[#766754] tabular-nums block">/{settings.dailyProteinTarget}g</span>
           </div>
           <div className="bg-[#EFECE3] p-2 rounded-xl border border-[#D8D3C8]">
-            <span className="text-[10px] text-[#EB5E28] uppercase font-bold block">Carbs</span>
-            <strong className="text-[#2C2324] text-sm font-display">{dailyLog.carbs}g</strong>
-            <span className="text-[9px] text-[#766754] block">fuel</span>
+            <span className="font-label text-[10px] text-[#EB5E28] block">Carbs</span>
+            <strong className="text-[#2C2324] font-score-m text-base tabular-nums block">{dailyLog.carbs}g</strong>
+            <span className="font-caption text-[#766754] block">fuel</span>
           </div>
           <div className="bg-[#EFECE3] p-2 rounded-xl border border-[#D8D3C8]">
-            <span className="text-[10px] text-[#766754] uppercase font-bold block">Fats</span>
-            <strong className="text-[#2C2324] text-sm font-display">{dailyLog.fat}g</strong>
-            <span className="text-[9px] text-[#766754] block">lipids</span>
+            <span className="font-label text-[10px] text-[#766754] block">Fats</span>
+            <strong className="text-[#2C2324] font-score-m text-base tabular-nums block">{dailyLog.fat}g</strong>
+            <span className="font-caption text-[#766754] block">lipids</span>
           </div>
         </div>
       </div>
@@ -239,15 +239,15 @@ export const TodayTab: React.FC<TodayTabProps> = ({
               <Droplets className="w-4 h-4 stroke-[2.5]" />
             </div>
             <div>
-              <div className="text-sm font-display font-bold text-[#2C2324] uppercase">Hydration</div>
-              <div className="text-[11px] font-mono text-[#766754]">
+              <div className="font-h3 text-base text-[#2C2324] uppercase">Hydration</div>
+              <div className="font-caption text-[#766754]">
                 {waterRemaining > 0 ? `${waterVal} L Drank • ${waterRemaining} L to go` : `Target reached (${waterVal} L)`}
               </div>
             </div>
           </div>
           <div className="text-right">
-            <span className="text-2xl font-display font-black text-[#2C2324]">{waterVal}</span>
-            <span className="font-mono text-xs text-[#766754]"> / {waterTarget} L</span>
+            <span className="font-score-m text-2xl text-[#2C2324] tabular-nums">{waterVal}</span>
+            <span className="font-caption text-[#766754] tabular-nums"> / {waterTarget} L</span>
           </div>
         </div>
 
@@ -263,26 +263,26 @@ export const TodayTab: React.FC<TodayTabProps> = ({
         <div className="flex items-center gap-2">
           <button
             onClick={() => handleAddWater(-0.25)}
-            className="p-2 btn-3d-foam rounded-xl font-bold transition-all"
+            className="p-2 btn-3d-foam rounded-xl font-button-s transition-all"
             title="Subtract 250ml"
           >
             <Minus className="w-3.5 h-3.5 text-[#766754]" />
           </button>
           <button
             onClick={() => handleAddWater(0.25)}
-            className="flex-1 py-2 btn-3d-foam rounded-xl font-mono font-bold text-xs flex items-center justify-center gap-1 text-[#2C2324]"
+            className="flex-1 py-2 btn-3d-foam rounded-xl font-button-s text-xs flex items-center justify-center gap-1 text-[#2C2324]"
           >
             <Plus className="w-3 h-3 text-[#EB5E28]" /> 250ml
           </button>
           <button
             onClick={() => handleAddWater(0.5)}
-            className="flex-1 py-2 btn-3d-foam rounded-xl font-mono font-bold text-xs flex items-center justify-center gap-1 text-[#2C2324]"
+            className="flex-1 py-2 btn-3d-foam rounded-xl font-button-s text-xs flex items-center justify-center gap-1 text-[#2C2324]"
           >
             <Plus className="w-3 h-3 text-[#EB5E28]" /> 500ml
           </button>
           <button
             onClick={() => handleAddWater(1.0)}
-            className="flex-1 py-2 btn-3d-santiago rounded-xl font-mono font-bold text-xs flex items-center justify-center gap-1"
+            className="flex-1 py-2 btn-3d-santiago rounded-xl font-button-s text-xs flex items-center justify-center gap-1"
           >
             <Plus className="w-3 h-3 text-white" /> 1.0L
           </button>
@@ -297,15 +297,15 @@ export const TodayTab: React.FC<TodayTabProps> = ({
               <Footprints className="w-4 h-4 stroke-[2.5]" />
             </div>
             <div>
-              <div className="text-sm font-display font-bold text-[#2C2324] uppercase">Daily Movement</div>
-              <div className="text-[11px] font-mono text-[#766754]">
+              <div className="font-h3 text-base text-[#2C2324] uppercase">Daily Movement</div>
+              <div className="font-caption text-[#766754]">
                 {stepsRemaining > 0 ? `${stepVal.toLocaleString()} hit • ${stepsRemaining.toLocaleString()} to goal` : `Goal Reached!`}
               </div>
             </div>
           </div>
           <div className="text-right">
-            <span className="text-2xl font-display font-black text-[#EB5E28]">{stepVal.toLocaleString()}</span>
-            <span className="font-mono text-xs text-[#766754]"> / {stepTarget.toLocaleString()}</span>
+            <span className="font-score-m text-2xl text-[#EB5E28] tabular-nums">{stepVal.toLocaleString()}</span>
+            <span className="font-caption text-[#766754] tabular-nums"> / {stepTarget.toLocaleString()}</span>
           </div>
         </div>
 
@@ -321,19 +321,19 @@ export const TodayTab: React.FC<TodayTabProps> = ({
         <div className="flex items-center gap-2 mb-2.5">
           <button
             onClick={() => handleAddSteps(1000)}
-            className="flex-1 py-2 btn-3d-foam rounded-xl font-mono font-bold text-xs text-[#2C2324]"
+            className="flex-1 py-2 btn-3d-foam rounded-xl font-button-s text-xs text-[#2C2324]"
           >
             +1,000
           </button>
           <button
             onClick={() => handleAddSteps(2500)}
-            className="flex-1 py-2 btn-3d-foam rounded-xl font-mono font-bold text-xs text-[#2C2324]"
+            className="flex-1 py-2 btn-3d-foam rounded-xl font-button-s text-xs text-[#2C2324]"
           >
             +2,500
           </button>
           <button
             onClick={() => handleAddSteps(5000)}
-            className="flex-1 py-2 btn-3d-santiago rounded-xl font-mono font-bold text-xs"
+            className="flex-1 py-2 btn-3d-santiago rounded-xl font-button-s text-xs"
           >
             +5,000
           </button>
@@ -346,11 +346,11 @@ export const TodayTab: React.FC<TodayTabProps> = ({
             placeholder="Type exact steps..."
             value={stepsInput}
             onChange={(e) => setStepsInput(e.target.value)}
-            className="flex-1 bg-white border border-[#D8D3C8] rounded-xl px-3 py-2 text-xs font-mono font-bold text-[#2C2324] placeholder-[#766754] focus:border-[#EB5E28]"
+            className="flex-1 bg-white border border-[#D8D3C8] rounded-xl px-3 py-2 font-stat text-xs font-bold text-[#2C2324] placeholder-[#766754] focus:border-[#EB5E28] tabular-nums"
           />
           <button
             onClick={handleSaveStepsInput}
-            className="px-4 py-2 btn-gold-black font-display font-bold text-xs uppercase tracking-wider rounded-xl"
+            className="px-4 py-2 btn-gold-black font-button-s uppercase tracking-wider rounded-xl"
           >
             Set
           </button>
@@ -367,7 +367,7 @@ export const TodayTab: React.FC<TodayTabProps> = ({
               <div className="p-1.5 rounded-lg bg-[#EFECE3] text-[#2C2324] border border-[#D8D3C8]">
                 <Scale className="w-3.5 h-3.5 stroke-[2.5]" />
               </div>
-              <div className="text-xs font-display font-bold text-[#2C2324] uppercase">Weight (kg)</div>
+              <div className="font-h3 text-xs text-[#2C2324] uppercase">Weight (kg)</div>
             </div>
             
             <button
@@ -386,7 +386,7 @@ export const TodayTab: React.FC<TodayTabProps> = ({
               placeholder="78.0"
               value={weightInput}
               onChange={(e) => setWeightInput(e.target.value)}
-              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 text-base font-display font-black text-[#2C2324] placeholder-[#766754] focus:border-[#EB5E28]"
+              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 font-stat font-bold text-base text-[#2C2324] placeholder-[#766754] focus:border-[#EB5E28] tabular-nums"
             />
             <button
               onClick={handleSaveWeight}
@@ -396,7 +396,7 @@ export const TodayTab: React.FC<TodayTabProps> = ({
               <Check className="w-4 h-4 stroke-[3]" />
             </button>
           </div>
-          <div className="text-[10px] font-mono text-[#766754]">
+          <div className="font-caption text-[#766754] tabular-nums">
             Goal: {settings.goalWeightKg} kg
           </div>
         </div>
@@ -407,12 +407,12 @@ export const TodayTab: React.FC<TodayTabProps> = ({
             <div className="p-1.5 rounded-lg bg-[#EFECE3] text-[#766754] border border-[#D8D3C8]">
               <Moon className="w-3.5 h-3.5 stroke-[2.5]" />
             </div>
-            <div className="text-xs font-display font-bold text-[#2C2324] uppercase">Sleep (hrs)</div>
+            <div className="font-h3 text-xs text-[#2C2324] uppercase">Sleep (hrs)</div>
           </div>
 
           <div className="flex items-center justify-between my-2">
-            <span className="text-xl font-display font-black text-[#2C2324]">{dailyLog.sleep || 0}</span>
-            <span className="font-mono text-[10px] text-[#766754]">/ {settings.dailySleepTarget}h target</span>
+            <span className="font-score-m text-xl text-[#2C2324] tabular-nums">{dailyLog.sleep || 0}</span>
+            <span className="font-caption text-[#766754] tabular-nums">/ {settings.dailySleepTarget}h target</span>
           </div>
 
           <div className="flex gap-1">
@@ -420,7 +420,7 @@ export const TodayTab: React.FC<TodayTabProps> = ({
               <button
                 key={h}
                 onClick={() => handleSetSleep(h)}
-                className={`flex-1 py-1 text-[11px] font-mono font-bold rounded-lg border transition-all ${
+                className={`flex-1 py-1 font-stat text-[11px] font-bold rounded-lg border transition-all tabular-nums ${
                   dailyLog.sleep === h
                     ? 'bg-[#2C2324] text-white border-[#2C2324]'
                     : 'bg-[#EFECE3] text-[#766754] border-[#D8D3C8] hover:bg-[#e6e2d7]'

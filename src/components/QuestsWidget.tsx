@@ -52,23 +52,23 @@ export const QuestsWidget: React.FC<QuestsWidgetProps> = ({
       {/* Widget Header with Duo-style Quests pill */}
       <div className="flex items-center justify-between pb-3 border-b border-[#D8D3C8]/60 mb-3">
         <div className="flex items-center space-x-2">
-          <div className="w-7 h-7 rounded-lg bg-[#EFECE3] text-[#EB5E28] border border-[#D8D3C8] flex items-center justify-center font-black text-xs">
+          <div className="w-7 h-7 rounded-lg bg-[#EFECE3] text-[#EB5E28] border border-[#D8D3C8] flex items-center justify-center font-display font-bold text-xs">
             ⚡
           </div>
           <div>
-            <div className="text-xs font-display font-black text-[#2C2324] uppercase tracking-wider flex items-center gap-1.5">
+            <div className="font-h3 text-xs text-[#2C2324] uppercase tracking-wide flex items-center gap-1.5">
               <span>Daily Missions</span>
-              <span className="font-mono text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-[#EFECE3] text-[#EB5E28] border border-[#D8D3C8]">
+              <span className="font-badge text-[10px] px-1.5 py-0.2 rounded-full bg-[#EFECE3] text-[#EB5E28] border border-[#D8D3C8] tabular-nums">
                 {completedCount}/{quests.length} Done
               </span>
             </div>
-            <div className="text-[10px] font-mono text-[#766754]">Crush missions to earn XP and open the Mystery Chest</div>
+            <div className="font-body-s text-[11px] text-[#766754]">Crush missions to earn XP and open the Mystery Chest</div>
           </div>
         </div>
 
         <button
           onClick={onOpenBadgesModal}
-          className="text-xs font-mono font-bold text-[#EB5E28] hover:text-[#2C2324] flex items-center gap-0.5 uppercase"
+          className="font-button-s text-xs text-[#EB5E28] hover:text-[#2C2324] flex items-center gap-0.5 uppercase"
         >
           <span>Badges</span>
           <ChevronRight className="w-3 h-3" />
@@ -95,8 +95,8 @@ export const QuestsWidget: React.FC<QuestsWidgetProps> = ({
                     {getQuestIcon(quest.icon)}
                   </div>
                   <div>
-                    <div className="text-xs font-display font-bold text-[#2C2324] uppercase leading-tight">{quest.title}</div>
-                    <div className="text-[10px] font-mono text-[#766754] mt-0.5">
+                    <div className="font-title text-xs text-[#2C2324] leading-tight">{quest.title}</div>
+                    <div className="font-caption text-[#766754] mt-0.5 tabular-nums">
                       {quest.current} / {quest.target} {quest.unit}
                     </div>
                   </div>
@@ -105,19 +105,19 @@ export const QuestsWidget: React.FC<QuestsWidgetProps> = ({
                 {/* Claim or XP Badge */}
                 {quest.completed ? (
                   quest.claimed ? (
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#2C2324] text-white font-mono font-bold text-[10px]">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#2C2324] text-white font-badge text-[10px]">
                       <Check className="w-3 h-3 stroke-[3]" /> Claimed
                     </span>
                   ) : (
                     <button
                       onClick={() => onClaimQuest(quest.id)}
-                      className="px-2.5 py-1 rounded-lg btn-3d-santiago font-mono font-black text-[10px] uppercase tracking-wide flex items-center gap-1 shadow-sm"
+                      className="px-2.5 py-1 rounded-lg btn-3d-santiago font-button-s text-[11px] uppercase tracking-wide flex items-center gap-1 shadow-sm"
                     >
                       <span>Claim +{quest.xp} XP</span>
                     </button>
                   )
                 ) : (
-                  <span className="font-mono text-[10px] font-bold text-[#766754] bg-white px-2 py-0.5 rounded-md border border-[#D8D3C8]">
+                  <span className="font-badge text-[11px] text-[#766754] bg-white px-2 py-0.5 rounded-md border border-[#D8D3C8] tabular-nums">
                     +{quest.xp} XP
                   </span>
                 )}
@@ -150,10 +150,10 @@ export const QuestsWidget: React.FC<QuestsWidgetProps> = ({
               {chestClaimed ? '✨' : '🎁'}
             </div>
             <div>
-              <div className="text-xs font-display font-black text-[#2C2324] uppercase">
+              <div className="font-h3 text-xs text-[#2C2324] uppercase">
                 {chestClaimed ? 'Daily Chest Unlocked!' : 'Daily Mystery Chest'}
               </div>
-              <div className="text-[10px] font-sans text-[#766754]">
+              <div className="font-body-s text-[11px] text-[#766754]">
                 {chestClaimed
                   ? 'All 3 missions crushed today! Good work.'
                   : allCompleted
@@ -165,19 +165,19 @@ export const QuestsWidget: React.FC<QuestsWidgetProps> = ({
 
           <div>
             {chestClaimed ? (
-              <span className="font-mono text-[10px] font-bold text-[#2C2324] bg-white px-2 py-1 rounded-md border border-[#D8D3C8]">
+              <span className="font-badge text-[10px] text-[#2C2324] bg-white px-2 py-1 rounded-md border border-[#D8D3C8]">
                 ✓ Opened
               </span>
             ) : allCompleted ? (
               <button
                 onClick={onClaimChest}
-                className="px-3 py-1.5 btn-3d-santiago font-display font-bold text-xs uppercase tracking-wider rounded-xl flex items-center gap-1 shadow-sm"
+                className="px-3 py-1.5 btn-3d-santiago font-button-s text-xs uppercase tracking-wider rounded-xl flex items-center gap-1 shadow-sm"
               >
                 <Gift className="w-3.5 h-3.5" />
                 <span>Open (+50 XP)</span>
               </button>
             ) : (
-              <span className="font-mono text-[9px] font-bold text-[#766754] bg-white px-2 py-1 rounded-md border border-[#D8D3C8]">
+              <span className="font-badge text-[10px] text-[#766754] bg-white px-2 py-1 rounded-md border border-[#D8D3C8]">
                 LOCKED
               </span>
             )}

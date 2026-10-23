@@ -46,17 +46,17 @@ export const WorkTab: React.FC<WorkTabProps> = ({
       <div className="specimen-card p-4 border border-[#D8D3C8]">
         <div className="flex items-center justify-between pb-3 border-b border-[#D8D3C8]/70">
           <div>
-            <div className="font-mono text-[10px] uppercase tracking-wider text-[#EB5E28] font-bold">
+            <div className="font-label text-[10px] text-[#EB5E28]">
               // ARCHIVE // FOCUS & DAILY OUTPUT
             </div>
-            <div className="text-xl font-display font-black text-[#2C2324] uppercase tracking-tight mt-0.5">
-              {totalHours} <span className="font-mono text-xs font-normal text-[#766754]">HOURS LOGGED</span>
+            <div className="font-h2 text-[#2C2324] uppercase tracking-tight mt-0.5">
+              <span className="font-score-m text-2xl tabular-nums">{totalHours}</span> <span className="font-caption font-normal text-[#766754]">HOURS LOGGED</span>
             </div>
           </div>
 
           <button
             onClick={() => onOpenAddModal(activeCategory !== 'All' ? activeCategory : 'Work')}
-            className="flex items-center gap-1.5 px-3.5 py-2 btn-santiago text-white font-display font-bold text-xs uppercase tracking-wider rounded-xl shadow-xs"
+            className="flex items-center gap-1.5 px-3.5 py-2 btn-santiago text-white font-button-s text-xs uppercase tracking-wider rounded-xl shadow-xs"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>Add Task</span>
@@ -66,21 +66,21 @@ export const WorkTab: React.FC<WorkTabProps> = ({
         {/* Quick Stats Grid */}
         <div className="grid grid-cols-2 gap-2.5 pt-3">
           <div className="bg-[#EFECE3] rounded-xl p-3 border border-[#D8D3C8]">
-            <div className="flex items-center space-x-1.5 font-mono text-[9px] uppercase tracking-wider text-[#766754] mb-1">
+            <div className="flex items-center space-x-1.5 font-label text-[9px] text-[#766754] mb-1">
               <Clock className="w-3.5 h-3.5 text-[#2C2324]" />
               <span>TIME INVESTED</span>
             </div>
-            <div className="text-xl font-display font-black text-[#2C2324]">{totalHours} hrs</div>
-            <div className="font-mono text-[9px] text-[#766754]">Syncs to Sheet Column T</div>
+            <div className="font-score-m text-xl text-[#2C2324] tabular-nums">{totalHours} hrs</div>
+            <div className="font-caption text-[#766754]">Syncs to Sheet Column T</div>
           </div>
 
           <div className="bg-[#EFECE3] rounded-xl p-3 border border-[#D8D3C8]">
-            <div className="flex items-center space-x-1.5 font-mono text-[9px] uppercase tracking-wider text-[#766754] mb-1">
+            <div className="flex items-center space-x-1.5 font-label text-[9px] text-[#766754] mb-1">
               <CheckCircle2 className="w-3.5 h-3.5 text-[#EB5E28]" />
               <span>TASKS FINISHED</span>
             </div>
-            <div className="text-xl font-display font-black text-[#EB5E28]">{doneCount} / {workItems.length}</div>
-            <div className="font-mono text-[9px] text-[#766754]">Completed focus items</div>
+            <div className="font-score-m text-xl text-[#EB5E28] tabular-nums">{doneCount} / {workItems.length}</div>
+            <div className="font-caption text-[#766754]">Completed focus items</div>
           </div>
         </div>
       </div>
@@ -91,7 +91,7 @@ export const WorkTab: React.FC<WorkTabProps> = ({
           <button
             key={cat}
             onClick={() => setActiveCategory(cat)}
-            className={`px-3 py-1.5 text-xs font-mono uppercase tracking-wider font-bold rounded-xl whitespace-nowrap transition-all active:scale-95 ${
+            className={`px-3 py-1.5 font-button-s text-xs uppercase tracking-wider rounded-xl whitespace-nowrap transition-all active:scale-95 ${
               activeCategory === cat
                 ? 'bg-[#2C2324] text-white shadow-xs'
                 : 'bg-white text-[#766754] hover:text-[#2C2324] border border-[#D8D3C8]'

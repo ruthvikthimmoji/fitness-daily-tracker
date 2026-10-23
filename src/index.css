@@ -1,10 +1,21 @@
 @import "tailwindcss";
 
+@theme {
+  --font-display: 'Fredoka', 'SF Pro Rounded', system-ui, -apple-system, sans-serif;
+  --font-body: 'Nunito', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Nunito', system-ui, -apple-system, sans-serif;
+  --font-number: 'Rubik', monospace, sans-serif;
+  --font-mono: 'Rubik', monospace, sans-serif;
+}
+
 @layer base {
   :root {
-    --font-sans: 'Inter', -apple-system, sans-serif;
-    --font-display: 'Space Grotesk', 'Inter', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    /* TYPOGRAPHY SYSTEM (Gamified Mobile App Design Spec v1.0) */
+    --font-display: 'Fredoka', 'SF Pro Rounded', system-ui, -apple-system, sans-serif;
+    --font-body: 'Nunito', system-ui, -apple-system, sans-serif;
+    --font-sans: 'Nunito', system-ui, -apple-system, sans-serif;
+    --font-number: 'Rubik', monospace, sans-serif;
+    --font-mono: 'Rubik', monospace, sans-serif;
 
     /* DIGITAL WARM NEUTRALS PALETTE (Exact Swatches) */
     --color-santiago: #EB5E28;      /* Santiago Orange */
@@ -18,21 +29,29 @@
   }
 
   body {
-    font-family: var(--font-sans);
+    font-family: var(--font-body);
     -webkit-tap-highlight-color: transparent;
     user-select: none;
     -webkit-user-select: none;
     background-color: var(--color-cold-foam);
     color: var(--color-gold-black);
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.1px;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
     color: var(--color-gold-black);
   }
 
-  /* Editorial Inputs */
+  button {
+    font-family: var(--font-display);
+    font-weight: 600;
+  }
+
+  /* Form & Interactive Inputs */
   input[type="text"],
   input[type="number"],
   input[type="date"],
@@ -42,10 +61,12 @@
     user-select: text;
     -webkit-user-select: text;
     background-color: #FFFFFF;
-    color: #2C2324;
+    color: var(--color-gold-black);
     border: 1px solid var(--color-border);
-    font-family: var(--font-sans);
+    font-family: var(--font-body);
     font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
   }
 
   input[type="text"]:focus,
@@ -58,6 +79,173 @@
     border-color: var(--color-santiago);
     box-shadow: 0 0 0 2px rgba(235, 94, 40, 0.2);
   }
+}
+
+/* ==========================================================================
+   TYPOGRAPHY SPEC V1.0 TOKENS (Fredoka + Nunito + Rubik)
+   ========================================================================== */
+
+/* Headings & Display (Fredoka) */
+.font-display-xl {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 46px;
+  letter-spacing: 0;
+}
+
+.font-display-l {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 38px;
+  letter-spacing: 0;
+}
+
+.font-h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 34px;
+  letter-spacing: 0;
+}
+
+.font-h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 30px;
+  letter-spacing: 0;
+}
+
+.font-h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 26px;
+  letter-spacing: 0;
+}
+
+/* Body & UI Text (Nunito) */
+.font-title {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: 0;
+}
+
+.font-body-l {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.1px;
+}
+
+.font-body-m {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+}
+
+.font-body-s {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.2px;
+}
+
+/* Buttons (Fredoka) */
+.font-button-l {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0.3px;
+}
+
+.font-button-s {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: 0.3px;
+}
+
+/* Meta / Tags / Badges (Nunito & Fredoka) */
+.font-label {
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.font-caption {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 14px;
+  letter-spacing: 0.2px;
+}
+
+.font-badge {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 14px;
+  letter-spacing: 0.4px;
+}
+
+/* Numbers (Rubik with Tabular Figures) */
+.font-score-xl {
+  font-family: var(--font-number);
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 52px;
+  letter-spacing: -0.5px;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+.font-score-m {
+  font-family: var(--font-number);
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 28px;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+.font-timer {
+  font-family: var(--font-number);
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 36px;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+.font-stat {
+  font-family: var(--font-number);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
 }
 
 .safe-top {
@@ -92,11 +280,14 @@
   transform: scale(0.99);
 }
 
-/* Buttons */
+/* Buttons (Fredoka SemiBold 600) */
 .btn-santiago {
   background-color: #EB5E28;
   color: #FFFFFF;
   border: 1px solid #D14B17;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.3px;
   transition: all 0.12s ease;
 }
 .btn-santiago:active {
@@ -108,6 +299,9 @@
   background-color: #2C2324;
   color: #FFFFFF;
   border: 1px solid #161112;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.3px;
   transition: all 0.12s ease;
 }
 .btn-gold-black:active {
@@ -119,6 +313,9 @@
   background-color: #EFECE3;
   color: #2C2324;
   border: 1px solid #D8D3C8;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.3px;
   transition: all 0.12s ease;
 }
 .btn-cold-foam:active {
@@ -131,6 +328,9 @@
   background-color: #EB5E28;
   color: #FFFFFF;
   border-bottom: 3px solid #B83C0A;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.3px;
   transition: all 0.08s ease;
 }
 .btn-3d-santiago:active {
@@ -142,6 +342,9 @@
   background-color: #2C2324;
   color: #FFFFFF;
   border-bottom: 3px solid #161112;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.3px;
   transition: all 0.08s ease;
 }
 .btn-3d-gold:active {
@@ -154,6 +357,9 @@
   color: #2C2324;
   border: 1px solid #D8D3C8;
   border-bottom: 3px solid #B8AEA0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.3px;
   transition: all 0.08s ease;
 }
 .btn-3d-foam:active {

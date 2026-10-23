@@ -52,8 +52,8 @@ export const BottomNav: React.FC<BottomNavProps> = ({ currentTab, onSelectTab })
 
               {/* Label */}
               <span
-                className={`text-[9px] mt-0.5 font-mono tracking-tight transition-colors duration-150 ${
-                  isActive ? 'text-white font-bold' : 'text-[#EFECE3]/60'
+                className={`text-[10px] mt-0.5 font-display tracking-tight transition-colors duration-150 ${
+                  isActive ? 'text-white font-bold' : 'text-[#EFECE3]/60 font-medium'
                 }`}
               >
                 {tab.label}

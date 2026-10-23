@@ -66,19 +66,19 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
       <div className="specimen-card p-4 border border-[#D8D3C8]">
         <div className="flex items-center justify-between mb-3 pb-3 border-b border-[#D8D3C8]/70">
           <div>
-            <div className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#EB5E28]">
+            <div className="font-label text-[10px] text-[#EB5E28]">
               // ARCHIVE // BODY TRANSFORMATION
             </div>
-            <div className="text-3xl font-display font-black text-[#2C2324] mt-0.5">
-              {currentWeight} <span className="text-sm font-mono font-normal text-[#766754]">KG</span>
+            <div className="font-score-xl text-[#2C2324] mt-0.5 tabular-nums">
+              {currentWeight} <span className="font-caption text-[#766754]">KG</span>
             </div>
-            <div className="text-xs font-mono text-[#766754] mt-0.5">
+            <div className="font-caption text-[#766754] mt-0.5 tabular-nums">
               Starting: {startWeight} kg • Goal: {goalWeight} kg
             </div>
           </div>
           <div className="text-right">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-[#766754] block">Goal Progress</span>
-            <div className="px-2.5 py-1 rounded-xl bg-[#2C2324] text-white font-mono font-black text-sm shadow-xs">
+            <span className="font-label text-[10px] text-[#766754] block">Goal Progress</span>
+            <div className="px-2.5 py-1 rounded-xl bg-[#2C2324] text-white font-score-m text-sm shadow-xs tabular-nums">
               {weightProgressPct}%
             </div>
           </div>
@@ -86,7 +86,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
 
         {/* Weight Progress Bar */}
         <div className="mb-4">
-          <div className="flex justify-between text-xs text-[#766754] mb-1 font-mono">
+          <div className="flex justify-between font-caption text-[#766754] mb-1 tabular-nums">
             <span>{startWeight} kg</span>
             <span className="text-[#EB5E28] font-bold">{lostSoFar > 0 ? `${lostSoFar.toFixed(1)} kg progress` : '0 kg change'}</span>
             <span>{goalWeight} kg target</span>
@@ -102,42 +102,42 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
         {/* 4 Metric Cards */}
         <div className="grid grid-cols-2 gap-2">
           <div className="bg-[#EFECE3] rounded-xl p-2.5 border border-[#D8D3C8]">
-            <div className="flex items-center space-x-1.5 text-[#766754] text-xs font-mono font-bold mb-1 uppercase">
+            <div className="flex items-center space-x-1.5 text-[#766754] font-label text-[9px] mb-1">
               <Scale className="w-3.5 h-3.5 text-[#EB5E28]" />
               <span>Change so far</span>
             </div>
-            <div className="text-xl font-display font-black text-[#2C2324]">
+            <div className="font-score-m text-xl text-[#2C2324] tabular-nums">
               {kpis.changeSoFar >= 0 ? `-${kpis.changeSoFar}` : `+${Math.abs(kpis.changeSoFar)}`} kg
             </div>
-            <div className="text-[10px] font-mono text-[#766754]">Since tracking start</div>
+            <div className="font-caption text-[#766754]">Since tracking start</div>
           </div>
 
           <div className="bg-[#EFECE3] rounded-xl p-2.5 border border-[#D8D3C8]">
-            <div className="flex items-center space-x-1.5 text-[#766754] text-xs font-mono font-bold mb-1 uppercase">
+            <div className="flex items-center space-x-1.5 text-[#766754] font-label text-[9px] mb-1">
               <Target className="w-3.5 h-3.5 text-[#EB5E28]" />
               <span>Remaining</span>
             </div>
-            <div className="text-xl font-display font-black text-[#2C2324]">
+            <div className="font-score-m text-xl text-[#2C2324] tabular-nums">
               {kpis.remainingToGoal > 0 ? `+${kpis.remainingToGoal}` : kpis.remainingToGoal} kg
             </div>
-            <div className="text-[10px] font-mono text-[#766754]">To goal target</div>
+            <div className="font-caption text-[#766754]">To goal target</div>
           </div>
 
           <div className="bg-[#EFECE3] rounded-xl p-2.5 border border-[#D8D3C8]">
-            <div className="flex items-center space-x-1.5 text-[#766754] text-xs font-mono font-bold mb-1 uppercase">
+            <div className="flex items-center space-x-1.5 text-[#766754] font-label text-[9px] mb-1">
               <Activity className="w-3.5 h-3.5 text-[#2C2324]" />
               <span>BMI</span>
             </div>
-            <div className="text-xl font-display font-black text-[#2C2324]">{kpis.bmi || 27.0}</div>
-            <div className="text-[10px] font-mono text-[#766754]">Height: {settings.heightCm} cm</div>
+            <div className="font-score-m text-xl text-[#2C2324] tabular-nums">{kpis.bmi || 27.0}</div>
+            <div className="font-caption text-[#766754]">Height: {settings.heightCm} cm</div>
           </div>
 
           <div className="bg-[#EFECE3] rounded-xl p-2.5 border border-[#D8D3C8]">
-            <div className="flex items-center space-x-1.5 text-[#766754] text-xs font-mono font-bold mb-1 uppercase">
+            <div className="flex items-center space-x-1.5 text-[#766754] font-label text-[9px] mb-1">
               <Award className="w-3.5 h-3.5 text-[#EB5E28]" />
               <span>Daily Target</span>
             </div>
-            <div className="text-xl font-display font-black text-[#2C2324]">{settings.dailyCalorieTarget}</div>
+            <div className="font-score-m text-xl text-[#2C2324] tabular-nums">{settings.dailyCalorieTarget}</div>
             <div className="text-[10px] font-mono text-[#766754]">kcal target</div>
           </div>
         </div>

@@ -95,10 +95,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               <SettingsIcon className="w-4 h-4 stroke-[2.5]" />
             </div>
             <div>
-              <div className="font-mono text-[9px] uppercase tracking-wider text-[#EB5E28] font-bold">
+              <div className="font-label text-[#EB5E28]">
                 // SYSTEM // CONFIG & SYNC
               </div>
-              <h2 className="text-sm font-display font-black text-[#2C2324] uppercase tracking-tight">
+              <h2 className="font-h2 text-[#2C2324]">
                 Settings & Sheet Connection
               </h2>
             </div>
@@ -115,7 +115,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           
           {/* 1. Google Apps Script Web App URL */}
           <div className="bg-[#EFECE3] p-3.5 rounded-xl border border-[#D8D3C8]">
-            <label className="text-xs font-mono font-bold text-[#2C2324] flex items-center justify-between mb-1.5 uppercase">
+            <label className="font-label text-[#2C2324] flex items-center justify-between mb-1.5">
               <span className="flex items-center space-x-1.5">
                 <Link2 className="w-3.5 h-3.5 text-[#EB5E28]" />
                 <span>Google Apps Script Web App URL</span>
@@ -124,7 +124,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 href="https://docs.google.com/spreadsheets/d/1g-LrMb2Efx4OiISCcNV9r6qosiarYu3hQ_4H4RHRt28/edit"
                 target="_blank"
                 rel="noreferrer"
-                className="text-[11px] font-mono text-[#EB5E28] hover:underline flex items-center gap-1 font-bold"
+                className="font-button-s text-xs text-[#EB5E28] hover:underline flex items-center gap-1"
               >
                 <span>Open Sheet</span>
                 <ExternalLink className="w-3 h-3" />
@@ -137,7 +137,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 placeholder="https://script.google.com/macros/s/.../exec"
                 value={scriptUrl}
                 onChange={(e) => setLocalUrl(e.target.value)}
-                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-2 text-xs text-[#2C2324] font-mono font-bold placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-2 font-mono text-xs text-[#2C2324] placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
               />
 
               <div className="flex items-center gap-2">
@@ -145,7 +145,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   type="button"
                   onClick={handleTestConnection}
                   disabled={isTesting || !scriptUrl.trim()}
-                  className="flex-1 py-2 btn-gold-black font-display font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-1.5"
+                  className="flex-1 py-2 btn-gold-black font-button-s text-xs rounded-xl transition-all flex items-center justify-center space-x-1.5"
                 >
                   {isTesting ? (
                     <>
@@ -192,27 +192,27 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           {/* 2. Open on Phone / QR Code Section */}
           <div className="bg-[#EFECE3] p-3.5 rounded-xl border border-[#D8D3C8]">
             <div className="flex items-center justify-between mb-1">
-              <div className="flex items-center space-x-1.5 text-xs font-mono font-bold text-[#2C2324] uppercase">
+              <div className="flex items-center space-x-1.5 font-label text-[#2C2324]">
                 <QrCode className="w-4 h-4 text-[#EB5E28]" />
                 <span>Open on Your Mobile Phone</span>
               </div>
               <button
                 type="button"
                 onClick={() => setShowQr(!showQr)}
-                className="text-[11px] text-[#EB5E28] font-mono font-bold hover:underline uppercase"
+                className="font-button-s text-xs text-[#EB5E28] hover:underline"
               >
                 {showQr ? 'Hide QR' : 'Show QR'}
               </button>
             </div>
 
-            <div className="text-[11px] text-[#766754] mb-2.5">
+            <div className="font-caption text-[#766754] mb-2.5">
               Scan with your iPhone Camera or Android scanner to open this mobile tracker immediately.
             </div>
 
             {showQr && (
               <div className="flex flex-col items-center justify-center p-4 bg-white rounded-xl mb-2.5 border border-[#D8D3C8] shadow-xs">
                 <QRCodeSVG value={currentAppUrl} size={160} level="M" />
-                <span className="text-[11px] text-[#766754] font-mono font-bold mt-2">Scan with Phone Camera</span>
+                <span className="font-label text-[#766754] mt-2">Scan with Phone Camera</span>
               </div>
             )}
 
@@ -221,7 +221,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 type="text"
                 readOnly
                 value={currentAppUrl}
-                className="flex-1 bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 text-xs text-[#766754] font-mono"
+                className="flex-1 bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 font-mono text-xs text-[#766754]"
               />
               <button
                 type="button"
@@ -236,90 +236,90 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
           {/* 3. Personal Goals (from Settings Sheet) */}
           <div className="bg-[#EFECE3] p-3.5 rounded-xl border border-[#D8D3C8] space-y-2.5">
-            <div className="text-xs font-mono font-bold text-[#2C2324] uppercase">Personal Targets (from Settings Sheet)</div>
+            <div className="font-label text-[#2C2324]">Personal Targets (from Settings Sheet)</div>
             
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="text-[10px] text-[#766754] font-mono font-bold block mb-0.5 uppercase">Your Name</label>
+                <label className="font-label text-[#766754] block mb-0.5">Your Name</label>
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1 text-xs text-[#2C2324] font-bold"
+                  className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1 font-body-m text-xs text-[#2C2324] font-bold"
                 />
               </div>
 
               <div>
-                <label className="text-[10px] text-[#766754] font-mono font-bold block mb-0.5 uppercase">Daily Calorie Target (kcal)</label>
+                <label className="font-label text-[#766754] block mb-0.5">Daily Calorie Target (kcal)</label>
                 <input
                   type="number"
                   value={calories}
                   onChange={(e) => setCalories(e.target.value)}
-                  className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1 text-xs text-[#2C2324] font-bold"
+                  className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1 font-stat tabular-nums text-xs text-[#2C2324]"
                 />
               </div>
 
               <div>
-                <label className="text-[10px] text-[#766754] font-mono font-bold block mb-0.5 uppercase">Protein Target (g)</label>
+                <label className="font-label text-[#766754] block mb-0.5">Protein Target (g)</label>
                 <input
                   type="number"
                   value={protein}
                   onChange={(e) => setProtein(e.target.value)}
-                  className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1 text-xs text-[#2C2324] font-bold"
+                  className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1 font-stat tabular-nums text-xs text-[#2C2324]"
                 />
               </div>
 
               <div>
-                <label className="text-[10px] text-[#766754] font-mono font-bold block mb-0.5 uppercase">Water Target (L)</label>
+                <label className="font-label text-[#766754] block mb-0.5">Water Target (L)</label>
                 <input
                   type="number"
                   step="0.1"
                   value={water}
                   onChange={(e) => setWater(e.target.value)}
-                  className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1 text-xs text-[#2C2324] font-bold"
+                  className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1 font-stat tabular-nums text-xs text-[#2C2324]"
                 />
               </div>
 
               <div>
-                <label className="text-[10px] text-[#766754] font-mono font-bold block mb-0.5 uppercase">Daily Steps Target</label>
+                <label className="font-label text-[#766754] block mb-0.5">Daily Steps Target</label>
                 <input
                   type="number"
                   value={steps}
                   onChange={(e) => setSteps(e.target.value)}
-                  className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1 text-xs text-[#2C2324] font-bold"
+                  className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1 font-stat tabular-nums text-xs text-[#2C2324]"
                 />
               </div>
 
               <div>
-                <label className="text-[10px] text-[#766754] font-mono font-bold block mb-0.5 uppercase">Sleep Target (hrs)</label>
+                <label className="font-label text-[#766754] block mb-0.5">Sleep Target (hrs)</label>
                 <input
                   type="number"
                   step="0.5"
                   value={sleep}
                   onChange={(e) => setSleep(e.target.value)}
-                  className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1 text-xs text-[#2C2324] font-bold"
+                  className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1 font-stat tabular-nums text-xs text-[#2C2324]"
                 />
               </div>
 
               <div>
-                <label className="text-[10px] text-[#766754] font-mono font-bold block mb-0.5 uppercase">Starting Weight (kg)</label>
+                <label className="font-label text-[#766754] block mb-0.5">Starting Weight (kg)</label>
                 <input
                   type="number"
                   step="0.1"
                   value={startWeight}
                   onChange={(e) => setStartWeight(e.target.value)}
-                  className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1 text-xs text-[#2C2324] font-bold"
+                  className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1 font-stat tabular-nums text-xs text-[#2C2324]"
                 />
               </div>
 
               <div>
-                <label className="text-[10px] text-[#766754] font-mono font-bold block mb-0.5 uppercase">Goal Weight (kg)</label>
+                <label className="font-label text-[#766754] block mb-0.5">Goal Weight (kg)</label>
                 <input
                   type="number"
                   step="0.1"
                   value={goalWeight}
                   onChange={(e) => setGoalWeight(e.target.value)}
-                  className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1 text-xs text-[#2C2324] font-bold"
+                  className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1 font-stat tabular-nums text-xs text-[#2C2324]"
                 />
               </div>
             </div>
@@ -328,7 +328,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           {/* Submit */}
           <button
             type="submit"
-            className="w-full py-3 btn-santiago active:scale-95 text-white font-display font-bold text-xs uppercase tracking-wider rounded-xl shadow-xs transition-all"
+            className="w-full py-3 btn-santiago active:scale-95 text-white font-button-l rounded-xl shadow-xs transition-all"
           >
             Save Settings & Targets
           </button>

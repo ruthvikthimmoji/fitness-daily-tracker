@@ -62,10 +62,10 @@ export const AddWorkModal: React.FC<AddWorkModalProps> = ({
               <Briefcase className="w-4 h-4 stroke-[2.5]" />
             </div>
             <div>
-              <div className="font-mono text-[9px] uppercase tracking-wider text-[#EB5E28] font-bold">
+              <div className="font-label text-[#EB5E28]">
                 // ARCHIVE // FOCUS & WORK SPECIMEN
               </div>
-              <h2 className="text-sm font-display font-black text-[#2C2324] uppercase tracking-tight">
+              <h2 className="font-h2 text-[#2C2324]">
                 Log Work / Activity
               </h2>
             </div>
@@ -83,14 +83,14 @@ export const AddWorkModal: React.FC<AddWorkModalProps> = ({
           
           {/* Category */}
           <div>
-            <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#766754] block mb-1">Category</label>
+            <label className="font-label text-[#766754] block mb-1">Category</label>
             <div className="grid grid-cols-3 gap-1">
               {categories.map((c) => (
                 <button
                   type="button"
                   key={c}
                   onClick={() => setCategory(c)}
-                  className={`py-1.5 text-[11px] font-mono font-bold rounded-xl border transition-all ${
+                  className={`py-1.5 font-button-s text-xs rounded-xl border transition-all ${
                     category === c
                       ? 'bg-[#2C2324] text-white border-[#2C2324] shadow-xs'
                       : 'bg-[#EFECE3] text-[#766754] border-[#D8D3C8] hover:bg-[#E5E0D5]'
@@ -104,21 +104,21 @@ export const AddWorkModal: React.FC<AddWorkModalProps> = ({
 
           {/* Task / Description */}
           <div>
-            <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#766754] block mb-1">Task / What I Did *</label>
+            <label className="font-label text-[#766754] block mb-1">Task / What I Did *</label>
             <input
               type="text"
               required
               placeholder="e.g. Finish project report"
               value={task}
               onChange={(e) => setTask(e.target.value)}
-              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-2 text-xs text-[#2C2324] font-bold placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
+              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-2 font-body-m text-[#2C2324] font-bold placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
             />
           </div>
 
           {/* Hours and Status */}
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#766754] block mb-1">Hours Spent</label>
+              <label className="font-label text-[#766754] block mb-1">Hours Spent</label>
               <input
                 type="number"
                 step="0.25"
@@ -126,19 +126,19 @@ export const AddWorkModal: React.FC<AddWorkModalProps> = ({
                 placeholder="1.5"
                 value={hours}
                 onChange={(e) => setHours(e.target.value)}
-                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-1.5 text-xs text-[#2C2324] font-mono font-black focus:outline-none focus:border-[#EB5E28]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#EB5E28]"
               />
             </div>
 
             <div>
-              <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#766754] block mb-1">Status</label>
+              <label className="font-label text-[#766754] block mb-1">Status</label>
               <div className="flex gap-1">
                 {statuses.map((s) => (
                   <button
                     type="button"
                     key={s}
                     onClick={() => setStatus(s)}
-                    className={`flex-1 py-1.5 text-[11px] font-mono font-bold rounded-xl border transition-all ${
+                    className={`flex-1 py-1.5 font-button-s text-xs rounded-xl border transition-all ${
                       status === s
                         ? s === 'Done' ? 'bg-[#2C2324] text-white border-[#2C2324]' : 'bg-[#EB5E28] text-white border-[#EB5E28]'
                         : 'bg-[#EFECE3] text-[#766754] border-[#D8D3C8]'
@@ -153,20 +153,20 @@ export const AddWorkModal: React.FC<AddWorkModalProps> = ({
 
           {/* Notes */}
           <div>
-            <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#766754] block mb-1">Notes (optional)</label>
+            <label className="font-label text-[#766754] block mb-1">Notes (optional)</label>
             <input
               type="text"
               placeholder="e.g. Deep focus session, completed all milestones"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-1.5 text-xs text-[#2C2324] font-sans placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
+              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-1.5 font-body-m text-[#2C2324] placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
             />
           </div>
 
           {/* Submit */}
           <button
             type="submit"
-            className="w-full mt-2 py-3 btn-santiago active:scale-95 text-white font-display font-bold text-xs uppercase tracking-wider rounded-xl shadow-xs transition-all flex items-center justify-center space-x-1.5"
+            className="w-full mt-2 py-3 btn-santiago active:scale-95 text-white font-button-l rounded-xl shadow-xs transition-all flex items-center justify-center space-x-1.5"
           >
             <Plus className="w-4 h-4 stroke-[3]" />
             <span>Add to Work Log Sheet</span>

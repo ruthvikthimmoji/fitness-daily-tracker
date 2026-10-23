@@ -40,10 +40,10 @@ export const BadgesModal: React.FC<BadgesModalProps> = ({
               <Award className="w-4 h-4 stroke-[2.5]" />
             </div>
             <div>
-              <div className="font-mono text-[9px] uppercase tracking-wider text-[#EB5E28] font-bold">
+              <div className="font-label text-[10px] text-[#EB5E28]">
                 SHOWROOM ARCHIVE // {unlockedCount}/{gamification.badges.length} UNLOCKED
               </div>
-              <h2 className="text-base font-display font-black text-[#2C2324] uppercase tracking-tight">
+              <h2 className="font-h2 text-[#2C2324] uppercase tracking-tight">
                 Achievements & Streaks
               </h2>
             </div>
@@ -65,10 +65,10 @@ export const BadgesModal: React.FC<BadgesModalProps> = ({
                 🔥
               </div>
               <div>
-                <div className="text-lg font-display font-black text-[#2C2324] flex items-center gap-1.5 uppercase">
+                <div className="font-display-l text-[#2C2324] uppercase leading-tight">
                   <span>{gamification.streak} Day Streak</span>
                 </div>
-                <div className="text-xs font-mono text-[#766754]">
+                <div className="font-body-s text-[#766754]">
                   Record: {gamification.bestStreak} days • Show up daily.
                 </div>
               </div>
@@ -77,10 +77,10 @@ export const BadgesModal: React.FC<BadgesModalProps> = ({
             <div className="flex items-center space-x-1.5 bg-white px-3 py-1.5 rounded-xl border border-[#D8D3C8] shadow-xs">
               <Shield className="w-4 h-4 text-[#EB5E28]" />
               <div className="text-right">
-                <div className="text-[11px] font-mono font-bold text-[#2C2324] leading-tight">
+                <div className="font-score-m text-sm text-[#2C2324] leading-tight tabular-nums">
                   {gamification.streakFreezes} Freezes
                 </div>
-                <div className="text-[9px] font-mono text-[#766754] leading-tight">Equipped</div>
+                <div className="font-caption text-[#766754] leading-tight">Equipped</div>
               </div>
             </div>
           </div>
@@ -89,14 +89,14 @@ export const BadgesModal: React.FC<BadgesModalProps> = ({
           <div className="bg-white p-4 rounded-xl border border-[#D8D3C8] shadow-xs">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center space-x-2">
-                <span className="text-xs font-display font-black text-[#2C2324] uppercase tracking-wider">
+                <span className="font-title text-sm text-[#2C2324] uppercase tracking-wider">
                   Level {gamification.level}: {gamification.levelTitle}
                 </span>
-                <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#EFECE3] text-[#EB5E28] border border-[#D8D3C8]">
+                <span className="font-badge text-[11px] px-2 py-0.5 rounded-full bg-[#EFECE3] text-[#EB5E28] border border-[#D8D3C8] tabular-nums">
                   ⚡ {gamification.totalXp} XP
                 </span>
               </div>
-              <span className="font-mono text-xs font-bold text-[#766754]">
+              <span className="font-caption text-[#766754] tabular-nums">
                 {gamification.currentLevelXp} / {gamification.nextLevelXp} XP
               </span>
             </div>
@@ -116,9 +116,9 @@ export const BadgesModal: React.FC<BadgesModalProps> = ({
               <button
                 key={cat}
                 onClick={() => setFilter(cat)}
-                className={`px-3 py-1 rounded-xl text-xs font-mono uppercase tracking-wider font-bold transition-all ${
+                className={`px-3 py-1.5 rounded-xl font-button-s text-xs uppercase tracking-wider transition-all ${
                   filter === cat
-                    ? 'bg-[#2C2324] text-white'
+                    ? 'bg-[#2C2324] text-white shadow-xs'
                     : 'bg-[#EFECE3] text-[#766754] border border-[#D8D3C8] hover:bg-[#E5E0D5]'
                 }`}
               >
@@ -159,17 +159,17 @@ export const BadgesModal: React.FC<BadgesModalProps> = ({
                   </div>
 
                   <div className="mt-2">
-                    <div className="text-xs font-display font-bold text-[#2C2324] uppercase leading-tight">
+                    <div className="font-title text-xs text-[#2C2324] uppercase leading-tight">
                       {badge.title}
                     </div>
-                    <div className="text-[10px] text-[#766754] font-sans mt-0.5 line-clamp-2">
+                    <div className="font-body-s text-[11px] text-[#766754] mt-0.5 line-clamp-2">
                       {badge.description}
                     </div>
                   </div>
 
                   {/* Progress bar */}
                   <div className="mt-2.5">
-                    <div className="flex justify-between text-[9px] font-mono text-[#766754] mb-1">
+                    <div className="flex justify-between font-caption text-[#766754] mb-1 tabular-nums">
                       <span>{isUnlocked ? 'Completed' : 'Progress'}</span>
                       <span>{badge.progress} / {badge.maxProgress}</span>
                     </div>

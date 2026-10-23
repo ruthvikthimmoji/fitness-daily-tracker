@@ -64,16 +64,16 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Editorial Wordmark & Logo */}
         <div className="flex items-center space-x-2.5">
           {/* Logo badge in Gold Black with Santiago Orange accent */}
-          <div className="w-8 h-8 rounded-xl bg-[#2C2324] text-white flex items-center justify-center font-display font-black text-xs shadow-xs tracking-tighter">
+          <div className="w-8 h-8 rounded-xl bg-[#2C2324] text-white flex items-center justify-center font-display font-bold text-xs shadow-xs tracking-tight">
             <span className="text-white">D</span>
             <span className="text-[#EB5E28]">F</span>
           </div>
 
           <div>
-            <h1 className="text-sm font-display font-black tracking-tight flex items-baseline gap-1.5 leading-none">
+            <h1 className="font-h3 tracking-tight flex items-baseline gap-1.5 leading-none">
               <span className="text-[#2C2324] uppercase">DAILY</span>
               <span className="text-[#EB5E28] uppercase">/ FIT</span>
-              <span className="font-mono text-[9px] text-[#766754] font-bold uppercase tracking-widest hidden xs:inline">
+              <span className="font-label text-[9px] text-[#766754] hidden xs:inline">
                 SPECIMEN
               </span>
             </h1>
@@ -81,7 +81,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Sync status pill */}
             <button
               onClick={onSync}
-              className="mt-1 flex items-center space-x-1.5 text-[10px] font-mono transition-colors"
+              className="mt-1 flex items-center space-x-1.5 font-caption transition-colors"
             >
               {syncStatus === 'syncing' ? (
                 <span className="inline-flex items-center gap-1 text-[#EB5E28] font-bold">
@@ -115,7 +115,7 @@ export const Header: React.FC<HeaderProps> = ({
               {/* Active Streak Flame */}
               <button
                 onClick={onOpenBadgesModal}
-                className="flex items-center gap-1 px-2 py-1.5 rounded-xl bg-[#EFECE3] hover:bg-[#e6e2d7] border border-[#D8D3C8] text-[#EB5E28] font-mono font-bold text-xs transition-all active:scale-95 shadow-2xs"
+                className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-[#EFECE3] hover:bg-[#e6e2d7] border border-[#D8D3C8] text-[#EB5E28] font-stat tabular-nums transition-all active:scale-95 shadow-2xs"
                 title={`Active Streak: ${gamification.streak} days`}
               >
                 <span className="text-xs leading-none">🔥</span>
@@ -125,11 +125,11 @@ export const Header: React.FC<HeaderProps> = ({
               {/* XP Level Pill */}
               <button
                 onClick={onOpenBadgesModal}
-                className="flex items-center gap-1 px-2 py-1.5 rounded-xl bg-[#EFECE3] hover:bg-[#e6e2d7] border border-[#D8D3C8] text-[#2C2324] font-mono font-bold text-xs transition-all active:scale-95 shadow-2xs"
+                className="flex items-center gap-1 px-2 py-1.5 rounded-xl bg-[#EFECE3] hover:bg-[#e6e2d7] border border-[#D8D3C8] text-[#2C2324] font-stat tabular-nums transition-all active:scale-95 shadow-2xs"
                 title={`Level ${gamification.level}: ${gamification.levelTitle} (${gamification.totalXp} XP)`}
               >
                 <span className="text-xs leading-none text-[#EB5E28]">⚡</span>
-                <span className="text-[10px] bg-[#2C2324] text-white px-1.5 py-0.5 rounded font-mono font-bold leading-none">
+                <span className="font-badge bg-[#2C2324] text-white px-1.5 py-0.5 rounded leading-none">
                   L{gamification.level}
                 </span>
               </button>
@@ -170,10 +170,10 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center space-x-2">
           <label className="relative cursor-pointer flex items-center space-x-1.5 bg-[#EFECE3] hover:bg-[#e6e2d7] px-3 py-1.5 rounded-xl border border-[#D8D3C8] transition-colors">
             <Calendar className="w-3.5 h-3.5 text-[#EB5E28]" />
-            <span className="text-xs font-display font-bold text-[#2C2324]">
+            <span className="font-title text-xs text-[#2C2324]">
               {formatDisplayDate(selectedDate)}
             </span>
-            <span className="font-mono text-[10px] text-[#766754]">
+            <span className="font-caption text-[#766754] tabular-nums">
               [{selectedDate}]
             </span>
             <input
@@ -187,7 +187,7 @@ export const Header: React.FC<HeaderProps> = ({
           {!isToday && (
             <button
               onClick={() => onSelectDate(todayStr)}
-              className="text-[10px] font-mono font-bold text-[#EB5E28] hover:text-[#2C2324] bg-white border border-[#D8D3C8] px-2 py-1 rounded-lg transition-colors active:scale-95"
+              className="font-button-s text-[11px] text-[#EB5E28] hover:text-[#2C2324] bg-white border border-[#D8D3C8] px-2.5 py-1 rounded-lg transition-colors active:scale-95"
             >
               TODAY
             </button>

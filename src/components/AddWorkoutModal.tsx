@@ -75,10 +75,10 @@ export const AddWorkoutModal: React.FC<AddWorkoutModalProps> = ({
               <Dumbbell className="w-4 h-4 stroke-[2.5]" />
             </div>
             <div>
-              <div className="font-mono text-[9px] uppercase tracking-wider text-[#EB5E28] font-bold">
+              <div className="font-label text-[#EB5E28]">
                 // ARCHIVE // EXERCISE SPECIMEN
               </div>
-              <h2 className="text-sm font-display font-black text-[#2C2324] uppercase tracking-tight">
+              <h2 className="font-h2 text-[#2C2324]">
                 Log Workout Exercise
               </h2>
             </div>
@@ -96,14 +96,14 @@ export const AddWorkoutModal: React.FC<AddWorkoutModalProps> = ({
           
           {/* Workout Type */}
           <div>
-            <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#766754] block mb-1">Workout Split / Type</label>
+            <label className="font-label text-[#766754] block mb-1">Workout Split / Type</label>
             <div className="grid grid-cols-4 gap-1">
               {workoutTypes.map((t) => (
                 <button
                   type="button"
                   key={t}
                   onClick={() => setWorkoutType(t)}
-                  className={`py-1.5 text-[11px] font-mono font-bold rounded-xl border transition-all ${
+                  className={`py-1.5 font-button-s text-xs rounded-xl border transition-all ${
                     workoutType === t
                       ? 'bg-[#2C2324] text-white border-[#2C2324] shadow-xs'
                       : 'bg-[#EFECE3] text-[#766754] border-[#D8D3C8] hover:bg-[#E5E0D5]'
@@ -117,48 +117,48 @@ export const AddWorkoutModal: React.FC<AddWorkoutModalProps> = ({
 
           {/* Exercise Name */}
           <div>
-            <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#766754] block mb-1">Exercise Name *</label>
+            <label className="font-label text-[#766754] block mb-1">Exercise Name *</label>
             <input
               type="text"
               required
               placeholder="e.g. Bench Press or Squats"
               value={exercise}
               onChange={(e) => setExercise(e.target.value)}
-              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-2 text-xs text-[#2C2324] font-bold placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
+              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-2 font-body-m text-[#2C2324] font-bold placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
             />
           </div>
 
           {/* Sets, Reps, Weight */}
           <div className="grid grid-cols-3 gap-1.5">
             <div>
-              <label className="text-[10px] font-mono font-bold text-[#766754] uppercase block mb-0.5">Sets</label>
+              <label className="font-label text-[#766754] block mb-0.5">Sets</label>
               <input
                 type="number"
                 placeholder="4"
                 value={sets}
                 onChange={(e) => setSets(e.target.value)}
-                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 text-xs text-[#2C2324] font-mono font-black focus:outline-none focus:border-[#EB5E28]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#EB5E28]"
               />
             </div>
             <div>
-              <label className="text-[10px] font-mono font-bold text-[#766754] uppercase block mb-0.5">Reps</label>
+              <label className="font-label text-[#766754] block mb-0.5">Reps</label>
               <input
                 type="number"
                 placeholder="10"
                 value={reps}
                 onChange={(e) => setReps(e.target.value)}
-                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 text-xs text-[#2C2324] font-mono font-black focus:outline-none focus:border-[#EB5E28]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#EB5E28]"
               />
             </div>
             <div>
-              <label className="text-[10px] font-mono font-bold text-[#EB5E28] uppercase block mb-0.5">Weight (kg)</label>
+              <label className="font-label text-[#EB5E28] block mb-0.5">Weight (kg)</label>
               <input
                 type="number"
                 step="0.5"
                 placeholder="kg"
                 value={weightKg}
                 onChange={(e) => setWeightKg(e.target.value)}
-                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 text-xs text-[#2C2324] font-mono font-black focus:outline-none focus:border-[#EB5E28]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#EB5E28]"
               />
             </div>
           </div>
@@ -166,51 +166,51 @@ export const AddWorkoutModal: React.FC<AddWorkoutModalProps> = ({
           {/* Volume preview banner */}
           {calculatedVolume > 0 && (
             <div className="bg-[#EFECE3] border border-[#D8D3C8] rounded-xl p-2.5 flex items-center justify-between text-xs">
-              <span className="text-[#766754] font-mono text-[11px]">Volume (Sets × Reps × Weight):</span>
-              <span className="text-[#2C2324] font-display font-black text-sm">{calculatedVolume.toLocaleString()} kg</span>
+              <span className="text-[#766754] font-label">Volume (Sets × Reps × Weight):</span>
+              <span className="text-[#2C2324] font-score-m tabular-nums">{calculatedVolume.toLocaleString()} kg</span>
             </div>
           )}
 
           {/* Cardio / Additional fields */}
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="text-[10px] font-mono font-bold text-[#766754] uppercase block mb-0.5">Duration (min)</label>
+              <label className="font-label text-[#766754] block mb-0.5">Duration (min)</label>
               <input
                 type="number"
                 placeholder="e.g. 45"
                 value={durationMin}
                 onChange={(e) => setDurationMin(e.target.value)}
-                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 text-xs text-[#2C2324] font-mono font-bold focus:outline-none focus:border-[#EB5E28]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#EB5E28]"
               />
             </div>
             <div>
-              <label className="text-[10px] font-mono font-bold text-[#EB5E28] uppercase block mb-0.5">Calories Burned</label>
+              <label className="font-label text-[#EB5E28] block mb-0.5">Calories Burned</label>
               <input
                 type="number"
                 placeholder="e.g. 300"
                 value={caloriesBurned}
                 onChange={(e) => setCaloriesBurned(e.target.value)}
-                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 text-xs text-[#2C2324] font-mono font-bold focus:outline-none focus:border-[#EB5E28]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#EB5E28]"
               />
             </div>
           </div>
 
           {/* Notes */}
           <div>
-            <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#766754] block mb-1">Notes</label>
+            <label className="font-label text-[#766754] block mb-1">Notes</label>
             <input
               type="text"
               placeholder="e.g. RPE 8, felt strong"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-1.5 text-xs text-[#2C2324] font-sans placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
+              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-1.5 font-body-m text-[#2C2324] placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
             />
           </div>
 
           {/* Submit */}
           <button
             type="submit"
-            className="w-full mt-2 py-3 btn-santiago active:scale-95 text-white font-display font-bold text-xs uppercase tracking-wider rounded-xl shadow-xs transition-all flex items-center justify-center space-x-1.5"
+            className="w-full mt-2 py-3 btn-santiago active:scale-95 text-white font-button-l rounded-xl shadow-xs transition-all flex items-center justify-center space-x-1.5"
           >
             <Plus className="w-4 h-4 stroke-[3]" />
             <span>Add to Workout Log Sheet</span>

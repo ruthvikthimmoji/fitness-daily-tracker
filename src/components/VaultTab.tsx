@@ -141,17 +141,17 @@ export const VaultTab: React.FC<VaultTabProps> = ({
           <div className="w-16 h-16 rounded-2xl bg-white border border-[#D8D3C8] mx-auto flex items-center justify-center text-[#2C2324] shadow-xs mb-3">
             <Shield className="w-8 h-8 stroke-[1.8] text-[#EB5E28]" />
           </div>
-          <span className="font-mono text-[10px] text-[#EB5E28] uppercase tracking-wider font-bold block">
+          <span className="font-label text-[10px] text-[#EB5E28] block">
             PRIVATE VAULT ARCHIVE
           </span>
-          <h2 className="text-xl font-display font-black text-[#2C2324] uppercase tracking-tight mt-1">
+          <h2 className="font-h2 text-[#2C2324] uppercase tracking-tight mt-1">
             {isSettingUpPin
               ? confirmPin
                 ? 'Confirm Passcode'
                 : 'Create 4-Digit Passcode'
               : 'Enter Vault Passcode'}
           </h2>
-          <p className="text-xs text-[#766754] font-sans mt-1">
+          <p className="font-body-s text-[#766754] mt-1">
             {isSettingUpPin
               ? confirmPin
                 ? 'Re-enter your 4 digits to confirm security'
@@ -178,7 +178,7 @@ export const VaultTab: React.FC<VaultTabProps> = ({
         </div>
 
         {pinError && (
-          <div className="text-center text-xs font-mono font-bold text-[#EB5E28] flex items-center justify-center gap-1">
+          <div className="text-center font-caption font-bold text-[#EB5E28] flex items-center justify-center gap-1">
             <AlertCircle className="w-3.5 h-3.5" />
             <span>{pinError}</span>
           </div>
@@ -190,7 +190,7 @@ export const VaultTab: React.FC<VaultTabProps> = ({
             <button
               key={digit}
               onClick={() => handleKeyClick(digit)}
-              className="h-14 rounded-2xl bg-white border border-[#D8D3C8] text-xl font-display font-bold text-[#2C2324] shadow-xs hover:bg-[#EFECE3] active:scale-95 transition-all flex items-center justify-center"
+              className="h-14 rounded-2xl bg-white border border-[#D8D3C8] font-timer text-2xl text-[#2C2324] tabular-nums shadow-xs hover:bg-[#EFECE3] active:scale-95 transition-all flex items-center justify-center"
             >
               {digit}
             </button>
@@ -201,19 +201,19 @@ export const VaultTab: React.FC<VaultTabProps> = ({
               setConfirmPin('');
               setPinError(null);
             }}
-            className="h-14 rounded-2xl bg-[#EFECE3] border border-[#D8D3C8] text-xs font-mono font-bold text-[#766754] hover:bg-[#e6e2d7] active:scale-95 transition-all flex items-center justify-center"
+            className="h-14 rounded-2xl bg-[#EFECE3] border border-[#D8D3C8] font-button-s text-xs text-[#766754] hover:bg-[#e6e2d7] active:scale-95 transition-all flex items-center justify-center uppercase"
           >
             CLEAR
           </button>
           <button
             onClick={() => handleKeyClick('0')}
-            className="h-14 rounded-2xl bg-white border border-[#D8D3C8] text-xl font-display font-bold text-[#2C2324] shadow-xs hover:bg-[#EFECE3] active:scale-95 transition-all flex items-center justify-center"
+            className="h-14 rounded-2xl bg-white border border-[#D8D3C8] font-timer text-2xl text-[#2C2324] tabular-nums shadow-xs hover:bg-[#EFECE3] active:scale-95 transition-all flex items-center justify-center"
           >
             0
           </button>
           <button
             onClick={handleBackspace}
-            className="h-14 rounded-2xl bg-[#EFECE3] border border-[#D8D3C8] text-xs font-mono font-bold text-[#766754] hover:bg-[#e6e2d7] active:scale-95 transition-all flex items-center justify-center"
+            className="h-14 rounded-2xl bg-[#EFECE3] border border-[#D8D3C8] font-button-s text-xs text-[#766754] hover:bg-[#e6e2d7] active:scale-95 transition-all flex items-center justify-center"
           >
             ⌫
           </button>
@@ -251,11 +251,11 @@ export const VaultTab: React.FC<VaultTabProps> = ({
       {/* Top Vault Header */}
       <div className="bg-white rounded-2xl p-4 border border-[#D8D3C8] shadow-xs flex items-center justify-between">
         <div>
-          <div className="font-mono text-[10px] text-[#EB5E28] font-bold uppercase tracking-wider flex items-center gap-1.5">
+          <div className="font-label text-[10px] text-[#EB5E28] flex items-center gap-1.5">
             <Unlock className="w-3.5 h-3.5 text-[#2E7D32]" />
             <span>ENCRYPTED VAULT // {photos.length} SPECIMENS</span>
           </div>
-          <h2 className="text-lg font-display font-black text-[#2C2324] uppercase tracking-tight mt-0.5">
+          <h2 className="font-h2 text-[#2C2324] uppercase tracking-tight mt-0.5">
             Photo Archive
           </h2>
         </div>
@@ -263,7 +263,7 @@ export const VaultTab: React.FC<VaultTabProps> = ({
         <div className="flex items-center space-x-2">
           <button
             onClick={() => onOpenPhotoUploader('workout')}
-            className="px-3.5 py-2 rounded-xl btn-santiago text-xs font-display font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-xs"
+            className="px-3.5 py-2 rounded-xl btn-santiago font-button-s text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-xs"
           >
             <Camera className="w-3.5 h-3.5" />
             <span>Upload</span>
@@ -287,7 +287,7 @@ export const VaultTab: React.FC<VaultTabProps> = ({
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-mono uppercase tracking-wider font-bold transition-all shrink-0 ${
+              className={`px-3 py-1.5 rounded-xl font-button-s text-xs uppercase tracking-wider transition-all shrink-0 ${
                 isSelected
                   ? 'bg-[#2C2324] text-white shadow-xs'
                   : 'bg-white text-[#766754] border border-[#D8D3C8] hover:bg-[#EFECE3]'
