@@ -1,28 +1,54 @@
 import React, { useEffect } from 'react';
 import { CheckCircle2 } from 'lucide-react';
 
+export interface ToastState {
+  message: string;
+  actionLabel?: string;
+  onAction?: () => void;
+  durationMs?: number;
+}
+
 interface ToastProps {
-  message: string | null;
+  toast: ToastState | string | null;
   onClear: () => void;
 }
 
-export const Toast: React.FC<ToastProps> = ({ message, onClear }) => {
+export const Toast: React.FC<ToastProps> = ({ toast, onClear }) => {
+  const message = typeof toast === 'string' ? toast : toast?.message;
+  const actionLabel = typeof toast === 'object' ? toast?.actionLabel : undefined;
+  const onAction = typeof toast === 'object' ? toast?.onAction : undefined;
+  const duration = typeof toast === 'object' && toast?.durationMs ? toast.durationMs : actionLabel ? 5000 : 2800;
+
   useEffect(() => {
     if (message) {
       const timer = setTimeout(() => {
         onClear();
-      }, 2500);
+      }, duration);
       return () => clearTimeout(timer);
     }
-  }, [message, onClear]);
+  }, [message, duration, onClear]);
 
   if (!message) return null;
 
   return (
-    <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-all duration-300">
-      <div className="bg-[#2C2324] text-white font-button-s text-xs px-4 py-2 rounded-full shadow-xl border border-white/10 flex items-center space-x-2 animate-in fade-in slide-in-from-top-2">
-        <CheckCircle2 className="w-4 h-4 text-[#EB5E28] shrink-0" />
-        <span>{message}</span>
+    <div className="fixed bottom-20 sm:bottom-24 left-1/2 -translate-x-1/2 z-50 px-4 w-full max-w-sm pointer-events-auto transition-all duration-300">
+      <div className="bg-[#2B2324] text-[#F5F2EA] font-body-m text-xs px-4 py-3 rounded-2xl shadow-2xl border border-[#E2DACB]/20 flex items-center justify-between gap-3 animate-in fade-in slide-in-from-bottom-3">
+        <div className="flex items-center space-x-2.5 min-w-0">
+          <CheckCircle2 className="w-4 h-4 text-[#C4501F] shrink-0" />
+          <span className="truncate font-semibold">{message}</span>
+        </div>
+        {actionLabel && onAction && (
+          <button
+            type="button"
+            onClick={() => {
+              onAction();
+              onClear();
+            }}
+            className="px-2.5 py-1 rounded-lg bg-[#C4501F] hover:bg-[#A83F17] text-white font-button-s text-xs font-bold uppercase tracking-wider shrink-0 transition-colors shadow-xs"
+          >
+            {actionLabel}
+          </button>
+        )}
       </div>
     </div>
   );

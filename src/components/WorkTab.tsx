@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Plus, Trash2, Briefcase, CheckCircle2, Clock, Check, Sparkles, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Plus, Trash2, Briefcase, CheckCircle2, Clock, Check, ChevronRight, Play, Square } from 'lucide-react';
 import { WorkItem } from '../types';
-import { SpecimenTrack } from './SpecimenTrack';
+import { triggerHaptic } from '../utils/formatters';
 
 interface WorkTabProps {
   workItems: WorkItem[];
@@ -21,80 +21,147 @@ export const WorkTab: React.FC<WorkTabProps> = ({
   onSelectDetail
 }) => {
   const [activeCategory, setActiveCategory] = useState<string>('All');
+  const [showAllPresets, setShowAllPresets] = useState<boolean>(false);
+
+  // Focus Timer state (Page 16 Layout rule)
+  const [timerRunning, setTimerRunning] = useState<boolean>(false);
+  const [timerSeconds, setTimerSeconds] = useState<number>(0);
+
+  useEffect(() => {
+    let interval: any = null;
+    if (timerRunning) {
+      interval = setInterval(() => {
+        setTimerSeconds(s => s + 1);
+      }, 1000);
+    } else {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [timerRunning]);
+
+  const handleStopAndLogTimer = () => {
+    setTimerRunning(false);
+    triggerHaptic(20);
+    const hrs = Math.max(0.25, Math.round((timerSeconds / 3600) * 100) / 100);
+    onQuickAdd({
+      task: 'Focus timer session',
+      category: 'Work',
+      hours: hrs,
+      status: 'Done'
+    });
+    setTimerSeconds(0);
+  };
+
+  const formatTimer = (sec: number) => {
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  };
 
   const categories = ['Work', 'Study', 'Personal Project', 'Errands', 'Reading'];
 
   const totalHours = workItems.reduce((sum, item) => sum + (item.hours || 0), 0);
   const doneCount = workItems.filter(item => item.status === 'Done').length;
 
+  // Shortened preset names in sentence case (Section 5 Copy changes)
   const quickTasks: Omit<WorkItem, 'date'>[] = [
-    { task: 'Deep Work: Core system development & coding', category: 'Work', hours: 2.5, status: 'Done' },
-    { task: 'Technical Study: Architecture & research', category: 'Study', hours: 1.5, status: 'Done' },
-    { task: 'Personal Side Project build', category: 'Personal Project', hours: 2.0, status: 'Done' },
-    { task: 'Reading & Knowledge Synthesis', category: 'Reading', hours: 0.75, status: 'Done' },
-    { task: 'Daily Strategy, Email & Planning Review', category: 'Work', hours: 0.5, status: 'Done' },
+    { task: 'Deep work: coding', category: 'Work', hours: 2.5, status: 'Done' },
+    { task: 'Study: architecture', category: 'Study', hours: 1.5, status: 'Done' },
+    { task: 'Side project build', category: 'Personal Project', hours: 2.0, status: 'Done' },
+    { task: 'Reading & synthesis', category: 'Reading', hours: 0.75, status: 'Done' },
+    { task: 'Planning & review', category: 'Work', hours: 0.5, status: 'Done' },
   ];
+
+  const visiblePresets = showAllPresets ? quickTasks : quickTasks.slice(0, 4);
 
   const filteredItems = activeCategory === 'All'
     ? workItems
     : workItems.filter(w => w.category.toLowerCase() === activeCategory.toLowerCase());
 
   return (
-    <div className="space-y-4 pb-28 animate-in fade-in duration-150">
+    <div className="space-y-3.5 pb-28 animate-in fade-in duration-150 relative">
       
-      {/* 1. Productivity Summary Specimen Card */}
-      <div className="specimen-card p-4 border border-[#D8D3C8]">
-        <div className="flex items-center justify-between pb-3 border-b border-[#D8D3C8]/70">
+      {/* 1. Summary Strip in One Line (Page 16) */}
+      <div className="bg-white rounded-2xl p-3.5 border border-[#E2DACB] shadow-2xs flex items-center justify-between gap-2">
+        <div className="flex items-center space-x-2">
+          <div className="p-1.5 rounded-lg bg-[#F5F2EA] text-[#2B2324]">
+            <Briefcase className="w-4 h-4" />
+          </div>
           <div>
-            <div className="font-label text-[10px] text-[#EB5E28]">
-              // ARCHIVE // FOCUS & DAILY OUTPUT
-            </div>
-            <div className="font-h2 text-[#2C2324] uppercase tracking-tight mt-0.5">
-              <span className="font-score-m text-2xl tabular-nums">{totalHours}</span> <span className="font-caption font-normal text-[#766754]">HOURS LOGGED</span>
+            <div className="font-title text-sm text-[#2B2324]">Productivity</div>
+            <div className="font-caption text-[11px] text-[#5E5444]">
+              {totalHours > 0 ? `${totalHours} hrs logged today` : 'Focus goal: 4 hrs'}
             </div>
           </div>
-
-          <button
-            onClick={() => onOpenAddModal(activeCategory !== 'All' ? activeCategory : 'Work')}
-            className="flex items-center gap-1.5 px-3.5 py-2 btn-santiago text-white font-button-s text-xs uppercase tracking-wider rounded-xl shadow-xs"
-          >
-            <Plus className="w-4 h-4 stroke-[2.5]" />
-            <span>Add Task</span>
-          </button>
         </div>
 
-        {/* Quick Stats Grid */}
-        <div className="grid grid-cols-2 gap-2.5 pt-3">
-          <div className="bg-[#EFECE3] rounded-xl p-3 border border-[#D8D3C8]">
-            <div className="flex items-center space-x-1.5 font-label text-[9px] text-[#766754] mb-1">
-              <Clock className="w-3.5 h-3.5 text-[#2C2324]" />
-              <span>TIME INVESTED</span>
+        <div className="flex items-center space-x-3 text-right">
+          <div>
+            <div className="flex items-center space-x-1 font-caption text-[#5E5444] justify-end">
+              <CheckCircle2 className="w-3 h-3 text-[#2F6B2A]" />
+              <span>{doneCount} of {workItems.length || 0} done</span>
             </div>
-            <div className="font-score-m text-xl text-[#2C2324] tabular-nums">{totalHours} hrs</div>
-            <div className="font-caption text-[#766754]">Syncs to Sheet Column T</div>
-          </div>
-
-          <div className="bg-[#EFECE3] rounded-xl p-3 border border-[#D8D3C8]">
-            <div className="flex items-center space-x-1.5 font-label text-[9px] text-[#766754] mb-1">
-              <CheckCircle2 className="w-3.5 h-3.5 text-[#EB5E28]" />
-              <span>TASKS FINISHED</span>
+            <div className="font-stat text-xs text-[#2B2324] mt-0.5">
+              Saved to your Sheet
             </div>
-            <div className="font-score-m text-xl text-[#EB5E28] tabular-nums">{doneCount} / {workItems.length}</div>
-            <div className="font-caption text-[#766754]">Completed focus items</div>
           </div>
         </div>
       </div>
 
-      {/* 2. Category Filter Pills */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
+      {/* Focus Timer Strip (Page 16 Layout rule) */}
+      <div className="bg-white rounded-2xl p-3 border border-[#E2DACB] shadow-2xs flex items-center justify-between">
+        <div className="flex items-center space-x-2.5">
+          <div className={`p-1.5 rounded-lg ${timerRunning ? 'bg-[#FBE8DE] text-[#C4501F]' : 'bg-[#F5F2EA] text-[#5E5444]'}`}>
+            <Clock className="w-4 h-4" />
+          </div>
+          <div>
+            <span className="font-label text-[10px] text-[#5E5444] block">FOCUS TIMER</span>
+            <span className="font-timer text-lg text-[#2B2324] font-bold leading-none">
+              {formatTimer(timerSeconds)}
+            </span>
+          </div>
+        </div>
+
+        <div className="flex items-center space-x-2">
+          {!timerRunning ? (
+            <button
+              type="button"
+              onClick={() => {
+                triggerHaptic(15);
+                setTimerRunning(true);
+              }}
+              className="px-3 py-1.5 btn-ember rounded-xl font-button-s text-xs flex items-center gap-1 shadow-xs"
+            >
+              <Play className="w-3.5 h-3.5 fill-white" />
+              <span>Start</span>
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={handleStopAndLogTimer}
+              className="px-3 py-1.5 btn-gold-black rounded-xl font-button-s text-xs flex items-center gap-1 shadow-xs"
+            >
+              <Square className="w-3.5 h-3.5 fill-white" />
+              <span>Stop & Log</span>
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* 2. Category Filter Chips with Right-Edge Fade (B6) */}
+      <div className="chips">
         {['All', ...categories].map((cat) => (
           <button
             key={cat}
-            onClick={() => setActiveCategory(cat)}
-            className={`px-3 py-1.5 font-button-s text-xs uppercase tracking-wider rounded-xl whitespace-nowrap transition-all active:scale-95 ${
+            type="button"
+            onClick={() => {
+              triggerHaptic(8);
+              setActiveCategory(cat);
+            }}
+            className={`chip px-3 py-1.5 font-button-s text-xs rounded-xl border transition-all ${
               activeCategory === cat
-                ? 'bg-[#2C2324] text-white shadow-xs'
-                : 'bg-white text-[#766754] hover:text-[#2C2324] border border-[#D8D3C8]'
+                ? 'bg-[#2B2324] text-white border-[#2B2324] shadow-xs'
+                : 'bg-white text-[#5E5444] border-[#E2DACB] hover:bg-[#EEE9DD]'
             }`}
           >
             {cat}
@@ -102,26 +169,62 @@ export const WorkTab: React.FC<WorkTabProps> = ({
         ))}
       </div>
 
-      {/* 3. Logged Work Tasks List (Specimen Cards) */}
-      <div className="space-y-2.5">
-        {filteredItems.length === 0 ? (
-          <div className="bg-white rounded-2xl p-8 border border-[#D8D3C8] text-center shadow-xs">
-            <div className="w-12 h-12 rounded-xl bg-[#EFECE3] mx-auto flex items-center justify-center text-[#2C2324] mb-2 border border-[#D8D3C8]">
-              <Briefcase className="w-6 h-6 stroke-[1.8]" />
-            </div>
-            <div className="text-sm font-display font-bold text-[#2C2324] uppercase">
-              No tasks logged today
-            </div>
-            <div className="text-xs text-[#766754] max-w-xs mx-auto mt-1 font-sans">
-              Track your deep work, study, and daily focus. Hours flow straight to your Daily Log.
-            </div>
-            <button
-              onClick={() => onOpenAddModal(activeCategory !== 'All' ? activeCategory : 'Work')}
-              className="mt-4 px-4 py-2.5 btn-santiago text-xs font-display font-bold uppercase tracking-wider rounded-xl shadow-xs inline-flex items-center gap-1.5"
+      {/* 3. Quick Add Presets First (L7) */}
+      <div className="bg-white rounded-2xl p-4 border border-[#E2DACB] shadow-2xs">
+        <div className="flex items-center justify-between pb-2 mb-2 border-b border-[#E2DACB]/60">
+          <span className="font-label text-[11px] text-[#5E5444]">
+            QUICK ADD
+          </span>
+          <button
+            type="button"
+            onClick={() => setShowAllPresets(!showAllPresets)}
+            className="font-button-s text-xs text-[#C4501F] hover:underline"
+          >
+            {showAllPresets ? 'Show less' : 'See all'}
+          </button>
+        </div>
+
+        <div className="space-y-2">
+          {visiblePresets.map((preset, i) => (
+            <div
+              key={i}
+              className="flex items-center justify-between p-2.5 bg-[#F5F2EA] hover:bg-[#EEE9DD] rounded-xl border border-[#E2DACB] transition-colors gap-2"
             >
-              <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
-              <span>Log {activeCategory !== 'All' ? activeCategory : 'Task'}</span>
-            </button>
+              <div className="min-w-0 flex-1">
+                <div className="font-title text-xs text-[#2B2324] truncate">{preset.task}</div>
+                <div className="font-caption text-[11px] text-[#5E5444] mt-0.5">
+                  {preset.category} · {preset.hours} hrs
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  triggerHaptic(15);
+                  onQuickAdd(preset);
+                }}
+                className="w-8 h-8 rounded-full bg-[#C4501F] hover:bg-[#A83F17] text-white flex items-center justify-center shrink-0 shadow-xs transition-transform active:scale-90"
+                title={`Log ${preset.task}`}
+                aria-label={`Log ${preset.task}`}
+              >
+                <Plus className="w-4 h-4 stroke-[2.5]" />
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 4. Logged Tasks List */}
+      <div className="space-y-2">
+        <div className="font-label text-[11px] text-[#5E5444] px-1">
+          TODAY'S TASKS
+        </div>
+
+        {filteredItems.length === 0 ? (
+          <div className="bg-white rounded-2xl p-6 border border-[#E2DACB] text-center shadow-2xs">
+            <p className="font-body-m text-xs text-[#5E5444]">
+              Nothing logged yet. Tap + to add a task.
+            </p>
           </div>
         ) : (
           filteredItems.map((item, idx) => {
@@ -131,78 +234,76 @@ export const WorkTab: React.FC<WorkTabProps> = ({
               <div
                 key={idx}
                 onClick={() => onSelectDetail(item)}
-                className="specimen-card p-3.5 border border-[#D8D3C8] cursor-pointer hover:border-[#EB5E28] transition-all group"
+                className="bg-white rounded-2xl p-3.5 border border-[#E2DACB] cursor-pointer hover:border-[#C4501F] transition-all shadow-2xs group"
               >
-                {/* Header */}
-                <div className="flex items-center justify-between pb-2 border-b border-[#D8D3C8]/60 mb-2">
+                <div className="flex items-center justify-between pb-1.5 border-b border-[#E2DACB]/60 mb-2">
                   <div className="flex items-center space-x-2">
-                    <span className="font-mono text-[9px] bg-[#2C2324] text-white px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">
-                      TASK #T-0{idx + 1}
+                    <span className="font-label text-[10px] bg-[#2B2324] text-white px-1.5 py-0.5 rounded">
+                      #{idx + 1}
                     </span>
-                    <span className="font-mono text-[9px] text-[#EB5E28] font-bold uppercase tracking-wide">
+                    <span className="font-label text-[10px] text-[#C4501F]">
                       {item.category}
                     </span>
                   </div>
 
                   <div className="flex items-center space-x-2">
-                    <span className="text-[10px] font-mono text-[#766754] flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform">
-                      <span>DETAILS</span>
-                      <ChevronRight className="w-3 h-3" />
+                    <span className="font-caption text-[#5E5444] flex items-center gap-0.5 group-hover:text-[#2B2324] transition-colors">
+                      <span>Details</span>
+                      <ChevronRight className="w-3.5 h-3.5" />
                     </span>
                     <button
+                      type="button"
                       onClick={(e) => {
                         e.stopPropagation();
+                        triggerHaptic(10);
                         onDeleteWork(item);
                       }}
-                      className="text-[#D8D3C8] hover:text-[#EB5E28] p-1 transition-colors"
-                      title="Delete task"
+                      className="text-[#E2DACB] hover:text-[#B3261E] p-1 transition-colors"
+                      title="Delete"
+                      aria-label="Delete task"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </div>
 
-                {/* Task Item with Interactive Status Toggle */}
-                <div className="flex items-start space-x-3">
+                <div className="flex items-start space-x-2.5">
                   <button
+                    type="button"
                     onClick={(e) => {
                       e.stopPropagation();
+                      triggerHaptic(15);
                       onToggleStatus(item);
                     }}
                     className={`mt-0.5 w-5 h-5 rounded-lg border flex items-center justify-center transition-all shrink-0 ${
                       isDone
-                        ? 'bg-[#2C2324] border-[#2C2324] text-[#EB5E28]'
-                        : 'border-[#D8D3C8] hover:border-[#EB5E28] bg-white'
+                        ? 'bg-[#2B2324] border-[#2B2324] text-white'
+                        : 'border-[#E2DACB] hover:border-[#C4501F] bg-white'
                     }`}
                     title="Toggle Status"
+                    aria-label="Toggle task completed"
                   >
                     {isDone && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                   </button>
 
-                  <div className="flex-1">
-                    <h3 className={`text-sm font-display font-bold uppercase tracking-tight ${
-                      isDone ? 'text-[#766754] line-through' : 'text-[#2C2324]'
-                    }`}>
-                      {item.task}
-                    </h3>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-baseline justify-between gap-2">
+                      <h3 className={`font-title text-sm truncate ${
+                        isDone ? 'text-[#5E5444] line-through' : 'text-[#2B2324]'
+                      }`}>
+                        {item.task}
+                      </h3>
+                      <span className="font-stat text-xs text-[#2B2324] font-bold shrink-0">
+                        {item.hours} hrs
+                      </span>
+                    </div>
 
-                    {/* Specimen Indicator Tracks */}
-                    <div className="mt-2 space-y-0.5">
-                      <SpecimenTrack
-                        label="Hours"
-                        value={item.hours}
-                        unit="HRS"
-                        percent={Math.min(100, (item.hours / 6) * 100)}
-                        dotColor="#EB5E28"
-                      />
-                      <SpecimenTrack
-                        label="Status"
-                        value={item.status}
-                      />
+                    <div className="font-caption text-[#5E5444] mt-0.5">
+                      Status: {item.status}
                     </div>
 
                     {item.notes && (
-                      <div className="text-[10px] font-sans text-[#766754] italic mt-2 pt-1 border-t border-[#D8D3C8]/40 truncate">
+                      <div className="text-[11px] font-body-s text-[#5E5444] italic mt-1.5 pt-1 border-t border-[#E2DACB]/40 truncate">
                         {item.notes}
                       </div>
                     )}
@@ -214,34 +315,19 @@ export const WorkTab: React.FC<WorkTabProps> = ({
         )}
       </div>
 
-      {/* 4. Quick 1-Tap Task Presets */}
-      <div className="bg-white rounded-2xl p-4 border border-[#D8D3C8] shadow-xs">
-        <div className="flex items-center space-x-1.5 mb-2.5">
-          <Sparkles className="w-4 h-4 text-[#EB5E28]" />
-          <div className="text-xs font-display font-bold uppercase tracking-wider text-[#2C2324]">
-            Quick Task Presets (1-Tap Log)
-          </div>
-        </div>
-
-        <div className="space-y-1.5">
-          {quickTasks.map((preset, i) => (
-            <div
-              key={i}
-              onClick={() => onQuickAdd(preset)}
-              className="flex items-center justify-between p-2.5 bg-[#EFECE3] hover:bg-[#EAE5DE] rounded-xl cursor-pointer border border-[#D8D3C8] active:scale-[0.99] transition-all"
-            >
-              <div>
-                <div className="text-xs font-display font-bold text-[#2C2324] uppercase">{preset.task}</div>
-                <div className="text-[10px] font-mono text-[#766754]">{preset.category}</div>
-              </div>
-              <div className="text-right">
-                <div className="text-xs font-display font-black text-[#EB5E28]">+{preset.hours} hrs</div>
-                <div className="text-[9px] font-mono text-[#766754] uppercase">Tap to log</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* 5. Single Floating Action Button (L5) */}
+      <button
+        type="button"
+        onClick={() => {
+          triggerHaptic(15);
+          onOpenAddModal(activeCategory !== 'All' ? activeCategory : 'Work');
+        }}
+        className="btn-fab"
+        title="Add task"
+        aria-label="Add task"
+      >
+        <Plus className="w-6 h-6 stroke-[2.5]" />
+      </button>
 
     </div>
   );

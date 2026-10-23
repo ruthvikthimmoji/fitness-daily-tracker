@@ -1,6 +1,7 @@
-import React from 'react';
-import { Droplets, Footprints, UtensilsCrossed, Gift, Check, Sparkles, ChevronRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { Droplets, Footprints, UtensilsCrossed, Gift, Check, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
 import { DailyQuest } from '../types';
+import { triggerHaptic } from '../utils/formatters';
 
 interface QuestsWidgetProps {
   quests: DailyQuest[];
@@ -8,6 +9,9 @@ interface QuestsWidgetProps {
   onClaimChest: () => void;
   chestClaimed: boolean;
   onOpenBadgesModal: () => void;
+  onQuickAddWater?: (litres: number) => void;
+  onQuickAddSteps?: (steps: number) => void;
+  onQuickLogMeal?: () => void;
 }
 
 export const QuestsWidget: React.FC<QuestsWidgetProps> = ({
@@ -15,176 +19,217 @@ export const QuestsWidget: React.FC<QuestsWidgetProps> = ({
   onClaimQuest,
   onClaimChest,
   chestClaimed,
-  onOpenBadgesModal
+  onOpenBadgesModal: _onOpenBadgesModal,
+  onQuickAddWater,
+  onQuickAddSteps,
+  onQuickLogMeal
 }) => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const completedCount = quests.filter((q) => q.completed).length;
   const allCompleted = completedCount === quests.length && quests.length > 0;
 
-  const getQuestIcon = (type: string) => {
-    switch (type) {
+  const getCleanTitle = (quest: DailyQuest) => {
+    switch (quest.icon) {
       case 'water':
-        return <Droplets className="w-4 h-4 text-[#EB5E28]" />;
+        return `Water ${quest.current} / ${quest.target} L`;
       case 'steps':
-        return <Footprints className="w-4 h-4 text-[#EB5E28]" />;
+        return `Steps ${quest.current.toLocaleString()} / ${quest.target.toLocaleString()}`;
       case 'food':
-        return <UtensilsCrossed className="w-4 h-4 text-[#2C2324]" />;
+        return `Meals ${quest.current} / ${quest.target}`;
       default:
-        return <Sparkles className="w-4 h-4 text-[#EB5E28]" />;
+        return quest.title.replace(/^[^:]+:\s*/, '');
     }
   };
 
-  const getProgressColor = (type: string) => {
-    switch (type) {
-      case 'water':
-        return '#EB5E28';
-      case 'steps':
-        return '#EB5E28';
-      case 'food':
-        return '#2C2324';
-      default:
-        return '#766754';
+  const getActionControl = (quest: DailyQuest) => {
+    // If completed and unclaimed, show Claim button
+    if (quest.completed && !quest.claimed) {
+      return (
+        <button
+          type="button"
+          onClick={() => {
+            triggerHaptic(15);
+            onClaimQuest(quest.id);
+          }}
+          className="px-2.5 py-1 rounded-lg bg-[#C4501F] text-white font-button-s text-xs font-bold shrink-0 shadow-xs"
+        >
+          Claim +{quest.xp} XP
+        </button>
+      );
     }
+
+    if (quest.completed && quest.claimed) {
+      return (
+        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#2B2324] text-white font-label text-[10px] shrink-0">
+          <Check className="w-3 h-3 stroke-[3]" /> Done
+        </span>
+      );
+    }
+
+    // In-place quick action buttons (I3)
+    if (quest.icon === 'water' && onQuickAddWater) {
+      return (
+        <button
+          type="button"
+          onClick={() => {
+            triggerHaptic(15);
+            onQuickAddWater(0.25);
+          }}
+          className="px-2.5 py-1 rounded-lg bg-[#EEE9DD] hover:bg-[#E2DACB] text-[#2B2324] font-button-s text-xs shrink-0 border border-[#E2DACB]"
+        >
+          +250 ml
+        </button>
+      );
+    }
+
+    if (quest.icon === 'steps' && onQuickAddSteps) {
+      return (
+        <button
+          type="button"
+          onClick={() => {
+            triggerHaptic(15);
+            onQuickAddSteps(1000);
+          }}
+          className="px-2.5 py-1 rounded-lg bg-[#EEE9DD] hover:bg-[#E2DACB] text-[#2B2324] font-button-s text-xs shrink-0 border border-[#E2DACB]"
+        >
+          +1k
+        </button>
+      );
+    }
+
+    if (quest.icon === 'food' && onQuickLogMeal) {
+      return (
+        <button
+          type="button"
+          onClick={() => {
+            triggerHaptic(10);
+            onQuickLogMeal();
+          }}
+          className="px-2.5 py-1 rounded-lg bg-[#EEE9DD] hover:bg-[#E2DACB] text-[#2B2324] font-button-s text-xs shrink-0 border border-[#E2DACB]"
+        >
+          Log
+        </button>
+      );
+    }
+
+    return (
+      <span className="font-caption text-[11px] text-[#5E5444] bg-[#EEE9DD] px-2 py-0.5 rounded-md tabular-nums shrink-0">
+        +{quest.xp} XP
+      </span>
+    );
   };
 
   return (
-    <div className="specimen-card p-4 border border-[#D8D3C8]">
-      
-      {/* Widget Header with Duo-style Quests pill */}
-      <div className="flex items-center justify-between pb-3 border-b border-[#D8D3C8]/60 mb-3">
+    <div className="bg-white rounded-2xl p-4 border border-[#E2DACB] shadow-2xs">
+      {/* Widget Header (I3 & V2: Today's goals) */}
+      <div className="flex items-center justify-between pb-2 mb-2">
         <div className="flex items-center space-x-2">
-          <div className="w-7 h-7 rounded-lg bg-[#EFECE3] text-[#EB5E28] border border-[#D8D3C8] flex items-center justify-center font-display font-bold text-xs">
-            ⚡
-          </div>
-          <div>
-            <div className="font-h3 text-xs text-[#2C2324] uppercase tracking-wide flex items-center gap-1.5">
-              <span>Daily Missions</span>
-              <span className="font-badge text-[10px] px-1.5 py-0.2 rounded-full bg-[#EFECE3] text-[#EB5E28] border border-[#D8D3C8] tabular-nums">
-                {completedCount}/{quests.length} Done
-              </span>
-            </div>
-            <div className="font-body-s text-[11px] text-[#766754]">Crush missions to earn XP and open the Mystery Chest</div>
+          <div className="font-h3 text-sm text-[#2B2324] flex items-center gap-2">
+            <span>Today's goals</span>
+            <span className="font-label text-[10px] px-2 py-0.5 rounded-full bg-[#EEE9DD] text-[#2B2324] border border-[#E2DACB]">
+              {completedCount}/{quests.length}
+            </span>
           </div>
         </div>
 
         <button
-          onClick={onOpenBadgesModal}
-          className="font-button-s text-xs text-[#EB5E28] hover:text-[#2C2324] flex items-center gap-0.5 uppercase"
+          type="button"
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="p-1 text-[#5E5444] hover:text-[#2B2324] rounded-lg"
+          title={isCollapsed ? 'Expand goals' : 'Collapse goals'}
         >
-          <span>Badges</span>
-          <ChevronRight className="w-3 h-3" />
+          {isCollapsed ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}
         </button>
       </div>
 
-      {/* 3 Quests List */}
-      <div className="space-y-2.5">
-        {quests.map((quest) => {
-          const pct = Math.min(100, Math.round(((quest.current || 0) / (quest.target || 1)) * 100));
+      {/* Actionable Goals List (I3, B5: nowrap XP, min-w-0 titles) */}
+      {!isCollapsed && (
+        <div className="space-y-2 pt-1">
+          {quests.map((quest) => {
+            const pct = Math.min(100, Math.round(((quest.current || 0) / (quest.target || 1)) * 100));
 
-          return (
-            <div
-              key={quest.id}
-              className={`p-2.5 rounded-xl border transition-all ${
-                quest.completed
-                  ? 'bg-[#EFECE3] border-[#EB5E28]/40'
-                  : 'bg-[#EFECE3] border-[#D8D3C8]'
-              }`}
-            >
-              <div className="flex items-center justify-between mb-1.5">
+            return (
+              <div
+                key={quest.id}
+                className="p-2.5 rounded-xl bg-[#F5F2EA] border border-[#E2DACB] transition-all"
+              >
+                <div className="flex items-center justify-between gap-2 mb-1.5">
+                  <div className="flex items-center space-x-2 min-w-0 flex-1">
+                    <div className="p-1.5 rounded-lg bg-white border border-[#E2DACB] shrink-0 text-[#2B2324]">
+                      {quest.icon === 'water' && <Droplets className="w-3.5 h-3.5 text-[#2F5D8A]" />}
+                      {quest.icon === 'steps' && <Footprints className="w-3.5 h-3.5 text-[#C4501F]" />}
+                      {quest.icon === 'food' && <UtensilsCrossed className="w-3.5 h-3.5 text-[#2B2324]" />}
+                      {quest.icon !== 'water' && quest.icon !== 'steps' && quest.icon !== 'food' && <Sparkles className="w-3.5 h-3.5 text-[#C4501F]" />}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="font-title text-xs text-[#2B2324] truncate">
+                        {getCleanTitle(quest)}
+                      </div>
+                    </div>
+                  </div>
+
+                  {getActionControl(quest)}
+                </div>
+
+                {/* Progress bar */}
+                <div className="w-full h-1.5 bg-white rounded-full overflow-hidden border border-[#E2DACB]">
+                  <div
+                    className="h-full rounded-full transition-all duration-300"
+                    style={{
+                      width: `${pct}%`,
+                      backgroundColor:
+                        quest.icon === 'water'
+                          ? '#2F5D8A'
+                          : quest.icon === 'steps'
+                          ? '#C4501F'
+                          : '#2F6B2A'
+                    }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+
+          {/* Mystery Chest Box - Appears when all goals completed or unlocked (V2) */}
+          {(allCompleted || chestClaimed) && (
+            <div className="mt-2 pt-2 border-t border-[#E2DACB]">
+              <div className="bg-[#EEE9DD] p-2.5 rounded-xl border border-[#E2DACB] flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <div className="p-1.5 rounded-lg bg-white border border-[#D8D3C8]">
-                    {getQuestIcon(quest.icon)}
+                  <div className="w-8 h-8 rounded-lg bg-white border border-[#E2DACB] flex items-center justify-center text-base">
+                    {chestClaimed ? '✨' : '🎁'}
                   </div>
                   <div>
-                    <div className="font-title text-xs text-[#2C2324] leading-tight">{quest.title}</div>
-                    <div className="font-caption text-[#766754] mt-0.5 tabular-nums">
-                      {quest.current} / {quest.target} {quest.unit}
+                    <div className="font-title text-xs text-[#2B2324]">
+                      {chestClaimed ? 'Daily Chest Unlocked' : 'Daily Bonus Unlocked!'}
+                    </div>
+                    <div className="font-caption text-[11px] text-[#5E5444]">
+                      {chestClaimed ? 'All goals crushed today.' : 'Tap to claim your bonus.'}
                     </div>
                   </div>
                 </div>
 
-                {/* Claim or XP Badge */}
-                {quest.completed ? (
-                  quest.claimed ? (
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#2C2324] text-white font-badge text-[10px]">
-                      <Check className="w-3 h-3 stroke-[3]" /> Claimed
-                    </span>
-                  ) : (
-                    <button
-                      onClick={() => onClaimQuest(quest.id)}
-                      className="px-2.5 py-1 rounded-lg btn-3d-santiago font-button-s text-[11px] uppercase tracking-wide flex items-center gap-1 shadow-sm"
-                    >
-                      <span>Claim +{quest.xp} XP</span>
-                    </button>
-                  )
+                {!chestClaimed ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      triggerHaptic(20);
+                      onClaimChest();
+                    }}
+                    className="px-2.5 py-1 bg-[#C4501F] text-white font-button-s text-xs font-bold rounded-lg flex items-center gap-1 shadow-xs"
+                  >
+                    <Gift className="w-3 h-3" />
+                    <span>Open (+50 XP)</span>
+                  </button>
                 ) : (
-                  <span className="font-badge text-[11px] text-[#766754] bg-white px-2 py-0.5 rounded-md border border-[#D8D3C8] tabular-nums">
-                    +{quest.xp} XP
+                  <span className="font-label text-[10px] text-[#5E5444] bg-white px-2 py-0.5 rounded border border-[#E2DACB]">
+                    Opened
                   </span>
                 )}
               </div>
-
-              {/* Progress bar */}
-              <div className="w-full h-1.5 bg-white rounded-full overflow-hidden border border-[#D8D3C8]">
-                <div
-                  className="h-full rounded-full transition-all duration-300"
-                  style={{
-                    width: `${pct}%`,
-                    backgroundColor: getProgressColor(quest.icon)
-                  }}
-                ></div>
-              </div>
             </div>
-          );
-        })}
-      </div>
-
-      {/* Mystery Chest Box */}
-      <div className="mt-3 pt-3 border-t border-[#D8D3C8]">
-        <div className="bg-[#EFECE3] p-3 rounded-xl border border-[#D8D3C8] flex items-center justify-between">
-          <div className="flex items-center space-x-2.5">
-            <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-xl ${
-              allCompleted && !chestClaimed
-                ? 'bg-amber-100 border border-amber-300 animate-chest-bounce'
-                : 'bg-white border border-[#D8D3C8]'
-            }`}>
-              {chestClaimed ? '✨' : '🎁'}
-            </div>
-            <div>
-              <div className="font-h3 text-xs text-[#2C2324] uppercase">
-                {chestClaimed ? 'Daily Chest Unlocked!' : 'Daily Mystery Chest'}
-              </div>
-              <div className="font-body-s text-[11px] text-[#766754]">
-                {chestClaimed
-                  ? 'All 3 missions crushed today! Good work.'
-                  : allCompleted
-                  ? 'All missions finished! Tap to claim your bonus.'
-                  : `Finish ${3 - completedCount} more mission${3 - completedCount === 1 ? '' : 's'} to unlock (+50 XP)`}
-              </div>
-            </div>
-          </div>
-
-          <div>
-            {chestClaimed ? (
-              <span className="font-badge text-[10px] text-[#2C2324] bg-white px-2 py-1 rounded-md border border-[#D8D3C8]">
-                ✓ Opened
-              </span>
-            ) : allCompleted ? (
-              <button
-                onClick={onClaimChest}
-                className="px-3 py-1.5 btn-3d-santiago font-button-s text-xs uppercase tracking-wider rounded-xl flex items-center gap-1 shadow-sm"
-              >
-                <Gift className="w-3.5 h-3.5" />
-                <span>Open (+50 XP)</span>
-              </button>
-            ) : (
-              <span className="font-badge text-[10px] text-[#766754] bg-white px-2 py-1 rounded-md border border-[#D8D3C8]">
-                LOCKED
-              </span>
-            )}
-          </div>
+          )}
         </div>
-      </div>
-
+      )}
     </div>
   );
 };

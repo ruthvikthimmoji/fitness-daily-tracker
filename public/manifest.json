@@ -1,12 +1,12 @@
 {
-  "name": "DAILY/FIT – Fitness & Daily Tracker",
+  "name": "DAILY/FIT",
   "short_name": "DAILY/FIT",
-  "description": "A private, no-excuses daily log of your body, food, work and habits synced to your Google Sheet.",
-  "start_url": "/",
+  "description": "Show up daily. Progress, not perfection.",
+  "start_url": "/?source=pwa",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#EAF2F5",
-  "theme_color": "#1F4E5F",
+  "background_color": "#F5F2EA",
+  "theme_color": "#F5F2EA",
   "icons": [
     {
       "src": "/icon-192.svg",
@@ -19,6 +19,29 @@
       "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Log meal",
+      "short_name": "Meal",
+      "description": "Log food or meal",
+      "url": "/?action=meal",
+      "icons": [{ "src": "/icon-192.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Log workout",
+      "short_name": "Workout",
+      "description": "Log training session",
+      "url": "/?action=workout",
+      "icons": [{ "src": "/icon-192.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Add water",
+      "short_name": "Water",
+      "description": "Quick add water",
+      "url": "/?action=water",
+      "icons": [{ "src": "/icon-192.svg", "sizes": "192x192" }]
     }
   ]
 }

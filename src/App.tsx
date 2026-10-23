@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import confetti from 'canvas-confetti';
 import { Header } from './components/Header';
 import { BottomNav } from './components/BottomNav';
@@ -13,10 +13,9 @@ import { AddFoodModal } from './components/AddFoodModal';
 import { AddWorkoutModal } from './components/AddWorkoutModal';
 import { AddWorkModal } from './components/AddWorkModal';
 import { BadgesModal } from './components/BadgesModal';
-import { VaultTab } from './components/VaultTab';
 import { SpecimenDetailModal, LogDetailType } from './components/SpecimenDetailModal';
 import { PhotoUploaderModal } from './components/PhotoUploaderModal';
-import { Toast } from './components/Toast';
+import { Toast, ToastState } from './components/Toast';
 
 import {
   TabType,
@@ -66,12 +65,14 @@ import {
   evaluateStreak
 } from './services/gamification';
 
+import { toLocalIso, triggerHaptic } from './utils/formatters';
+
 export function App() {
   const [currentTab, setCurrentTab] = useState<TabType>('today');
-  const [selectedDate, setSelectedDate] = useState<string>(getTodayString());
+  const [selectedDate, setSelectedDate] = useState<string>(toLocalIso());
   const [syncStatus, setSyncStatus] = useState<'idle' | 'syncing' | 'synced' | 'error' | 'offline'>('idle');
   const [lastSyncTime, setLastSyncTimeState] = useState<string | null>(getLastSyncTime());
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [toastState, setToastState] = useState<ToastState | null>(null);
 
   // Core Data State
   const [settings, setSettings] = useState<UserSettings>(getStoredSettings());
@@ -105,7 +106,7 @@ export function App() {
   const [isAddWorkOpen, setIsAddWorkOpen] = useState(false);
   const [workCategoryPreset, setWorkCategoryPreset] = useState<string>('Work');
 
-  // Check standalone mode
+  // Standalone mode check
   const [isStandalone, setIsStandalone] = useState(false);
 
   useEffect(() => {
@@ -115,11 +116,11 @@ export function App() {
     setIsStandalone(isStandaloneMode);
   }, []);
 
-  const showToast = useCallback((msg: string) => {
-    setToastMessage(msg);
+  const showToast = useCallback((msg: string, actionLabel?: string, onAction?: () => void) => {
+    setToastState({ message: msg, actionLabel, onAction });
   }, []);
 
-  // Award XP with Duolingo-style celebration and level advancement
+  // Award XP with celebration
   const awardActionXp = useCallback((amount: number, reason: string) => {
     setGamification((prev) => {
       const res = awardXp(amount, prev);
@@ -132,12 +133,12 @@ export function App() {
             particleCount: 100,
             spread: 70,
             origin: { y: 0.5 },
-            colors: ['#EB5E28', '#2C2324', '#766754', '#EFECE3', '#FFD700']
+            colors: ['#C4501F', '#2B2324', '#5E5444', '#F5F2EA', '#FFD700']
           });
         } catch {}
-        showToast(`🎉 LEVEL UP! You reached Level ${res.newLevel}: ${res.nextState.levelTitle}!`);
+        showToast(`🎉 Level ${res.newLevel}: ${res.nextState.levelTitle}!`);
       } else {
-        showToast(`+${amount} XP: ${reason}!`);
+        showToast(`+${amount} XP · ${reason}`);
       }
       return withStreak;
     });
@@ -146,180 +147,136 @@ export function App() {
   // Sync daily quests whenever logs or items change
   useEffect(() => {
     setGamification((prev) => {
-      const updated = syncQuestsWithDailyData(prev, dailyLog, foodItems, workoutItems, workItems);
-      return updated;
+      return syncQuestsWithDailyData(prev, dailyLog, foodItems, workoutItems, workItems);
     });
   }, [dailyLog, foodItems, workoutItems, workItems]);
 
-  // Duolingo Quest Claim Handler
+  // Quest Claim Handler
   const handleClaimQuest = useCallback((questId: string) => {
     setGamification((prev) => {
       const quest = prev.quests.find((q) => q.id === questId);
       if (!quest || quest.claimed) return prev;
 
       const xpEarned = quest.xp || 25;
-      const res = awardXp(xpEarned, prev);
-      const updatedQuests = res.nextState.quests.map((q) =>
+      triggerHaptic(20);
+      awardActionXp(xpEarned, `Completed ${quest.title}`);
+
+      const updatedQuests = prev.quests.map((q) =>
         q.id === questId ? { ...q, claimed: true } : q
       );
 
-      const nextState = {
-        ...res.nextState,
-        quests: updatedQuests
-      };
-      saveStoredGamification(nextState);
-
-      try {
-        confetti({
-          particleCount: 60,
-          spread: 60,
-          origin: { y: 0.6 },
-          colors: ['#2E7D32', '#8BC34A', '#2E75B6', '#FFD700']
-        });
-      } catch {}
-
-      showToast(`⚡ Quest Claimed! +${xpEarned} XP!`);
-      return nextState;
+      const next = { ...prev, quests: updatedQuests };
+      saveStoredGamification(next);
+      return next;
     });
-  }, [showToast]);
+  }, [awardActionXp]);
 
-  // Duolingo Mystery Chest Bonus Handler
+  // Mystery Chest Claim
   const handleClaimChest = useCallback(() => {
     setGamification((prev) => {
       if (prev.chestClaimedDate === selectedDate) return prev;
 
-      const res = awardXp(50, prev);
-      const nextState = {
-        ...res.nextState,
+      triggerHaptic(30);
+      try {
+        confetti({
+          particleCount: 120,
+          spread: 80,
+          origin: { y: 0.6 },
+          colors: ['#C4501F', '#2B2324', '#FFD700', '#F5F2EA']
+        });
+      } catch {}
+
+      awardActionXp(50, 'Daily bonus claimed');
+
+      const next = {
+        ...prev,
         chestClaimedDate: selectedDate
       };
-      saveStoredGamification(nextState);
-
-      try {
-        confetti({
-          particleCount: 130,
-          spread: 85,
-          origin: { y: 0.5 },
-          colors: ['#FFD700', '#F28E2B', '#2E75B6', '#2E7D32', '#EC407A']
-        });
-      } catch {}
-
-      showToast(`🎁 Mystery Chest Unlocked! +50 XP Bonus!`);
-      return nextState;
+      saveStoredGamification(next);
+      return next;
     });
-  }, [selectedDate, showToast]);
+  }, [selectedDate, awardActionXp]);
 
-  // Photo Uploader Handlers
-  const handleOpenPhotoUploader = useCallback((category: 'workout' | 'physique' | 'food' | 'scale' | 'other' = 'workout', logId?: string) => {
-    setPhotoUploaderCategory(category);
-    setPhotoLinkedLogId(logId);
-    setIsPhotoUploaderOpen(true);
-  }, []);
+  // Reload data on date change
+  useEffect(() => {
+    setDailyLog(getStoredDailyLog(selectedDate));
+    setFoodItems(getStoredFoodItems(selectedDate));
+    setWorkoutItems(getStoredWorkoutItems(selectedDate));
+    setWorkItems(getStoredWorkItems(selectedDate));
+  }, [selectedDate]);
 
-  const handlePhotoSaved = useCallback((_photo: StoredPhoto) => {
-    awardActionXp(25, 'Specimen photo archived');
-    showToast('Photo secured in private Vault!');
-    // If daily photo hasn't been recorded in sheet, record it
-    if (!dailyLog.photoTaken) {
-      handleUpdateDailyLog({ photoTaken: true });
+  // Periodic offline queue flusher
+  useEffect(() => {
+    const scriptUrl = getScriptUrl();
+    if (scriptUrl) {
+      flushPendingQueue().catch(() => {});
     }
-  }, [awardActionXp, dailyLog.photoTaken, showToast]);
+  }, [selectedDate]);
 
-  // Specimen Detail Modal Handlers
-  const handleSelectLogDetail = useCallback((detail: LogDetailType) => {
-    setSelectedLogDetail(detail);
-    setIsDetailModalOpen(true);
-  }, []);
+  // Fetch summary and history from Google Sheets
+  const refreshSheetData = useCallback(async (isManual = false) => {
+    const scriptUrl = getScriptUrl();
+    if (!scriptUrl) return;
 
-  const handleDeleteCurrentDetail = useCallback(() => {
-    if (!selectedLogDetail) return;
-    if (selectedLogDetail.type === 'workout') {
-      handleDeleteWorkout(selectedLogDetail.item);
-    } else if (selectedLogDetail.type === 'food') {
-      handleDeleteFood(selectedLogDetail.item);
-    } else if (selectedLogDetail.type === 'work') {
-      handleDeleteWork(selectedLogDetail.item);
-    }
-    setIsDetailModalOpen(false);
-  }, [selectedLogDetail]);
-
-  // Load and refresh summary for date
-  const loadDataForDate = useCallback(async (date: string, _forceSync = false) => {
-    // 1. Load locally immediately
-    setDailyLog(getStoredDailyLog(date));
-    setFoodItems(getStoredFoodItems(date));
-    setWorkoutItems(getStoredWorkoutItems(date));
-    setWorkItems(getStoredWorkItems(date));
-    setSettings(getStoredSettings());
-    setKpis(getStoredDashboardKpis());
-
-    const hasUrl = !!getScriptUrl();
-    if (!hasUrl) {
-      setSyncStatus('idle');
-      return;
+    if (isManual) {
+      triggerHaptic(10);
+      setSyncStatus('syncing');
     }
 
-    // 2. Fetch from Google Apps Script
-    setSyncStatus('syncing');
     try {
-      await flushPendingQueue();
-
-      const res = await fetchDailySummary(date);
-      if (res.success) {
-        if (res.dailyLog) setDailyLog(res.dailyLog);
-        if (res.foodItems) setFoodItems(res.foodItems);
-        if (res.workoutItems) setWorkoutItems(res.workoutItems);
-        if (res.workItems) setWorkItems(res.workItems);
-        if (res.settings) setSettings(res.settings);
-        if (res.dashboardKpis) setKpis(res.dashboardKpis);
-        setSyncStatus('synced');
-        setLastSyncTimeState(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
-      } else {
-        setSyncStatus('offline');
+      const summaryRes = await fetchDailySummary(selectedDate);
+      if (summaryRes.success) {
+        if (summaryRes.dailyLog) setDailyLog(summaryRes.dailyLog);
+        if (summaryRes.foodItems) setFoodItems(summaryRes.foodItems);
+        if (summaryRes.workoutItems) setWorkoutItems(summaryRes.workoutItems);
+        if (summaryRes.workItems) setWorkItems(summaryRes.workItems);
+        if (summaryRes.dashboardKpis) setKpis(summaryRes.dashboardKpis);
       }
 
-      // Fetch history trends
-      const hist = await fetchHistory(14);
-      if (hist.length > 0) setHistory(hist);
+      const histRes = await fetchHistory();
+      if (Array.isArray(histRes) && histRes.length > 0) {
+        setHistory(histRes);
+      }
+
+      setSyncStatus('synced');
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      setLastSyncTimeState(timeStr);
+      if (isManual) {
+        showToast('Synced with Google Sheet');
+      }
     } catch {
       setSyncStatus('offline');
+      if (isManual) {
+        showToast('Offline cache saved · Will retry');
+      }
     }
-  }, []);
+  }, [selectedDate, showToast]);
 
+  // Initial load sync
   useEffect(() => {
-    loadDataForDate(selectedDate);
-  }, [selectedDate, loadDataForDate]);
+    refreshSheetData(false);
+  }, [refreshSheetData]);
 
-  useEffect(() => {
-    const url = getScriptUrl();
-    if (!url) {
-      const t = setTimeout(() => {
-        showToast('Tip: Link your Google Sheet in Settings to enable sync!');
-      }, 1500);
-      return () => clearTimeout(t);
+  // Set of logged dates for week strip dots (L1, I5)
+  const loggedDates = useMemo(() => {
+    const s = new Set<string>();
+    history.forEach(h => {
+      if (h.hasData || (h.dailyScore && h.dailyScore > 0)) {
+        s.add(h.date);
+      }
+    });
+    // Add today if has entries
+    if (foodItems.length > 0 || workoutItems.length > 0 || workItems.length > 0 || (dailyLog.water || 0) > 0 || (dailyLog.steps || 0) > 0) {
+      s.add(selectedDate);
     }
-  }, [showToast]);
-
-  // Brand-colored confetti trigger
-  useEffect(() => {
-    if (dailyLog.dailyScore >= 100) {
-      try {
-        confetti({
-          particleCount: 80,
-          spread: 60,
-          colors: ['#EB5E28', '#2C2324', '#766754', '#EFECE3', '#FFD700'],
-          origin: { y: 0.6 }
-        });
-      } catch {}
-    }
-  }, [dailyLog.dailyScore]);
+    return s;
+  }, [history, foodItems, workoutItems, workItems, dailyLog, selectedDate]);
 
   // Update Daily Log
   const handleUpdateDailyLog = async (updates: Partial<DailyLog>) => {
     const nextLog = { ...dailyLog, ...updates };
     setDailyLog(nextLog);
 
-    // Duolingo XP Rewards for Daily Tracking Actions
     if (updates.water !== undefined && (updates.water > (dailyLog.water || 0))) {
       awardActionXp(5, 'Hydration logged');
     } else if (updates.steps !== undefined && (updates.steps > (dailyLog.steps || 0))) {
@@ -342,7 +299,7 @@ export function App() {
     }
   };
 
-  // Food handlers
+  // Food handlers with Undo (I1)
   const handleOpenAddFood = (mealPreset = 'Breakfast') => {
     setFoodMealPreset(mealPreset);
     setIsAddFoodOpen(true);
@@ -357,7 +314,6 @@ export function App() {
       carbs: prev.carbs + (food.carbs || 0),
       fat: prev.fat + (food.fat || 0)
     }));
-    showToast(`Added ${food.foodItem}!`);
     awardActionXp(20, 'Meal tracked');
 
     setSyncStatus('syncing');
@@ -379,7 +335,7 @@ export function App() {
       carbs: Math.max(0, prev.carbs - (food.carbs || 0)),
       fat: Math.max(0, prev.fat - (food.fat || 0))
     }));
-    showToast(`Deleted ${food.foodItem}`);
+    showToast(`Removed ${food.foodItem}`);
 
     setSyncStatus('syncing');
     await syncDeleteFood(food);
@@ -387,13 +343,15 @@ export function App() {
   };
 
   const handleQuickAddFood = (preset: Omit<FoodItem, 'date'>) => {
-    handleAddFood({
-      ...preset,
-      date: selectedDate
+    triggerHaptic(15);
+    const item: FoodItem = { ...preset, date: selectedDate };
+    handleAddFood(item);
+    showToast(`${preset.foodItem} logged`, 'Undo', () => {
+      handleDeleteFood(item);
     });
   };
 
-  // Workout handlers
+  // Workout handlers with Undo (I1)
   const handleOpenAddWorkout = (typePreset = 'Push') => {
     setWorkoutTypePreset(typePreset);
     setIsAddWorkoutOpen(true);
@@ -409,7 +367,6 @@ export function App() {
       workoutVolume: prev.workoutVolume + vol,
       caloriesBurned: prev.caloriesBurned + (workout.caloriesBurned || 0)
     }));
-    showToast(`Logged ${workout.exercise}!`);
     awardActionXp(30, 'Workout logged');
 
     setSyncStatus('syncing');
@@ -430,7 +387,7 @@ export function App() {
       workoutVolume: Math.max(0, prev.workoutVolume - vol),
       caloriesBurned: Math.max(0, prev.caloriesBurned - (workout.caloriesBurned || 0))
     }));
-    showToast(`Deleted ${workout.exercise}`);
+    showToast(`Removed ${workout.exercise}`);
 
     setSyncStatus('syncing');
     await syncDeleteWorkout(workout);
@@ -438,13 +395,15 @@ export function App() {
   };
 
   const handleQuickAddWorkout = (preset: Omit<WorkoutItem, 'date'>) => {
-    handleAddWorkout({
-      ...preset,
-      date: selectedDate
+    triggerHaptic(15);
+    const item: WorkoutItem = { ...preset, date: selectedDate };
+    handleAddWorkout(item);
+    showToast(`${preset.exercise} logged`, 'Undo', () => {
+      handleDeleteWorkout(item);
     });
   };
 
-  // Work handlers
+  // Work handlers with Undo (I1)
   const handleOpenAddWork = (catPreset = 'Work') => {
     setWorkCategoryPreset(catPreset);
     setIsAddWorkOpen(true);
@@ -456,8 +415,7 @@ export function App() {
       ...prev,
       workHours: prev.workHours + (work.hours || 0)
     }));
-    showToast(`Logged task!`);
-    awardActionXp(15, 'Task logged');
+    awardActionXp(20, 'Task tracked');
 
     setSyncStatus('syncing');
     const res = await syncAddWork(work);
@@ -475,59 +433,97 @@ export function App() {
       ...prev,
       workHours: Math.max(0, prev.workHours - (work.hours || 0))
     }));
-    showToast(`Deleted task`);
+    showToast(`Removed ${work.task}`);
 
     setSyncStatus('syncing');
     await syncDeleteWork(work);
     setSyncStatus('synced');
   };
 
-  const handleToggleWorkStatus = (item: WorkItem) => {
-    const nextStatus = item.status === 'Done' ? 'In Progress' : 'Done';
-    const updated = { ...item, status: nextStatus as any };
-    setWorkItems((prev) => prev.map((w) => (w === item ? updated : w)));
-    showToast(`Task set to ${nextStatus}`);
-  };
-
   const handleQuickAddWork = (preset: Omit<WorkItem, 'date'>) => {
-    handleAddWork({
-      ...preset,
-      date: selectedDate
+    triggerHaptic(15);
+    const item: WorkItem = { ...preset, date: selectedDate };
+    handleAddWork(item);
+    showToast(`${preset.task} logged`, 'Undo', () => {
+      handleDeleteWork(item);
     });
   };
 
-  // Settings Save
+  const handleToggleWorkStatus = async (item: WorkItem) => {
+    const nextStatus = item.status === 'Done' ? 'In Progress' : 'Done';
+    const updated = { ...item, status: nextStatus as any };
+    setWorkItems((prev) => prev.map((w) => (w === item ? updated : w)));
+
+    if (nextStatus === 'Done') {
+      awardActionXp(15, 'Task finished');
+    }
+
+    setSyncStatus('syncing');
+    await syncAddWork(updated);
+    setSyncStatus('synced');
+  };
+
+  // Detail Modal inspection
+  const handleSelectLogDetail = (detail: LogDetailType) => {
+    setSelectedLogDetail(detail);
+    setIsDetailModalOpen(true);
+  };
+
+  const handleDeleteCurrentDetail = () => {
+    if (!selectedLogDetail) return;
+    if (selectedLogDetail.type === 'workout') {
+      handleDeleteWorkout(selectedLogDetail.item);
+    } else if (selectedLogDetail.type === 'food') {
+      handleDeleteFood(selectedLogDetail.item);
+    } else if (selectedLogDetail.type === 'work') {
+      handleDeleteWork(selectedLogDetail.item);
+    }
+    setIsDetailModalOpen(false);
+  };
+
+  const handleOpenPhotoUploader = (category: 'workout' | 'physique' | 'food' | 'scale' | 'other', logId?: string) => {
+    setPhotoUploaderCategory(category);
+    setPhotoLinkedLogId(logId);
+    setIsPhotoUploaderOpen(true);
+  };
+
+  const handlePhotoSaved = (_photo: StoredPhoto) => {
+    showToast('Photo saved to private vault');
+    awardActionXp(25, 'Photo captured');
+  };
+
   const handleSaveSettings = (newSettings: UserSettings) => {
     setSettings(newSettings);
     saveStoredSettings(newSettings);
-    loadDataForDate(selectedDate, true);
+    refreshSheetData(true);
   };
 
-  // Add Measurement
-  const handleAddMeasurement = async (_m: Measurement) => {
-    showToast('Measurement logged to sheet!');
+  const handleAddMeasurement = (_m: Measurement) => {
+    showToast('Measurement saved');
   };
 
   return (
-    <div className="min-h-screen bg-[#EFECE3] text-[#2C2324] flex flex-col font-sans selection:bg-[#EB5E28] selection:text-white">
-      <Toast message={toastMessage} onClear={() => setToastMessage(null)} />
+    <div className="min-h-screen bg-[#F5F2EA] text-[#2B2324] flex flex-col font-body selection:bg-[#C4501F] selection:text-white">
+      
+      {/* Toast Notification with Undo (I1) */}
+      <Toast toast={toastState} onClear={() => setToastState(null)} />
 
-      {/* Top Header with Duolingo Gamification Pill Bar */}
+      {/* Slim 56px App Bar (L1, V8, I2) */}
       <Header
+        currentTab={currentTab}
         selectedDate={selectedDate}
         onSelectDate={setSelectedDate}
         syncStatus={syncStatus}
-        onSync={() => loadDataForDate(selectedDate, true)}
+        onSync={() => refreshSheetData(true)}
         onOpenSettings={() => setIsSettingsOpen(true)}
-        onOpenInstall={() => setIsInstallOpen(true)}
-        isStandalone={isStandalone}
         lastSyncTime={lastSyncTime}
         gamification={gamification}
         onOpenBadgesModal={() => setIsBadgesModalOpen(true)}
+        loggedDates={loggedDates}
       />
 
-      {/* Main Tab Screen Content */}
-      <main className="flex-1 max-w-md w-full mx-auto px-4 pt-3 pb-6">
+      {/* Main Screen Content with Padding (L3) */}
+      <main className="flex-1 max-w-md mx-auto w-full px-3.5 pt-3 app-content">
         {currentTab === 'today' && (
           <TodayTab
             dailyLog={dailyLog}
@@ -541,6 +537,11 @@ export function App() {
             onShowToast={showToast}
             onSelectDetail={handleSelectLogDetail}
             onOpenPhotoUploader={handleOpenPhotoUploader}
+            onOpenAddModal={(type) => {
+              if (type === 'food') handleOpenAddFood();
+              if (type === 'workout') handleOpenAddWorkout();
+              if (type === 'work') handleOpenAddWork();
+            }}
           />
         )}
 
@@ -578,27 +579,24 @@ export function App() {
           />
         )}
 
-        {currentTab === 'vault' && (
-          <VaultTab
-            onOpenPhotoUploader={handleOpenPhotoUploader}
-            onShowToast={showToast}
-            onSelectPhotoDetail={(photo) => handleSelectLogDetail({ type: 'photo', item: photo })}
-            selectedDate={selectedDate}
-          />
-        )}
-
         {currentTab === 'dashboard' && (
           <DashboardTab
             kpis={kpis}
             history={history}
             settings={settings}
             onAddMeasurement={handleAddMeasurement}
+            onSaveWeight={(w) => handleUpdateDailyLog({ weight: w })}
             onShowToast={showToast}
+            onOpenPhotoUploader={handleOpenPhotoUploader}
+            onSelectPhotoDetail={(photo) => handleSelectLogDetail({ type: 'photo', item: photo })}
           />
         )}
       </main>
 
-      {/* Bottom Navigation */}
+      {/* Subtle bottom gradient fade overlay (L3) */}
+      <div className="app-fade-bottom" />
+
+      {/* 5-Item Thumb-friendly Bottom Navigation (L2) */}
       <BottomNav currentTab={currentTab} onSelectTab={setCurrentTab} />
 
       {/* Modals */}
@@ -625,6 +623,8 @@ export function App() {
         settings={settings}
         onSaveSettings={handleSaveSettings}
         onShowToast={showToast}
+        onOpenInstall={() => setIsInstallOpen(true)}
+        isStandalone={isStandalone}
       />
 
       <InstallModal
@@ -663,12 +663,4 @@ export function App() {
       />
     </div>
   );
-}
-
-function getTodayString() {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
 }

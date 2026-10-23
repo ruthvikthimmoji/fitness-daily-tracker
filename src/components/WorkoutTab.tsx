@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, Dumbbell, Flame, Clock, Award, Sparkles, Camera, ChevronRight } from 'lucide-react';
+import { Plus, Trash2, Dumbbell, Award, Flame, Clock, ChevronRight } from 'lucide-react';
 import { WorkoutItem } from '../types';
-import { SpecimenTrack } from './SpecimenTrack';
+import { triggerHaptic } from '../utils/formatters';
 
 interface WorkoutTabProps {
   workoutItems: WorkoutItem[];
@@ -9,7 +9,7 @@ interface WorkoutTabProps {
   onDeleteWorkout: (item: WorkoutItem) => void;
   onQuickAdd: (workout: Omit<WorkoutItem, 'date'>) => void;
   onSelectDetail: (item: WorkoutItem) => void;
-  onOpenPhotoUploader: (category: 'workout' | 'physique' | 'food' | 'scale' | 'other') => void;
+  onOpenPhotoUploader?: (category: 'workout' | 'physique' | 'food' | 'scale' | 'other') => void;
 }
 
 export const WorkoutTab: React.FC<WorkoutTabProps> = ({
@@ -17,10 +17,10 @@ export const WorkoutTab: React.FC<WorkoutTabProps> = ({
   onOpenAddModal,
   onDeleteWorkout,
   onQuickAdd,
-  onSelectDetail,
-  onOpenPhotoUploader
+  onSelectDetail
 }) => {
   const [activeFilter, setActiveFilter] = useState<string>('All');
+  const [showAllPresets, setShowAllPresets] = useState<boolean>(false);
 
   const workoutTypes = ['Push', 'Pull', 'Legs', 'Cardio', 'Upper', 'Lower', 'Full Body'];
 
@@ -33,97 +33,75 @@ export const WorkoutTab: React.FC<WorkoutTabProps> = ({
   const totalDuration = workoutItems.reduce((sum, item) => sum + (item.durationMin || 0), 0);
 
   const quickExercises: Omit<WorkoutItem, 'date'>[] = [
-    { workoutType: 'Push', exercise: 'Flat Barbell Bench Press', sets: 4, reps: 10, weightKg: 60, caloriesBurned: 150 },
-    { workoutType: 'Push', exercise: 'Incline Dumbbell Press', sets: 3, reps: 12, weightKg: 22, caloriesBurned: 100 },
-    { workoutType: 'Pull', exercise: 'Barbell Deadlifts', sets: 4, reps: 8, weightKg: 100, caloriesBurned: 220 },
-    { workoutType: 'Pull', exercise: 'Lat Pulldowns', sets: 3, reps: 12, weightKg: 55, caloriesBurned: 80 },
-    { workoutType: 'Legs', exercise: 'Barbell Back Squats', sets: 4, reps: 10, weightKg: 80, caloriesBurned: 200 },
-    { workoutType: 'Cardio', exercise: 'Treadmill Incline Walk', sets: 1, reps: 1, weightKg: 0, durationMin: 30, caloriesBurned: 250 },
+    { workoutType: 'Push', exercise: 'Bench press', sets: 4, reps: 10, weightKg: 60, caloriesBurned: 150 },
+    { workoutType: 'Push', exercise: 'Incline dumbbell press', sets: 3, reps: 12, weightKg: 22, caloriesBurned: 100 },
+    { workoutType: 'Pull', exercise: 'Barbell deadlift', sets: 4, reps: 8, weightKg: 100, caloriesBurned: 220 },
+    { workoutType: 'Pull', exercise: 'Lat pulldown', sets: 3, reps: 12, weightKg: 55, caloriesBurned: 80 },
+    { workoutType: 'Legs', exercise: 'Barbell back squat', sets: 4, reps: 10, weightKg: 80, caloriesBurned: 200 },
+    { workoutType: 'Cardio', exercise: 'Incline treadmill walk', sets: 1, reps: 1, weightKg: 0, durationMin: 30, caloriesBurned: 250 },
   ];
+
+  const visiblePresets = showAllPresets ? quickExercises : quickExercises.slice(0, 4);
 
   const filteredItems = activeFilter === 'All'
     ? workoutItems
     : workoutItems.filter(w => w.workoutType.toLowerCase() === activeFilter.toLowerCase());
 
   return (
-    <div className="space-y-4 pb-28 animate-in fade-in duration-150">
+    <div className="space-y-3.5 pb-28 animate-in fade-in duration-150 relative">
       
-      {/* 1. Workout Summary Hero Specimen Card */}
-      <div className="specimen-card p-4 border border-[#D8D3C8]">
-        <div className="flex items-center justify-between pb-3 border-b border-[#D8D3C8]/70">
-          <div>
-            <div className="font-label text-[10px] text-[#EB5E28]">
-              // ARCHIVE // STRENGTH & LOAD
-            </div>
-            <div className="font-h2 text-[#2C2324] uppercase tracking-tight mt-0.5">
-              {workoutItems.length > 0 ? (
-                <span><span className="font-score-m text-2xl tabular-nums">{totalVolume.toLocaleString()}</span> <span className="font-caption font-normal text-[#766754]">KG VOL</span></span>
-              ) : (
-                'WORKOUT SPECIMEN'
-              )}
-            </div>
+      {/* 1. Summary Strip in One Line (Page 16 Layout Rules) */}
+      <div className="bg-white rounded-2xl p-3.5 border border-[#E2DACB] shadow-2xs flex items-center justify-between gap-2">
+        <div className="flex items-center space-x-2">
+          <div className="p-1.5 rounded-lg bg-[#F5F2EA] text-[#2F6B2A]">
+            <Dumbbell className="w-4 h-4" />
           </div>
-
-          <div className="flex items-center space-x-1.5">
-            <button
-              onClick={() => onOpenPhotoUploader('workout')}
-              className="p-2 rounded-xl btn-cold-foam text-[#EB5E28] hover:text-[#2C2324] transition-colors"
-              title="Snap Workout Photo"
-            >
-              <Camera className="w-4 h-4" />
-            </button>
-
-            <button
-              onClick={() => onOpenAddModal(activeFilter !== 'All' ? activeFilter : 'Push')}
-              className="flex items-center gap-1 px-3.5 py-2 btn-santiago text-white font-button-s text-xs uppercase tracking-wider rounded-xl shadow-xs"
-            >
-              <Plus className="w-4 h-4 stroke-[2.5]" />
-              <span>Log</span>
-            </button>
+          <div>
+            <div className="font-title text-sm text-[#2B2324]">Training</div>
+            <div className="font-caption text-[11px] text-[#5E5444]">
+              {totalVolume > 0 ? `${totalVolume.toLocaleString()} kg total volume` : '0 kg volume today'}
+            </div>
           </div>
         </div>
 
-        {/* 3 Metrics Grid */}
-        <div className="grid grid-cols-3 gap-2 pt-3">
-          <div className="bg-[#EFECE3] rounded-xl p-2.5 border border-[#D8D3C8]">
-            <div className="flex items-center space-x-1 font-label text-[9px] text-[#766754] mb-0.5">
-              <Award className="w-3 h-3 text-[#2C2324]" />
-              <span>EXERCISES</span>
+        <div className="flex items-center space-x-3 text-right">
+          <div>
+            <div className="flex items-center space-x-1 font-caption text-[#5E5444] justify-end">
+              <Award className="w-3 h-3 text-[#2B2324]" />
+              <span>{workoutItems.length} exercises</span>
             </div>
-            <div className="font-score-m text-lg text-[#2C2324] tabular-nums">{workoutItems.length}</div>
-            <div className="font-caption text-[#766754]">Logged today</div>
-          </div>
-
-          <div className="bg-[#EFECE3] rounded-xl p-2.5 border border-[#D8D3C8]">
-            <div className="flex items-center space-x-1 font-label text-[9px] text-[#766754] mb-0.5">
-              <Flame className="w-3 h-3 text-[#EB5E28]" />
-              <span>BURNED</span>
+            <div className="flex items-center space-x-2 font-stat text-xs text-[#2B2324] mt-0.5 justify-end">
+              {totalCaloriesBurned > 0 && (
+                <span className="flex items-center gap-0.5 text-[#C4501F]">
+                  <Flame className="w-3 h-3" />
+                  <span>+{totalCaloriesBurned} kcal</span>
+                </span>
+              )}
+              {totalDuration > 0 && (
+                <span className="flex items-center gap-0.5 text-[#5E5444]">
+                  <Clock className="w-3 h-3" />
+                  <span>{totalDuration}m</span>
+                </span>
+              )}
             </div>
-            <div className="font-score-m text-lg text-[#EB5E28] tabular-nums">+{totalCaloriesBurned}</div>
-            <div className="font-caption text-[#766754]">kcal burned</div>
-          </div>
-
-          <div className="bg-[#EFECE3] rounded-xl p-2.5 border border-[#D8D3C8]">
-            <div className="flex items-center space-x-1 font-label text-[9px] text-[#766754] mb-0.5">
-              <Clock className="w-3 h-3 text-[#2C2324]" />
-              <span>DURATION</span>
-            </div>
-            <div className="font-score-m text-lg text-[#2C2324] tabular-nums">{totalDuration}m</div>
-            <div className="font-caption text-[#766754]">Total time</div>
           </div>
         </div>
       </div>
 
-      {/* 2. Workout Type Filter Pills */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
+      {/* 2. Filter Chips Row with Right-Edge Fade (B6) */}
+      <div className="chips">
         {['All', ...workoutTypes].map((filter) => (
           <button
             key={filter}
-            onClick={() => setActiveFilter(filter)}
-            className={`px-3 py-1.5 font-button-s text-xs uppercase tracking-wider rounded-xl whitespace-nowrap transition-all active:scale-95 ${
+            type="button"
+            onClick={() => {
+              triggerHaptic(8);
+              setActiveFilter(filter);
+            }}
+            className={`chip px-3 py-1.5 font-button-s text-xs rounded-xl border transition-all ${
               activeFilter === filter
-                ? 'bg-[#2C2324] text-white shadow-xs'
-                : 'bg-white text-[#766754] hover:text-[#2C2324] border border-[#D8D3C8]'
+                ? 'bg-[#2B2324] text-white border-[#2B2324] shadow-xs'
+                : 'bg-white text-[#5E5444] border-[#E2DACB] hover:bg-[#EEE9DD]'
             }`}
           >
             {filter}
@@ -131,35 +109,67 @@ export const WorkoutTab: React.FC<WorkoutTabProps> = ({
         ))}
       </div>
 
-      {/* 3. Logged Exercises List (Specimen Cards) */}
-      <div className="space-y-2.5">
+      {/* 3. Quick Add Presets First (L7 & Wireframe 7) */}
+      <div className="bg-white rounded-2xl p-4 border border-[#E2DACB] shadow-2xs">
+        <div className="flex items-center justify-between pb-2 mb-2 border-b border-[#E2DACB]/60">
+          <span className="font-label text-[11px] text-[#5E5444]">
+            QUICK ADD
+          </span>
+          <button
+            type="button"
+            onClick={() => setShowAllPresets(!showAllPresets)}
+            className="font-button-s text-xs text-[#C4501F] hover:underline"
+          >
+            {showAllPresets ? 'Show less' : 'See all'}
+          </button>
+        </div>
+
+        <div className="space-y-2">
+          {visiblePresets.map((preset, i) => {
+            const vol = (preset.sets || 0) * (preset.reps || 0) * (preset.weightKg || 0);
+
+            return (
+              <div
+                key={i}
+                className="flex items-center justify-between p-2.5 bg-[#F5F2EA] hover:bg-[#EEE9DD] rounded-xl border border-[#E2DACB] transition-colors gap-2"
+              >
+                <div className="min-w-0 flex-1">
+                  <div className="font-title text-xs text-[#2B2324] truncate">{preset.exercise}</div>
+                  <div className="font-caption text-[11px] text-[#5E5444] mt-0.5">
+                    {preset.workoutType} · {preset.sets} × {preset.reps} {preset.weightKg > 0 ? `@ ${preset.weightKg} kg` : ''}
+                    {vol > 0 ? ` · ${vol.toLocaleString()} kg` : ''}
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    triggerHaptic(15);
+                    onQuickAdd(preset);
+                  }}
+                  className="w-8 h-8 rounded-full bg-[#C4501F] hover:bg-[#A83F17] text-white flex items-center justify-center shrink-0 shadow-xs transition-transform active:scale-90"
+                  title={`Log ${preset.exercise}`}
+                  aria-label={`Log ${preset.exercise}`}
+                >
+                  <Plus className="w-4 h-4 stroke-[2.5]" />
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 4. Logged Exercises List */}
+      <div className="space-y-2">
+        <div className="font-label text-[11px] text-[#5E5444] px-1">
+          TODAY'S SESSIONS
+        </div>
+
         {filteredItems.length === 0 ? (
-          <div className="bg-white rounded-2xl p-8 border border-[#D8D3C8] text-center shadow-xs">
-            <div className="w-12 h-12 rounded-xl bg-[#EFECE3] mx-auto flex items-center justify-center text-[#EB5E28] mb-2 border border-[#D8D3C8]">
-              <Dumbbell className="w-6 h-6 stroke-[1.8]" />
-            </div>
-            <div className="text-sm font-display font-bold text-[#2C2324] uppercase">
-              No exercises logged today
-            </div>
-            <div className="text-xs text-[#766754] max-w-xs mx-auto mt-1 font-sans">
-              Log your sets, reps, and load. Tap any entry to view full technical specs or add workout photos.
-            </div>
-            <div className="mt-4 flex items-center justify-center gap-2">
-              <button
-                onClick={() => onOpenAddModal(activeFilter !== 'All' ? activeFilter : 'Push')}
-                className="px-4 py-2.5 btn-santiago text-xs font-display font-bold uppercase tracking-wider rounded-xl shadow-xs inline-flex items-center gap-1.5"
-              >
-                <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
-                <span>Log {activeFilter !== 'All' ? activeFilter : 'Exercise'}</span>
-              </button>
-              <button
-                onClick={() => onOpenPhotoUploader('workout')}
-                className="px-3.5 py-2.5 btn-cold-foam text-xs font-mono font-bold uppercase tracking-wider rounded-xl inline-flex items-center gap-1.5"
-              >
-                <Camera className="w-3.5 h-3.5 text-[#EB5E28]" />
-                <span>Photo</span>
-              </button>
-            </div>
+          <div className="bg-white rounded-2xl p-6 border border-[#E2DACB] text-center shadow-2xs">
+            <p className="font-body-m text-xs text-[#5E5444]">
+              Nothing logged yet. Tap + to add an exercise.
+            </p>
           </div>
         ) : (
           filteredItems.map((item, idx) => {
@@ -169,66 +179,56 @@ export const WorkoutTab: React.FC<WorkoutTabProps> = ({
               <div
                 key={idx}
                 onClick={() => onSelectDetail(item)}
-                className="specimen-card p-3.5 border border-[#D8D3C8] cursor-pointer hover:border-[#EB5E28] transition-all group"
+                className="bg-white rounded-2xl p-3.5 border border-[#E2DACB] cursor-pointer hover:border-[#C4501F] transition-all shadow-2xs group"
               >
-                {/* Top Catalog & Category Header */}
-                <div className="flex items-center justify-between pb-2 border-b border-[#D8D3C8]/60 mb-2">
+                <div className="flex items-center justify-between pb-1.5 border-b border-[#E2DACB]/60 mb-2">
                   <div className="flex items-center space-x-2">
-                    <span className="font-label text-[9px] bg-[#2C2324] text-white px-1.5 py-0.5 rounded">
-                      SPECIMEN #W-0{idx + 1}
+                    <span className="font-label text-[10px] bg-[#2B2324] text-white px-1.5 py-0.5 rounded">
+                      #{idx + 1}
                     </span>
-                    <span className="font-badge text-[10px] text-[#EB5E28] uppercase">
+                    <span className="font-label text-[10px] text-[#C4501F]">
                       {item.workoutType}
                     </span>
                   </div>
 
                   <div className="flex items-center space-x-2">
-                    <span className="font-caption text-[#766754] flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform">
-                      <span>SPECS</span>
-                      <ChevronRight className="w-3 h-3" />
+                    <span className="font-caption text-[#5E5444] flex items-center gap-0.5 group-hover:text-[#2B2324] transition-colors">
+                      <span>Details</span>
+                      <ChevronRight className="w-3.5 h-3.5" />
                     </span>
                     <button
+                      type="button"
                       onClick={(e) => {
                         e.stopPropagation();
+                        triggerHaptic(10);
                         onDeleteWorkout(item);
                       }}
-                      className="text-[#D8D3C8] hover:text-[#EB5E28] p-1 transition-colors"
+                      className="text-[#E2DACB] hover:text-[#B3261E] p-1 transition-colors"
                       title="Delete"
+                      aria-label="Delete exercise"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </div>
 
-                {/* Bold Exercise Title */}
-                <h3 className="font-h3 text-base text-[#2C2324] uppercase tracking-tight">
-                  {item.exercise}
-                </h3>
+                <div className="flex items-baseline justify-between">
+                  <h3 className="font-title text-sm text-[#2B2324] font-semibold">
+                    {item.exercise}
+                  </h3>
+                  <span className="font-stat text-xs text-[#2B2324] font-bold">
+                    {vol > 0 ? `${vol.toLocaleString()} kg` : ''}
+                  </span>
+                </div>
 
-                {/* Specimen Indicator Tracks */}
-                <div className="mt-2 space-y-0.5">
-                  <SpecimenTrack
-                    label="Volume"
-                    value={vol.toLocaleString()}
-                    unit="KG"
-                    percent={Math.min(100, (vol / 3000) * 100)}
-                    dotColor="#2C2324"
-                  />
-                  <SpecimenTrack
-                    label="Load"
-                    value={item.weightKg}
-                    unit="KG"
-                    percent={Math.min(100, (item.weightKg / 140) * 100)}
-                    dotColor="#EB5E28"
-                  />
-                  <SpecimenTrack
-                    label="Sets × Reps"
-                    value={`${item.sets} × ${item.reps}`}
-                  />
+                <div className="font-caption text-[#5E5444] mt-1">
+                  {item.sets} sets × {item.reps} reps {item.weightKg > 0 ? `@ ${item.weightKg} kg` : ''}
+                  {item.durationMin ? ` · ${item.durationMin} min` : ''}
+                  {item.caloriesBurned ? ` · ${item.caloriesBurned} kcal` : ''}
                 </div>
 
                 {item.notes && (
-                  <div className="text-[10px] font-sans text-[#766754] italic mt-2 pt-1 border-t border-[#D8D3C8]/40 truncate">
+                  <div className="text-[11px] font-body-s text-[#5E5444] italic mt-1.5 pt-1 border-t border-[#E2DACB]/40 truncate">
                     {item.notes}
                   </div>
                 )}
@@ -238,44 +238,19 @@ export const WorkoutTab: React.FC<WorkoutTabProps> = ({
         )}
       </div>
 
-      {/* 4. Quick Exercise Presets */}
-      <div className="bg-white rounded-2xl p-4 border border-[#D8D3C8] shadow-xs">
-        <div className="flex items-center space-x-1.5 mb-2.5">
-          <Sparkles className="w-4 h-4 text-[#EB5E28]" />
-          <div className="text-xs font-display font-bold uppercase tracking-wider text-[#2C2324]">
-            Quick Presets (1-Tap Log)
-          </div>
-        </div>
-
-        <div className="space-y-1.5">
-          {quickExercises.map((preset, i) => {
-            const vol = (preset.sets || 0) * (preset.reps || 0) * (preset.weightKg || 0);
-
-            return (
-              <div
-                key={i}
-                onClick={() => onQuickAdd(preset)}
-                className="flex items-center justify-between p-2.5 bg-[#EFECE3] hover:bg-[#e6e2d7] rounded-xl cursor-pointer border border-[#D8D3C8] active:scale-[0.99] transition-all"
-              >
-                <div>
-                  <div className="text-xs font-display font-bold text-[#2C2324] uppercase">{preset.exercise}</div>
-                  <div className="text-[10px] font-mono text-[#766754]">
-                    {preset.workoutType} • {preset.sets} × {preset.reps} {preset.weightKg > 0 ? `@ ${preset.weightKg}kg` : ''}
-                  </div>
-                </div>
-                <div className="text-right">
-                  {vol > 0 ? (
-                    <div className="text-xs font-display font-black text-[#2C2324]">+{vol} kg</div>
-                  ) : (
-                    <div className="text-xs font-mono font-bold text-[#EB5E28]">+{preset.caloriesBurned} kcal</div>
-                  )}
-                  <div className="text-[9px] font-mono text-[#766754] uppercase">Tap to log</div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+      {/* 5. Single Floating Action Button (L5 & Wireframe 9) */}
+      <button
+        type="button"
+        onClick={() => {
+          triggerHaptic(15);
+          onOpenAddModal(activeFilter !== 'All' ? activeFilter : 'Push');
+        }}
+        className="btn-fab"
+        title="Log exercise"
+        aria-label="Log exercise"
+      >
+        <Plus className="w-6 h-6 stroke-[2.5]" />
+      </button>
 
     </div>
   );

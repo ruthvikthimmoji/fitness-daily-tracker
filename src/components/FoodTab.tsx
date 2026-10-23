@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, UtensilsCrossed, Sparkles, Camera, ChevronRight } from 'lucide-react';
+import { Plus, Trash2, UtensilsCrossed, ChevronRight } from 'lucide-react';
 import { FoodItem, UserSettings } from '../types';
-import { SpecimenTrack } from './SpecimenTrack';
+import { triggerHaptic } from '../utils/formatters';
 
 interface FoodTabProps {
   foodItems: FoodItem[];
@@ -10,7 +10,7 @@ interface FoodTabProps {
   onDeleteFood: (item: FoodItem) => void;
   onQuickAdd: (food: Omit<FoodItem, 'date'>) => void;
   onSelectDetail: (item: FoodItem) => void;
-  onOpenPhotoUploader: (category: 'workout' | 'physique' | 'food' | 'scale' | 'other') => void;
+  onOpenPhotoUploader?: (category: 'workout' | 'physique' | 'food' | 'scale' | 'other') => void;
 }
 
 export const FoodTab: React.FC<FoodTabProps> = ({
@@ -19,10 +19,10 @@ export const FoodTab: React.FC<FoodTabProps> = ({
   onOpenAddModal,
   onDeleteFood,
   onQuickAdd,
-  onSelectDetail,
-  onOpenPhotoUploader
+  onSelectDetail
 }) => {
   const [activeFilter, setActiveFilter] = useState<string>('All');
+  const [showAllPresets, setShowAllPresets] = useState<boolean>(false);
 
   const meals = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
 
@@ -35,107 +35,65 @@ export const FoodTab: React.FC<FoodTabProps> = ({
   const proTarget = settings.dailyProteinTarget || 130;
 
   const quickPresets: Omit<FoodItem, 'date'>[] = [
-    { meal: 'Breakfast', foodItem: 'Oats with Milk & Banana', quantity: '1 bowl', calories: 380, protein: 14, carbs: 65, fat: 7 },
-    { meal: 'Snacks', foodItem: 'Whey Protein Shake', quantity: '1 scoop (30g)', calories: 120, protein: 25, carbs: 2, fat: 1.5 },
-    { meal: 'Lunch', foodItem: 'Grilled Chicken Breast & Rice', quantity: '200g chicken + 1 cup rice', calories: 520, protein: 48, carbs: 55, fat: 8 },
-    { meal: 'Breakfast', foodItem: 'Boiled Eggs', quantity: '3 large eggs', calories: 210, protein: 18, carbs: 1.5, fat: 15 },
-    { meal: 'Snacks', foodItem: 'Greek Yogurt & Almonds', quantity: '150g yogurt + 15g nuts', calories: 220, protein: 18, carbs: 10, fat: 12 },
+    { meal: 'Breakfast', foodItem: 'Oats with milk & banana', quantity: '1 bowl', calories: 380, protein: 14, carbs: 65, fat: 7 },
+    { meal: 'Snacks', foodItem: 'Whey protein shake', quantity: '1 scoop (30 g)', calories: 120, protein: 25, carbs: 2, fat: 1.5 },
+    { meal: 'Lunch', foodItem: 'Grilled chicken & rice', quantity: '200 g chicken + 1 cup rice', calories: 520, protein: 40, carbs: 55, fat: 8 },
+    { meal: 'Breakfast', foodItem: '3 large eggs', quantity: '3 eggs', calories: 210, protein: 18, carbs: 1.5, fat: 15 },
+    { meal: 'Snacks', foodItem: 'Greek yogurt & almonds', quantity: '150 g yogurt + 15 g nuts', calories: 220, protein: 18, carbs: 10, fat: 12 },
   ];
+
+  const visiblePresets = showAllPresets ? quickPresets : quickPresets.slice(0, 4);
 
   const filteredItems = activeFilter === 'All' 
     ? foodItems 
     : foodItems.filter(f => f.meal.toLowerCase() === activeFilter.toLowerCase());
 
   return (
-    <div className="space-y-4 pb-28 animate-in fade-in duration-150">
+    <div className="space-y-3.5 pb-28 animate-in fade-in duration-150 relative">
       
-      {/* 1. Macro Summary Hero Specimen Card */}
-      <div className="specimen-card p-4 border border-[#D8D3C8]">
-        <div className="flex items-center justify-between pb-3 border-b border-[#D8D3C8]/70">
-          <div>
-            <div className="font-label text-[10px] text-[#EB5E28]">
-              // ARCHIVE // NUTRITION & FUEL
-            </div>
-            <div className="font-h2 text-[#2C2324] uppercase tracking-tight mt-0.5">
-              <span className="font-score-m text-2xl tabular-nums">{totalCalories}</span> <span className="font-caption font-normal text-[#766754]">/ {calTarget} KCAL</span>
-            </div>
+      {/* 1. Summary Header Strip (Wireframe Food, Page 15) */}
+      <div className="bg-white rounded-2xl p-3.5 border border-[#E2DACB] shadow-2xs flex items-center justify-between gap-2">
+        <div className="flex items-center space-x-2">
+          <div className="p-1.5 rounded-lg bg-[#F5F2EA] text-[#2B2324]">
+            <UtensilsCrossed className="w-4 h-4" />
           </div>
-
-          <div className="flex items-center space-x-1.5">
-            <button
-              onClick={() => onOpenPhotoUploader('food')}
-              className="p-2 rounded-xl btn-cold-foam text-[#EB5E28] hover:text-[#2C2324] transition-colors"
-              title="Snap Meal Photo"
-            >
-              <Camera className="w-4 h-4" />
-            </button>
-
-            <button
-              onClick={() => onOpenAddModal(activeFilter !== 'All' ? activeFilter : 'Breakfast')}
-              className="flex items-center gap-1 px-3.5 py-2 btn-santiago text-white font-button-s text-xs uppercase tracking-wider rounded-xl shadow-xs"
-            >
-              <Plus className="w-4 h-4 stroke-[2.5]" />
-              <span>Log</span>
-            </button>
+          <div>
+            <div className="font-score-m text-base text-[#2B2324]">
+              {totalCalories.toLocaleString()} <span className="font-caption text-[#5E5444]">/ {calTarget.toLocaleString()} kcal</span>
+            </div>
+            <div className="font-caption text-[11px] text-[#5E5444] mt-0.5">
+              Protein {totalProtein} g · Carbs {totalCarbs} g · Fat {totalFat} g
+            </div>
           </div>
         </div>
 
-        {/* Macro Bars */}
-        <div className="grid grid-cols-3 gap-2 pt-3">
-          <div className="bg-[#EFECE3] rounded-xl p-2.5 border border-[#D8D3C8]">
-            <div className="flex items-center justify-between font-label text-[10px] mb-1">
-              <span className="text-[#2E7D32]">PROTEIN</span>
-              <span className="text-[#2C2324] font-stat tabular-nums">{totalProtein}g</span>
-            </div>
-            <div className="w-full h-1.5 bg-white rounded-full overflow-hidden border border-[#D8D3C8]">
-              <div
-                className="h-full bg-[#2E7D32] rounded-full transition-all"
-                style={{ width: `${Math.min(100, (totalProtein / proTarget) * 100)}%` }}
-              ></div>
-            </div>
-            <div className="font-caption text-[#766754] mt-1 tabular-nums">Goal: {proTarget}g</div>
-          </div>
-
-          <div className="bg-[#EFECE3] rounded-xl p-2.5 border border-[#D8D3C8]">
-            <div className="flex items-center justify-between font-label text-[10px] mb-1">
-              <span className="text-[#EB5E28]">CARBS</span>
-              <span className="text-[#2C2324] font-stat tabular-nums">{totalCarbs}g</span>
-            </div>
-            <div className="w-full h-1.5 bg-white rounded-full overflow-hidden border border-[#D8D3C8]">
-              <div
-                className="h-full bg-[#EB5E28] rounded-full transition-all"
-                style={{ width: `${Math.min(100, (totalCarbs / 250) * 100)}%` }}
-              ></div>
-            </div>
-            <div className="font-caption text-[#766754] mt-1 tabular-nums">Target: 250g</div>
-          </div>
-
-          <div className="bg-[#EFECE3] rounded-xl p-2.5 border border-[#D8D3C8]">
-            <div className="flex items-center justify-between font-label text-[10px] mb-1">
-              <span className="text-[#766754]">FATS</span>
-              <span className="text-[#2C2324] font-stat tabular-nums">{totalFat}g</span>
-            </div>
-            <div className="w-full h-1.5 bg-white rounded-full overflow-hidden border border-[#D8D3C8]">
-              <div
-                className="h-full bg-[#766754] rounded-full transition-all"
-                style={{ width: `${Math.min(100, (totalFat / 70) * 100)}%` }}
-              ></div>
-            </div>
-            <div className="font-caption text-[#766754] mt-1 tabular-nums">Target: 70g</div>
+        <div className="text-right">
+          <span className="font-caption text-[11px] text-[#2F6B2A] font-semibold">
+            {totalProtein} of {proTarget} g protein
+          </span>
+          <div className="w-20 h-1.5 bg-[#EEE9DD] rounded-full overflow-hidden mt-1">
+            <div
+              className="h-full bg-[#2F6B2A] rounded-full transition-all"
+              style={{ width: `${Math.min(100, (totalProtein / proTarget) * 100)}%` }}
+            />
           </div>
         </div>
       </div>
 
-      {/* 2. Meal Filter Pills */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
+      {/* 2. Filter Chips Row with Right-Edge Fade (B6) */}
+      <div className="chips">
         {['All', ...meals].map((filter) => (
           <button
             key={filter}
-            onClick={() => setActiveFilter(filter)}
-            className={`px-3 py-1.5 font-button-s text-xs uppercase tracking-wider rounded-xl whitespace-nowrap transition-all active:scale-95 ${
+            type="button"
+            onClick={() => {
+              triggerHaptic(8);
+              setActiveFilter(filter);
+            }}
+            className={`chip px-3 py-1.5 font-button-s text-xs rounded-xl border transition-all ${
               activeFilter === filter
-                ? 'bg-[#2C2324] text-white shadow-xs'
-                : 'bg-white text-[#766754] hover:text-[#2C2324] border border-[#D8D3C8]'
+                ? 'bg-[#2B2324] text-white border-[#2B2324] shadow-xs'
+                : 'bg-white text-[#5E5444] border-[#E2DACB] hover:bg-[#EEE9DD]'
             }`}
           >
             {filter}
@@ -143,107 +101,116 @@ export const FoodTab: React.FC<FoodTabProps> = ({
         ))}
       </div>
 
-      {/* 3. Logged Food Items (Specimen Cards) */}
-      <div className="space-y-2.5">
+      {/* 3. Quick Add Presets First (L7 & Wireframe 7) */}
+      <div className="bg-white rounded-2xl p-4 border border-[#E2DACB] shadow-2xs">
+        <div className="flex items-center justify-between pb-2 mb-2 border-b border-[#E2DACB]/60">
+          <span className="font-label text-[11px] text-[#5E5444]">
+            QUICK ADD
+          </span>
+          <button
+            type="button"
+            onClick={() => setShowAllPresets(!showAllPresets)}
+            className="font-button-s text-xs text-[#C4501F] hover:underline"
+          >
+            {showAllPresets ? 'Show less' : 'See all'}
+          </button>
+        </div>
+
+        <div className="space-y-2">
+          {visiblePresets.map((preset, i) => (
+            <div
+              key={i}
+              className="flex items-center justify-between p-2.5 bg-[#F5F2EA] hover:bg-[#EEE9DD] rounded-xl border border-[#E2DACB] transition-colors gap-2"
+            >
+              <div className="min-w-0 flex-1">
+                <div className="font-title text-xs text-[#2B2324] truncate">{preset.foodItem}</div>
+                <div className="font-caption text-[11px] text-[#5E5444] mt-0.5">
+                  {preset.calories} kcal · {preset.protein} g protein · {preset.quantity}
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  triggerHaptic(15);
+                  onQuickAdd(preset);
+                }}
+                className="w-8 h-8 rounded-full bg-[#C4501F] hover:bg-[#A83F17] text-white flex items-center justify-center shrink-0 shadow-xs transition-transform active:scale-90"
+                title={`Log ${preset.foodItem}`}
+                aria-label={`Log ${preset.foodItem}`}
+              >
+                <Plus className="w-4 h-4 stroke-[2.5]" />
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 4. Logged Food Items List */}
+      <div className="space-y-2">
+        <div className="font-label text-[11px] text-[#5E5444] px-1">
+          TODAY'S MEALS
+        </div>
+
         {filteredItems.length === 0 ? (
-          <div className="bg-white rounded-2xl p-8 border border-[#D8D3C8] text-center shadow-xs">
-            <div className="w-12 h-12 rounded-xl bg-[#EFECE3] mx-auto flex items-center justify-center text-[#2C2324] mb-2 border border-[#D8D3C8]">
-              <UtensilsCrossed className="w-6 h-6 stroke-[1.8]" />
-            </div>
-            <div className="text-sm font-display font-bold text-[#2C2324] uppercase">
-              No food logged today
-            </div>
-            <div className="text-xs text-[#766754] max-w-xs mx-auto mt-1 font-sans">
-              Track calories & macros. Tap any logged meal to view full nutrient breakdown or attach plate photos.
-            </div>
-            <div className="mt-4 flex items-center justify-center gap-2">
-              <button
-                onClick={() => onOpenAddModal(activeFilter !== 'All' ? activeFilter : 'Breakfast')}
-                className="px-4 py-2.5 btn-santiago text-xs font-display font-bold uppercase tracking-wider rounded-xl shadow-xs inline-flex items-center gap-1.5"
-              >
-                <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
-                <span>Log {activeFilter !== 'All' ? activeFilter : 'Meal'}</span>
-              </button>
-              <button
-                onClick={() => onOpenPhotoUploader('food')}
-                className="px-3.5 py-2.5 btn-cold-foam text-xs font-mono font-bold uppercase tracking-wider rounded-xl inline-flex items-center gap-1.5"
-              >
-                <Camera className="w-3.5 h-3.5 text-[#EB5E28]" />
-                <span>Photo</span>
-              </button>
-            </div>
+          <div className="bg-white rounded-2xl p-6 border border-[#E2DACB] text-center shadow-2xs">
+            <p className="font-body-m text-xs text-[#5E5444]">
+              Nothing logged yet. Add your first meal.
+            </p>
           </div>
         ) : (
           filteredItems.map((item, idx) => (
             <div
               key={idx}
               onClick={() => onSelectDetail(item)}
-              className="specimen-card p-3.5 border border-[#D8D3C8] cursor-pointer hover:border-[#EB5E28] transition-all group"
+              className="bg-white rounded-2xl p-3.5 border border-[#E2DACB] cursor-pointer hover:border-[#C4501F] transition-all shadow-2xs group"
             >
-              {/* Card Header */}
-              <div className="flex items-center justify-between pb-2 border-b border-[#D8D3C8]/60 mb-2">
+              <div className="flex items-center justify-between pb-1.5 border-b border-[#E2DACB]/60 mb-2">
                 <div className="flex items-center space-x-2">
-                  <span className="font-label text-[9px] bg-[#2C2324] text-white px-1.5 py-0.5 rounded">
-                    SPECIMEN #F-0{idx + 1}
+                  <span className="font-label text-[10px] bg-[#2B2324] text-white px-1.5 py-0.5 rounded">
+                    #{idx + 1}
                   </span>
-                  <span className="font-badge text-[10px] text-[#EB5E28] uppercase">
+                  <span className="font-label text-[10px] text-[#C4501F]">
                     {item.meal}
                   </span>
                 </div>
 
                 <div className="flex items-center space-x-2">
-                  <span className="font-caption text-[#766754] flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform">
-                    <span>SPECS</span>
-                    <ChevronRight className="w-3 h-3" />
+                  <span className="font-caption text-[#5E5444] flex items-center gap-0.5 group-hover:text-[#2B2324] transition-colors">
+                    <span>Details</span>
+                    <ChevronRight className="w-3.5 h-3.5" />
                   </span>
                   <button
+                    type="button"
                     onClick={(e) => {
                       e.stopPropagation();
+                      triggerHaptic(10);
                       onDeleteFood(item);
                     }}
-                    className="text-[#D8D3C8] hover:text-[#EB5E28] p-1 transition-colors"
+                    className="text-[#E2DACB] hover:text-[#B3261E] p-1 transition-colors"
                     title="Delete"
+                    aria-label="Delete food item"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>
 
-              {/* Title & Quantity */}
               <div className="flex items-baseline justify-between">
-                <h3 className="font-h3 text-base text-[#2C2324] uppercase tracking-tight">
+                <h3 className="font-title text-sm text-[#2B2324] font-semibold">
                   {item.foodItem}
                 </h3>
-                <span className="font-caption text-[#766754]">{item.quantity}</span>
+                <span className="font-stat text-xs text-[#2B2324] font-bold">
+                  {item.calories} kcal
+                </span>
               </div>
 
-              {/* Specimen Indicator Tracks */}
-              <div className="mt-2 space-y-0.5">
-                <SpecimenTrack
-                  label="Energy"
-                  value={item.calories}
-                  unit="KCAL"
-                  percent={Math.min(100, (item.calories / 800) * 100)}
-                  dotColor="#2C2324"
-                />
-                <SpecimenTrack
-                  label="Protein"
-                  value={item.protein}
-                  unit="G"
-                  percent={Math.min(100, (item.protein / 50) * 100)}
-                  dotColor="#2E7D32"
-                />
-                <SpecimenTrack
-                  label="Carbs"
-                  value={item.carbs}
-                  unit="G"
-                  percent={Math.min(100, (item.carbs / 80) * 100)}
-                  dotColor="#EB5E28"
-                />
+              <div className="font-caption text-[#5E5444] mt-1">
+                {item.quantity} · Protein {item.protein} g · Carbs {item.carbs} g · Fat {item.fat} g
               </div>
 
               {item.notes && (
-                <div className="text-[10px] font-sans text-[#766754] italic mt-2 pt-1 border-t border-[#D8D3C8]/40 truncate">
+                <div className="text-[11px] font-body-s text-[#5E5444] italic mt-1.5 pt-1 border-t border-[#E2DACB]/40 truncate">
                   {item.notes}
                 </div>
               )}
@@ -252,34 +219,19 @@ export const FoodTab: React.FC<FoodTabProps> = ({
         )}
       </div>
 
-      {/* 4. Quick 1-Tap Presets */}
-      <div className="bg-white rounded-2xl p-4 border border-[#D8D3C8] shadow-xs">
-        <div className="flex items-center space-x-1.5 mb-2.5">
-          <Sparkles className="w-4 h-4 text-[#EB5E28]" />
-          <div className="text-xs font-display font-bold uppercase tracking-wider text-[#2C2324]">
-            Quick Presets (1-Tap Log)
-          </div>
-        </div>
-
-        <div className="space-y-1.5">
-          {quickPresets.map((preset, i) => (
-            <div
-              key={i}
-              onClick={() => onQuickAdd(preset)}
-              className="flex items-center justify-between p-2.5 bg-[#EFECE3] hover:bg-[#e6e2d7] rounded-xl cursor-pointer border border-[#D8D3C8] active:scale-[0.99] transition-all"
-            >
-              <div>
-                <div className="text-xs font-display font-bold text-[#2C2324] uppercase">{preset.foodItem}</div>
-                <div className="text-[10px] font-mono text-[#766754]">{preset.meal} • {preset.quantity}</div>
-              </div>
-              <div className="text-right">
-                <div className="text-xs font-display font-black text-[#2C2324]">+{preset.calories} kcal</div>
-                <div className="text-[9px] font-mono font-bold text-[#2E7D32]">+{preset.protein}g protein</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* 5. Single Floating Action Button (L5 & Wireframe 9) */}
+      <button
+        type="button"
+        onClick={() => {
+          triggerHaptic(15);
+          onOpenAddModal(activeFilter !== 'All' ? activeFilter : 'Breakfast');
+        }}
+        className="btn-fab"
+        title="Log meal"
+        aria-label="Log meal"
+      >
+        <Plus className="w-6 h-6 stroke-[2.5]" />
+      </button>
 
     </div>
   );

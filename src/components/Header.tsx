@@ -1,181 +1,234 @@
 import React from 'react';
-import { Calendar, ChevronLeft, ChevronRight, Settings as SettingsIcon, RefreshCw, CheckCircle2, AlertCircle, Smartphone } from 'lucide-react';
-import { GamificationState } from '../types';
+import { Calendar, ChevronLeft, ChevronRight, Settings as SettingsIcon, RefreshCw, Flame } from 'lucide-react';
+import { GamificationState, TabType } from '../types';
+import { toLocalIso, triggerHaptic } from '../utils/formatters';
 
 interface HeaderProps {
+  currentTab: TabType;
   selectedDate: string;
   onSelectDate: (date: string) => void;
   syncStatus: 'idle' | 'syncing' | 'synced' | 'error' | 'offline';
   onSync: () => void;
   onOpenSettings: () => void;
-  onOpenInstall: () => void;
-  isStandalone: boolean;
   lastSyncTime: string | null;
   gamification?: GamificationState;
   onOpenBadgesModal?: () => void;
+  loggedDates?: Set<string>;
 }
 
 export const Header: React.FC<HeaderProps> = ({
+  currentTab,
   selectedDate,
   onSelectDate,
   syncStatus,
   onSync,
   onOpenSettings,
-  onOpenInstall,
-  isStandalone,
   lastSyncTime,
   gamification,
-  onOpenBadgesModal
+  onOpenBadgesModal,
+  loggedDates = new Set()
 }) => {
-  const todayStr = getTodayString();
+  const todayStr = toLocalIso();
   const isToday = selectedDate === todayStr;
 
+  // Format short sync label
+  const renderSyncLabel = () => {
+    switch (syncStatus) {
+      case 'syncing':
+        return (
+          <span className="inline-flex items-center gap-1.5 text-[#C4501F]">
+            <RefreshCw className="w-2.5 h-2.5 animate-spin" />
+            <span>Syncing</span>
+          </span>
+        );
+      case 'offline':
+        return (
+          <span className="inline-flex items-center gap-1.5 text-[#8A5A00]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#8A5A00]" />
+            <span>Offline</span>
+          </span>
+        );
+      case 'error':
+        return (
+          <span className="inline-flex items-center gap-1.5 text-[#B3261E]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#B3261E]" />
+            <span>Retry</span>
+          </span>
+        );
+      case 'synced':
+      default:
+        return (
+          <span className="inline-flex items-center gap-1.5 text-[#2F6B2A]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#2F6B2A]" />
+            <span>{lastSyncTime ? `Synced ${lastSyncTime}` : 'Synced'}</span>
+          </span>
+        );
+    }
+  };
+
+  // Generate current 7-day week strip for Today view
+  const renderWeekStrip = () => {
+    const sel = new Date(`${selectedDate}T12:00:00`);
+    const dayOfWeek = sel.getDay(); // 0 is Sun, 1 is Mon...
+    // Start week on Monday
+    const diffToMon = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    const mon = new Date(sel);
+    mon.setDate(sel.getDate() + diffToMon);
+
+    const weekDays: { dateStr: string; dayLetter: string; dayNum: number; isSelected: boolean; isCurrentDay: boolean; hasLog: boolean }[] = [];
+    const letters = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(mon);
+      d.setDate(mon.getDate() + i);
+      const dStr = toLocalIso(d);
+      weekDays.push({
+        dateStr: dStr,
+        dayLetter: letters[i],
+        dayNum: d.getDate(),
+        isSelected: dStr === selectedDate,
+        isCurrentDay: dStr === todayStr,
+        hasLog: loggedDates.has(dStr)
+      });
+    }
+
+    return (
+      <div className="max-w-md mx-auto mt-2 px-1 flex items-center justify-between gap-1 select-none">
+        {weekDays.map((w) => (
+          <button
+            key={w.dateStr}
+            type="button"
+            onClick={() => {
+              triggerHaptic(10);
+              onSelectDate(w.dateStr);
+            }}
+            className={`flex-1 py-1.5 rounded-xl flex flex-col items-center justify-center transition-all min-h-[44px] ${
+              w.isSelected
+                ? 'bg-[#2B2324] text-white shadow-xs'
+                : w.isCurrentDay
+                ? 'bg-[#E2DACB]/60 text-[#2B2324]'
+                : 'hover:bg-[#EEE9DD] text-[#5E5444]'
+            }`}
+          >
+            <span className={`text-[10px] font-label leading-none ${w.isSelected ? 'text-[#F5F2EA]/70' : 'text-[#5E5444]'}`}>
+              {w.dayLetter}
+            </span>
+            <span className={`text-xs font-number font-bold mt-0.5 leading-none ${w.isSelected ? 'text-white' : 'text-[#2B2324]'}`}>
+              {w.dayNum}
+            </span>
+            <span
+              className={`w-1 h-1 rounded-full mt-1 ${
+                w.hasLog
+                  ? w.isSelected ? 'bg-[#E8743F]' : 'bg-[#C4501F]'
+                  : 'bg-transparent'
+              }`}
+            />
+          </button>
+        ))}
+      </div>
+    );
+  };
+
   const handlePrevDay = () => {
-    const d = new Date(selectedDate);
+    triggerHaptic(10);
+    const d = new Date(`${selectedDate}T12:00:00`);
     d.setDate(d.getDate() - 1);
-    onSelectDate(formatDate(d));
+    onSelectDate(toLocalIso(d));
   };
 
   const handleNextDay = () => {
-    const d = new Date(selectedDate);
+    triggerHaptic(10);
+    const d = new Date(`${selectedDate}T12:00:00`);
     d.setDate(d.getDate() + 1);
-    onSelectDate(formatDate(d));
+    onSelectDate(toLocalIso(d));
   };
 
-  const formatDisplayDate = (dStr: string) => {
-    const d = new Date(dStr);
-    if (dStr === todayStr) return 'Today';
-    
-    const y = new Date();
-    y.setDate(y.getDate() - 1);
-    if (dStr === formatDate(y)) return 'Yesterday';
-
-    const t = new Date();
-    t.setDate(t.getDate() + 1);
-    if (dStr === formatDate(t)) return 'Tomorrow';
-
-    return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-  };
+  const friendlyDate = new Date(`${selectedDate}T12:00:00`).toLocaleDateString('en-US', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short'
+  });
 
   return (
-    <header className="sticky top-0 z-40 bg-[#FFFFFF]/95 backdrop-blur-md border-b border-[#D8D3C8] px-4 pt-3 pb-3 safe-top shadow-xs">
-      <div className="max-w-md mx-auto flex items-center justify-between">
+    <header className="sticky top-0 z-40 bg-[#F5F2EA]/95 backdrop-blur-md border-b border-[#E2DACB] px-4 pt-2.5 pb-2 safe-top shadow-xs">
+      {/* 56px App Bar (L1) */}
+      <div className="max-w-md mx-auto flex items-center justify-between h-[44px]">
         
-        {/* Editorial Wordmark & Logo */}
-        <div className="flex items-center space-x-2.5">
-          {/* Logo badge in Gold Black with Santiago Orange accent */}
-          <div className="w-8 h-8 rounded-xl bg-[#2C2324] text-white flex items-center justify-center font-display font-bold text-xs shadow-xs tracking-tight">
-            <span className="text-white">D</span>
-            <span className="text-[#EB5E28]">F</span>
+        {/* Wordmark & Brand mark */}
+        <div className="flex items-center space-x-2">
+          <div className="w-7 h-7 rounded-lg bg-[#2B2324] text-white flex items-center justify-center font-display font-bold text-xs tracking-tight shadow-xs">
+            <span>D</span>
+            <span className="text-[#C4501F]">F</span>
           </div>
 
-          <div>
-            <h1 className="font-h3 tracking-tight flex items-baseline gap-1.5 leading-none">
-              <span className="text-[#2C2324] uppercase">DAILY</span>
-              <span className="text-[#EB5E28] uppercase">/ FIT</span>
-              <span className="font-label text-[9px] text-[#766754] hidden xs:inline">
-                SPECIMEN
-              </span>
-            </h1>
-
-            {/* Sync status pill */}
-            <button
-              onClick={onSync}
-              className="mt-1 flex items-center space-x-1.5 font-caption transition-colors"
-            >
-              {syncStatus === 'syncing' ? (
-                <span className="inline-flex items-center gap-1 text-[#EB5E28] font-bold">
-                  <RefreshCw className="w-2.5 h-2.5 animate-spin" />
-                  <span>SYNCING...</span>
-                </span>
-              ) : syncStatus === 'synced' ? (
-                <span className="inline-flex items-center gap-1 text-[#2E7D32] font-bold">
-                  <CheckCircle2 className="w-2.5 h-2.5" />
-                  <span>SYNCED {lastSyncTime ? `[${lastSyncTime}]` : ''}</span>
-                </span>
-              ) : syncStatus === 'offline' ? (
-                <span className="inline-flex items-center gap-1 text-[#EB5E28] font-bold">
-                  <AlertCircle className="w-2.5 h-2.5" />
-                  <span>OFFLINE CACHED</span>
-                </span>
-              ) : (
-                <span className="inline-flex items-center gap-1 text-[#766754] hover:text-[#2C2324]">
-                  <RefreshCw className="w-2.5 h-2.5" />
-                  <span>TAP TO SYNC</span>
-                </span>
-              )}
-            </button>
+          <div className="flex items-baseline space-x-1.5">
+            <span className="font-h3 text-sm tracking-tight text-[#2B2324]">DAILY</span>
+            <span className="font-h3 text-sm tracking-tight text-[#C4501F]">/ FIT</span>
           </div>
         </div>
 
-        {/* Action Controls & Gamification Pill Bar */}
+        {/* Action Controls & Status */}
         <div className="flex items-center space-x-1.5">
+          {/* Real Sync Status Chip (I2) */}
+          <button
+            type="button"
+            onClick={onSync}
+            className="px-2 py-1 rounded-lg bg-[#EEE9DD] hover:bg-[#E2DACB] text-[11px] font-caption font-semibold transition-colors flex items-center shadow-2xs"
+            title="Tap to sync with Google Sheet"
+          >
+            {renderSyncLabel()}
+          </button>
+
+          {/* Streak Chip (V7 flame in ember, tap opens Badges modal) */}
           {gamification && onOpenBadgesModal && (
-            <div className="flex items-center space-x-1">
-              {/* Active Streak Flame */}
-              <button
-                onClick={onOpenBadgesModal}
-                className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-[#EFECE3] hover:bg-[#e6e2d7] border border-[#D8D3C8] text-[#EB5E28] font-stat tabular-nums transition-all active:scale-95 shadow-2xs"
-                title={`Active Streak: ${gamification.streak} days`}
-              >
-                <span className="text-xs leading-none">🔥</span>
-                <span className="text-[#2C2324]">{gamification.streak}</span>
-              </button>
-
-              {/* XP Level Pill */}
-              <button
-                onClick={onOpenBadgesModal}
-                className="flex items-center gap-1 px-2 py-1.5 rounded-xl bg-[#EFECE3] hover:bg-[#e6e2d7] border border-[#D8D3C8] text-[#2C2324] font-stat tabular-nums transition-all active:scale-95 shadow-2xs"
-                title={`Level ${gamification.level}: ${gamification.levelTitle} (${gamification.totalXp} XP)`}
-              >
-                <span className="text-xs leading-none text-[#EB5E28]">⚡</span>
-                <span className="font-badge bg-[#2C2324] text-white px-1.5 py-0.5 rounded leading-none">
-                  L{gamification.level}
-                </span>
-              </button>
-            </div>
-          )}
-
-          {!isStandalone && (
             <button
-              onClick={onOpenInstall}
-              className="p-2 text-[#766754] hover:text-[#2C2324] bg-[#EFECE3] hover:bg-[#e6e2d7] rounded-xl transition-all active:scale-95 border border-[#D8D3C8]"
-              title="Install app to phone"
+              type="button"
+              onClick={() => {
+                triggerHaptic(10);
+                onOpenBadgesModal();
+              }}
+              className="flex items-center gap-1 px-2 py-1 rounded-lg bg-[#EEE9DD] hover:bg-[#E2DACB] text-[#C4501F] text-xs font-number font-bold transition-all active:scale-95 shadow-2xs"
+              title={`Streak: ${gamification.streak} days. Tap to view achievements.`}
             >
-              <Smartphone className="w-4 h-4 text-[#EB5E28]" />
+              <Flame className="w-3.5 h-3.5 text-[#C4501F] fill-[#C4501F]" />
+              <span className="text-[#2B2324]">{gamification.streak}</span>
             </button>
           )}
 
+          {/* Settings Button (V8) */}
           <button
-            onClick={onOpenSettings}
-            className="p-2 text-[#766754] hover:text-[#2C2324] bg-[#EFECE3] hover:bg-[#e6e2d7] rounded-xl transition-colors active:scale-95 border border-[#D8D3C8]"
-            title="Settings & Sheet Link"
+            type="button"
+            onClick={() => {
+              triggerHaptic(10);
+              onOpenSettings();
+            }}
+            className="p-1.5 text-[#5E5444] hover:text-[#2B2324] hover:bg-[#EEE9DD] rounded-lg transition-colors active:scale-95"
+            title="Settings & Google Sheet"
+            aria-label="Settings"
           >
             <SettingsIcon className="w-4 h-4" />
           </button>
         </div>
-
       </div>
 
-      {/* Date Navigator Bar */}
-      <div className="max-w-md mx-auto mt-2.5 pt-2 border-t border-[#D8D3C8]/70 flex items-center justify-between">
-        <button
-          onClick={handlePrevDay}
-          className="p-1.5 text-[#766754] hover:text-[#2C2324] hover:bg-[#EFECE3] rounded-lg transition-colors active:scale-95"
-          title="Previous day"
-        >
-          <ChevronLeft className="w-4 h-4" />
-        </button>
+      {/* Date Navigation Strip */}
+      {currentTab === 'today' && renderWeekStrip()}
 
-        <div className="flex items-center space-x-2">
-          <label className="relative cursor-pointer flex items-center space-x-1.5 bg-[#EFECE3] hover:bg-[#e6e2d7] px-3 py-1.5 rounded-xl border border-[#D8D3C8] transition-colors">
-            <Calendar className="w-3.5 h-3.5 text-[#EB5E28]" />
-            <span className="font-title text-xs text-[#2C2324]">
-              {formatDisplayDate(selectedDate)}
-            </span>
-            <span className="font-caption text-[#766754] tabular-nums">
-              [{selectedDate}]
-            </span>
+      {(currentTab === 'workout' || currentTab === 'food' || currentTab === 'work') && (
+        <div className="max-w-md mx-auto mt-1.5 pt-1.5 border-t border-[#E2DACB]/60 flex items-center justify-between text-xs">
+          <button
+            type="button"
+            onClick={handlePrevDay}
+            className="p-1 text-[#5E5444] hover:text-[#2B2324] rounded-lg hover:bg-[#EEE9DD] transition-colors"
+            title="Previous day"
+            aria-label="Previous day"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+
+          <label className="relative cursor-pointer flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-[#EEE9DD] hover:bg-[#E2DACB] font-title text-xs text-[#2B2324] transition-colors">
+            <Calendar className="w-3.5 h-3.5 text-[#C4501F]" />
+            <span>{isToday ? 'Today · ' : ''}{friendlyDate}</span>
             <input
               type="date"
               value={selectedDate}
@@ -184,39 +237,29 @@ export const Header: React.FC<HeaderProps> = ({
             />
           </label>
 
-          {!isToday && (
+          <div className="flex items-center space-x-1">
+            {!isToday && (
+              <button
+                type="button"
+                onClick={() => onSelectDate(todayStr)}
+                className="font-button-s text-[10px] text-[#C4501F] hover:text-[#2B2324] px-1.5 py-0.5 rounded bg-white border border-[#E2DACB]"
+              >
+                TODAY
+              </button>
+            )}
             <button
-              onClick={() => onSelectDate(todayStr)}
-              className="font-button-s text-[11px] text-[#EB5E28] hover:text-[#2C2324] bg-white border border-[#D8D3C8] px-2.5 py-1 rounded-lg transition-colors active:scale-95"
+              type="button"
+              onClick={handleNextDay}
+              className="p-1 text-[#5E5444] hover:text-[#2B2324] rounded-lg hover:bg-[#EEE9DD] transition-colors"
+              title="Next day"
+              aria-label="Next day"
             >
-              TODAY
+              <ChevronRight className="w-4 h-4" />
             </button>
-          )}
+          </div>
         </div>
-
-        <button
-          onClick={handleNextDay}
-          className="p-1.5 text-[#766754] hover:text-[#2C2324] hover:bg-[#EFECE3] rounded-lg transition-colors active:scale-95"
-          title="Next day"
-        >
-          <ChevronRight className="w-4 h-4" />
-        </button>
-      </div>
+      )}
+      {/* On Progress / Stats: Date UI is hidden (L1) */}
     </header>
   );
 };
-
-function getTodayString() {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
-
-function formatDate(d: Date) {
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}

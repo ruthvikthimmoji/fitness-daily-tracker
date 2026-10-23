@@ -4,28 +4,75 @@
   --font-display: 'Fredoka', 'SF Pro Rounded', system-ui, -apple-system, sans-serif;
   --font-body: 'Nunito', system-ui, -apple-system, sans-serif;
   --font-sans: 'Nunito', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Rubik', monospace, sans-serif;
   --font-number: 'Rubik', monospace, sans-serif;
-  --font-mono: 'Rubik', monospace, sans-serif;
 }
 
 @layer base {
   :root {
-    /* TYPOGRAPHY SYSTEM (Gamified Mobile App Design Spec v1.0) */
+    /* FIELD NOTEBOOK COLOR TOKENS (Design Guide Section 5) */
+    --cream: #F5F2EA;       /* Page background */
+    --paper: #FFFFFF;       /* Cards */
+    --tint: #EEE9DD;        /* Tiles, inputs */
+    --line: #E2DACB;        /* 1 px borders */
+    --ink: #2B2324;         /* Text, nav, primary dark */
+    --muted: #5E5444;       /* Secondary text */
+    --ember: #C4501F;       /* Buttons, fills (white text 4.65:1) */
+    --ember-text: #A83F17;  /* Small orange text (5.54:1 on cream) */
+    --ember-bright: #E8743F;/* Accent on dark surfaces only */
+    --ember-tint: #FBE8DE;  /* Selected chip, highlight */
+    --leaf: #2F6B2A;        /* Protein, success */
+    --leaf-tint: #E3EEDF;   /* Success bg */
+    --water: #2F5D8A;       /* Hydration, info */
+    --water-tint: #E1EAF3;  /* Info bg */
+    --amber: #8A5A00;       /* Fats, warning */
+    --amber-tint: #F6EBCF;  /* Warning bg */
+    --error: #B3261E;       /* Errors, failed sync */
+
+    /* Radii & Spacing Tokens */
+    --r-card: 20px;
+    --r-tile: 14px;
+    --r-btn: 14px;
+    --r-pill: 999px;
+    --s-1: 4px;
+    --s-2: 8px;
+    --s-3: 12px;
+    --s-4: 16px;
+    --s-6: 24px;
+    --s-8: 32px;
+    --appbar-h: 56px;
+    --nav-h: 64px;
+    --tap: 48px;
+    --shadow: 0 1px 2px rgba(43,35,36,.06), 0 8px 24px rgba(43,35,36,.06);
+
+    /* Typography font families */
     --font-display: 'Fredoka', 'SF Pro Rounded', system-ui, -apple-system, sans-serif;
     --font-body: 'Nunito', system-ui, -apple-system, sans-serif;
     --font-sans: 'Nunito', system-ui, -apple-system, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'Rubik', monospace, sans-serif;
     --font-number: 'Rubik', monospace, sans-serif;
-    --font-mono: 'Rubik', monospace, sans-serif;
 
-    /* DIGITAL WARM NEUTRALS PALETTE (Exact Swatches) */
-    --color-santiago: #EB5E28;      /* Santiago Orange */
-    --color-cold-foam: #EFECE3;     /* Cold Foam Background */
-    --color-gold-black: #2C2324;    /* Gold Black Text/Surfaces */
-    --color-landmark: #766754;      /* Landmark Taupe/Slate */
-    
-    /* Structure & Dividers */
-    --color-surface: #FFFFFF;       /* Pure White Cards */
-    --color-border: #D8D3C8;        /* Soft Warm Border */
+    /* Compatibility aliases */
+    --color-santiago: var(--ember);
+    --color-cold-foam: var(--cream);
+    --color-gold-black: var(--ink);
+    --color-landmark: var(--muted);
+    --color-surface: var(--paper);
+    --color-border: var(--line);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --cream: #1E1819;
+      --paper: #2B2324;
+      --tint: #362D2E;
+      --line: #463B3C;
+      --ink: #F5F2EA;
+      --muted: #BDB3A5;
+      --ember: #E8743F;
+      --ember-text: #F09A72;
+      --ember-tint: #4A2A1D;
+    }
   }
 
   body {
@@ -33,22 +80,36 @@
     -webkit-tap-highlight-color: transparent;
     user-select: none;
     -webkit-user-select: none;
-    background-color: var(--color-cold-foam);
-    color: var(--color-gold-black);
+    background-color: var(--cream);
+    color: var(--ink);
     font-size: 14px;
     line-height: 20px;
     letter-spacing: 0.1px;
+    overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
     letter-spacing: 0;
-    color: var(--color-gold-black);
+    color: var(--ink);
   }
 
   button {
     font-family: var(--font-display);
     font-weight: 600;
+  }
+
+  /* Accessible focus styling (B4) */
+  button:focus {
+    outline: none;
+  }
+  :focus-visible {
+    outline: 3px solid var(--ember-text);
+    outline-offset: 2px;
+    border-radius: 12px;
+  }
+  .nav-item[aria-current="page"]:focus-visible {
+    outline-color: #fff;
   }
 
   /* Form & Interactive Inputs */
@@ -60,12 +121,12 @@
   textarea {
     user-select: text;
     -webkit-user-select: text;
-    background-color: #FFFFFF;
-    color: var(--color-gold-black);
-    border: 1px solid var(--color-border);
+    background-color: var(--paper);
+    color: var(--ink);
+    border: 1px solid var(--line);
     font-family: var(--font-body);
     font-weight: 600;
-    font-size: 14px;
+    font-size: 16px; /* 16px minimum prevents iOS zoom (A1) */
     line-height: 20px;
   }
 
@@ -76,8 +137,14 @@
   input[type="password"]:focus,
   textarea:focus {
     outline: none;
-    border-color: var(--color-santiago);
-    box-shadow: 0 0 0 2px rgba(235, 94, 40, 0.2);
+    border-color: var(--ember);
+    box-shadow: 0 0 0 2px rgba(196, 80, 31, 0.2);
+  }
+
+  /* Accessibility minimum tap targets (A2) */
+  button, [role="button"], .chip, .nav-item {
+    min-height: var(--tap);
+    min-width: var(--tap);
   }
 }
 
@@ -113,16 +180,16 @@
 .font-h2 {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 24px;
-  line-height: 30px;
+  font-size: 22px;
+  line-height: 28px;
   letter-spacing: 0;
 }
 
 .font-h3 {
   font-family: var(--font-display);
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 26px;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
   letter-spacing: 0;
 }
 
@@ -130,8 +197,8 @@
 .font-title {
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 18px;
-  line-height: 24px;
+  font-size: 16px;
+  line-height: 22px;
   letter-spacing: 0;
 }
 
@@ -176,21 +243,21 @@
   letter-spacing: 0.3px;
 }
 
-/* Meta / Tags / Badges (Nunito & Fredoka) */
+/* Meta / Tags / Badges (Mono & Nunito) */
 .font-label {
-  font-family: var(--font-body);
-  font-weight: 800;
-  font-size: 12px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 11px;
   line-height: 16px;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .font-caption {
   font-family: var(--font-body);
   font-weight: 600;
-  font-size: 11px;
-  line-height: 14px;
+  font-size: 12px;
+  line-height: 16px;
   letter-spacing: 0.2px;
 }
 
@@ -205,9 +272,9 @@
 /* Numbers (Rubik with Tabular Figures) */
 .font-score-xl {
   font-family: var(--font-number);
-  font-weight: 700;
-  font-size: 48px;
-  line-height: 52px;
+  font-weight: 800;
+  font-size: 40px;
+  line-height: 44px;
   letter-spacing: -0.5px;
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum";
@@ -215,7 +282,7 @@
 
 .font-score-m {
   font-family: var(--font-number);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 24px;
   line-height: 28px;
   letter-spacing: 0;
@@ -225,8 +292,8 @@
 
 .font-timer {
   font-family: var(--font-number);
-  font-weight: 500;
-  font-size: 32px;
+  font-weight: 600;
+  font-size: 30px;
   line-height: 36px;
   letter-spacing: 0;
   font-variant-numeric: tabular-nums;
@@ -235,8 +302,8 @@
 
 .font-stat {
   font-family: var(--font-number);
-  font-weight: 500;
-  font-size: 16px;
+  font-weight: 600;
+  font-size: 15px;
   line-height: 20px;
   letter-spacing: 0;
   font-variant-numeric: tabular-nums;
@@ -248,8 +315,40 @@
   font-feature-settings: "tnum";
 }
 
+/* Content Bottom Padding & Fade (L3) */
+.app-content {
+  padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom) + 28px);
+}
+
+.app-fade-bottom {
+  position: fixed;
+  inset: auto 0 0 0;
+  pointer-events: none;
+  height: calc(var(--nav-h) + 28px + env(safe-area-inset-bottom));
+  background: linear-gradient(to top, var(--cream) 55%, transparent);
+  z-index: 30;
+}
+
+/* Chips Scroller with Right-edge Fade (B6) */
+.chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 0 4px;
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+}
+.chip {
+  flex: none;
+  white-space: nowrap;
+  min-height: 40px;
+  scroll-snap-align: start;
+}
+
 .safe-top {
-  padding-top: max(0.75rem, env(safe-area-inset-top));
+  padding-top: max(0.5rem, env(safe-area-inset-top));
 }
 
 .safe-bottom {
@@ -264,39 +363,25 @@
   scrollbar-width: none;
 }
 
-/* ==========================================================================
-   SPECIMEN CARD STYLING (Digital Warm Neutrals)
-   ========================================================================== */
-
-.specimen-card {
-  background-color: #FFFFFF;
-  border: 1px solid #D8D3C8;
-  border-radius: 18px;
-  box-shadow: 0 1px 3px rgba(44, 35, 36, 0.04), 0 6px 18px rgba(44, 35, 36, 0.02);
-  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-}
-
-.specimen-card:active {
-  transform: scale(0.99);
-}
-
-/* Buttons (Fredoka SemiBold 600) */
-.btn-santiago {
-  background-color: #EB5E28;
+/* Buttons (V1 High Contrast) */
+.btn-santiago,
+.btn-ember {
+  background-color: var(--ember);
   color: #FFFFFF;
-  border: 1px solid #D14B17;
+  border: 1px solid #A83F17;
   font-family: var(--font-display);
   font-weight: 600;
   letter-spacing: 0.3px;
   transition: all 0.12s ease;
 }
-.btn-santiago:active {
+.btn-santiago:active,
+.btn-ember:active {
   transform: scale(0.97);
-  background-color: #B83C0A;
+  background-color: #8F3713;
 }
 
 .btn-gold-black {
-  background-color: #2C2324;
+  background-color: var(--ink);
   color: #FFFFFF;
   border: 1px solid #161112;
   font-family: var(--font-display);
@@ -310,9 +395,9 @@
 }
 
 .btn-cold-foam {
-  background-color: #EFECE3;
-  color: #2C2324;
-  border: 1px solid #D8D3C8;
+  background-color: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--line);
   font-family: var(--font-display);
   font-weight: 600;
   letter-spacing: 0.3px;
@@ -320,26 +405,28 @@
 }
 .btn-cold-foam:active {
   transform: scale(0.97);
-  background-color: #E2DDD0;
+  background-color: var(--tint);
 }
 
-/* Duolingo 3D Tactile Buttons */
-.btn-3d-santiago {
-  background-color: #EB5E28;
+/* 3D Tactile Buttons */
+.btn-3d-santiago,
+.btn-3d-ember {
+  background-color: var(--ember);
   color: #FFFFFF;
-  border-bottom: 3px solid #B83C0A;
+  border-bottom: 3px solid #8F3713;
   font-family: var(--font-display);
   font-weight: 600;
   letter-spacing: 0.3px;
   transition: all 0.08s ease;
 }
-.btn-3d-santiago:active {
+.btn-3d-santiago:active,
+.btn-3d-ember:active {
   transform: translateY(2px);
   border-bottom-width: 1px;
 }
 
 .btn-3d-gold {
-  background-color: #2C2324;
+  background-color: var(--ink);
   color: #FFFFFF;
   border-bottom: 3px solid #161112;
   font-family: var(--font-display);
@@ -353,10 +440,10 @@
 }
 
 .btn-3d-foam {
-  background-color: #FFFFFF;
-  color: #2C2324;
-  border: 1px solid #D8D3C8;
-  border-bottom: 3px solid #B8AEA0;
+  background-color: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-bottom: 3px solid #D1C7B7;
   font-family: var(--font-display);
   font-weight: 600;
   letter-spacing: 0.3px;
@@ -367,126 +454,25 @@
   border-bottom-width: 1px;
 }
 
-/* Compatibility aliases for previous theme */
-.btn-gallery-blue {
-  background-color: #2C2324;
+/* Floating Action Button (L5) */
+.btn-fab {
+  position: fixed;
+  bottom: calc(var(--nav-h) + env(safe-area-inset-bottom) + 16px);
+  right: 16px;
+  z-index: 35;
+  width: 52px;
+  height: 52px;
+  border-radius: 9999px;
+  background-color: var(--ember);
   color: #FFFFFF;
-  border: 1px solid #161112;
-  transition: all 0.12s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(196, 80, 31, 0.4);
+  transition: all 0.15s ease;
 }
-.btn-gallery-blue:active {
-  transform: scale(0.97);
-  background-color: #161112;
-}
-
-.btn-terracotta {
-  background-color: #EB5E28;
-  color: #FFFFFF;
-  border: 1px solid #D14B17;
-  transition: all 0.12s ease;
-}
-.btn-terracotta:active {
-  transform: scale(0.97);
-  background-color: #B83C0A;
-}
-
-.btn-stone {
-  background-color: #EFECE3;
-  color: #2C2324;
-  border: 1px solid #D8D3C8;
-  transition: all 0.12s ease;
-}
-.btn-stone:active {
-  transform: scale(0.97);
-  background-color: #E2DDD0;
-}
-
-.btn-3d-terracotta {
-  background-color: #EB5E28;
-  color: #FFFFFF;
-  border-bottom: 3px solid #B83C0A;
-  transition: all 0.08s ease;
-}
-.btn-3d-terracotta:active {
-  transform: translateY(2px);
-  border-bottom-width: 1px;
-}
-
-.btn-3d-blue {
-  background-color: #2C2324;
-  color: #FFFFFF;
-  border-bottom: 3px solid #161112;
-  transition: all 0.08s ease;
-}
-.btn-3d-blue:active {
-  transform: translateY(2px);
-  border-bottom-width: 1px;
-}
-
-.btn-3d-stone {
-  background-color: #FFFFFF;
-  color: #2C2324;
-  border: 1px solid #D8D3C8;
-  border-bottom: 3px solid #B8AEA0;
-  transition: all 0.08s ease;
-}
-.btn-3d-stone:active {
-  transform: translateY(2px);
-  border-bottom-width: 1px;
-}
-
-.btn-3d-teal {
-  background-color: #2C2324;
-  color: #FFFFFF;
-  border-bottom: 3px solid #161112;
-  transition: all 0.08s ease;
-}
-.btn-3d-teal:active {
-  transform: translateY(2px);
-  border-bottom-width: 1px;
-}
-
-.btn-3d-mist {
-  background-color: #FFFFFF;
-  color: #2C2324;
-  border: 1px solid #D8D3C8;
-  border-bottom: 3px solid #B8AEA0;
-  transition: all 0.08s ease;
-}
-.btn-3d-mist:active {
-  transform: translateY(2px);
-  border-bottom-width: 1px;
-}
-
-.btn-3d-orange {
-  background-color: #EB5E28;
-  color: #FFFFFF;
-  border-bottom: 3px solid #B83C0A;
-  transition: all 0.08s ease;
-}
-.btn-3d-orange:active {
-  transform: translateY(2px);
-  border-bottom-width: 1px;
-}
-
-.btn-3d-green {
-  background-color: #2E7D32;
-  color: #FFFFFF;
-  border-bottom: 3px solid #1B4E1F;
-  transition: all 0.08s ease;
-}
-.btn-3d-green:active {
-  transform: translateY(2px);
-  border-bottom-width: 1px;
-}
-
-/* Chest Bounce */
-@keyframes chestBounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-}
-.animate-chest-bounce {
-  animation: chestBounce 1.5s ease-in-out infinite;
+.btn-fab:active {
+  transform: scale(0.92);
 }
 
 /* Custom Scrollbars */
@@ -498,6 +484,6 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D8D3C8;
+  background: var(--line);
   border-radius: 9999px;
 }

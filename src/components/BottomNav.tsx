@@ -1,6 +1,7 @@
 import React from 'react';
-import { Flame, UtensilsCrossed, Dumbbell, Briefcase, Shield, TrendingUp } from 'lucide-react';
+import { Flame, UtensilsCrossed, Dumbbell, Briefcase, TrendingUp } from 'lucide-react';
 import { TabType } from '../types';
+import { triggerHaptic } from '../utils/formatters';
 
 interface BottomNavProps {
   currentTab: TabType;
@@ -8,19 +9,19 @@ interface BottomNavProps {
 }
 
 export const BottomNav: React.FC<BottomNavProps> = ({ currentTab, onSelectTab }) => {
+  // 5 destinations (L2 & Wireframe 6): Today, Train, Food, Work, Progress
   const tabs = [
     { id: 'today' as TabType, label: 'Today', icon: Flame },
-    { id: 'workout' as TabType, label: 'Workout', icon: Dumbbell },
+    { id: 'workout' as TabType, label: 'Train', icon: Dumbbell },
     { id: 'food' as TabType, label: 'Food', icon: UtensilsCrossed },
     { id: 'work' as TabType, label: 'Work', icon: Briefcase },
-    { id: 'vault' as TabType, label: 'Vault', icon: Shield },
-    { id: 'dashboard' as TabType, label: 'Stats', icon: TrendingUp },
+    { id: 'dashboard' as TabType, label: 'Progress', icon: TrendingUp },
   ];
 
   return (
     <nav className="fixed bottom-3 left-3 right-3 z-40 max-w-md mx-auto safe-bottom">
-      {/* Modern Floating Frosted Glass Dock */}
-      <div className="bg-[#2C2324]/92 backdrop-blur-xl border border-white/10 rounded-2xl px-1.5 py-1.5 shadow-[0_10px_35px_rgba(44,35,36,0.3)] flex items-center justify-around">
+      {/* 5-item Frosted Dock (L2, V1, A2) */}
+      <div className="bg-[#2B2324]/95 backdrop-blur-xl border border-white/10 rounded-2xl px-1.5 py-1 shadow-[0_8px_30px_rgba(43,35,36,0.35)] flex items-center justify-around">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = currentTab === tab.id;
@@ -28,19 +29,22 @@ export const BottomNav: React.FC<BottomNavProps> = ({ currentTab, onSelectTab })
           return (
             <button
               key={tab.id}
-              onClick={() => onSelectTab(tab.id)}
-              className={`flex-1 flex flex-col items-center py-1.5 px-0.5 rounded-xl transition-all duration-200 active:scale-90 relative ${
-                isActive
-                  ? 'text-white'
-                  : 'text-[#EFECE3]/60 hover:text-white'
+              type="button"
+              onClick={() => {
+                triggerHaptic(12);
+                onSelectTab(tab.id);
+              }}
+              aria-current={isActive ? 'page' : undefined}
+              className={`nav-item flex-1 flex flex-col items-center justify-center py-1 rounded-xl transition-all duration-150 relative select-none ${
+                isActive ? 'text-white' : 'text-[#F5F2EA]/65 hover:text-white'
               }`}
             >
-              {/* Active Santiago Orange Glow Pill */}
+              {/* Active Ember Pill (V1) */}
               <div
-                className={`relative px-2 py-1 rounded-xl transition-all duration-200 flex items-center justify-center ${
+                className={`px-3 py-1 rounded-xl transition-all duration-200 flex items-center justify-center ${
                   isActive
-                    ? 'bg-[#EB5E28] text-white shadow-[0_2px_12px_rgba(235,94,40,0.4)] scale-105'
-                    : 'text-[#EFECE3]/70'
+                    ? 'bg-[#C4501F] text-white shadow-[0_2px_10px_rgba(196,80,31,0.5)] scale-105'
+                    : 'text-[#F5F2EA]/75'
                 }`}
               >
                 <Icon
@@ -52,8 +56,8 @@ export const BottomNav: React.FC<BottomNavProps> = ({ currentTab, onSelectTab })
 
               {/* Label */}
               <span
-                className={`text-[10px] mt-0.5 font-display tracking-tight transition-colors duration-150 ${
-                  isActive ? 'text-white font-bold' : 'text-[#EFECE3]/60 font-medium'
+                className={`text-[11px] mt-0.5 font-button-s leading-tight transition-colors duration-150 ${
+                  isActive ? 'text-white font-bold' : 'text-[#F5F2EA]/65 font-medium'
                 }`}
               >
                 {tab.label}

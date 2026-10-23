@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Droplets, Footprints, Moon, Scale, Smile, Dumbbell, Briefcase, Plus, Minus, Check, ArrowRight, Camera, ChevronRight } from 'lucide-react';
+import { Droplets, Footprints, Moon, Scale, Smile, Dumbbell, UtensilsCrossed, Plus, Minus, Check, Camera, ChevronRight } from 'lucide-react';
 import { DailyLog, UserSettings, TabType, GamificationState } from '../types';
 import { QuestsWidget } from './QuestsWidget';
-import { SpecimenTrack } from './SpecimenTrack';
 import { LogDetailType } from './SpecimenDetailModal';
+import { triggerHaptic } from '../utils/formatters';
 
 interface TodayTabProps {
   dailyLog: DailyLog;
@@ -14,9 +14,10 @@ interface TodayTabProps {
   onOpenBadgesModal: () => void;
   onUpdateDailyLog: (updates: Partial<DailyLog>) => void;
   onNavigateTab: (tab: TabType) => void;
-  onShowToast: (msg: string) => void;
+  onShowToast: (msg: string, actionLabel?: string, onAction?: () => void) => void;
   onSelectDetail: (detail: LogDetailType) => void;
   onOpenPhotoUploader: (category: 'workout' | 'physique' | 'food' | 'scale' | 'other') => void;
+  onOpenAddModal?: (type: 'food' | 'workout' | 'work') => void;
 }
 
 export const TodayTab: React.FC<TodayTabProps> = ({
@@ -27,10 +28,11 @@ export const TodayTab: React.FC<TodayTabProps> = ({
   onClaimChest,
   onOpenBadgesModal,
   onUpdateDailyLog,
-  onNavigateTab,
+  onNavigateTab: _onNavigateTab,
   onShowToast,
   onSelectDetail,
-  onOpenPhotoUploader
+  onOpenPhotoUploader,
+  onOpenAddModal
 }) => {
   const [weightInput, setWeightInput] = useState(dailyLog.weight !== null ? String(dailyLog.weight) : '');
   const [stepsInput, setStepsInput] = useState(dailyLog.steps > 0 ? String(dailyLog.steps) : '');
@@ -43,65 +45,18 @@ export const TodayTab: React.FC<TodayTabProps> = ({
     setNotesInput(dailyLog.notes || '');
   }, [dailyLog.date, dailyLog.weight, dailyLog.steps, dailyLog.notes]);
 
-  // Water handlers
-  const handleAddWater = (litres: number) => {
-    const nextVal = Math.max(0, Math.round(((dailyLog.water || 0) + litres) * 100) / 100);
-    onUpdateDailyLog({ water: nextVal });
-    onShowToast(`Water updated: ${nextVal} L`);
-  };
-
-  // Steps handlers
-  const handleAddSteps = (amount: number) => {
-    const nextVal = Math.max(0, (dailyLog.steps || 0) + amount);
-    onUpdateDailyLog({ steps: nextVal });
-    setStepsInput(String(nextVal));
-    onShowToast(`Steps: ${nextVal.toLocaleString()}`);
-  };
-
-  const handleSaveStepsInput = () => {
-    const num = parseInt(stepsInput, 10);
-    if (!isNaN(num)) {
-      onUpdateDailyLog({ steps: num });
-      onShowToast(`Steps set to ${num.toLocaleString()}`);
-    }
-  };
-
-  // Weight handler
-  const handleSaveWeight = () => {
-    const val = parseFloat(weightInput);
-    if (!isNaN(val) && val > 30 && val < 300) {
-      onUpdateDailyLog({ weight: val });
-      onShowToast(`Weight saved: ${val} kg`);
-    } else {
-      onShowToast('Please enter a valid weight');
-    }
-  };
-
-  // Sleep handlers
-  const handleSetSleep = (hrs: number) => {
-    onUpdateDailyLog({ sleep: hrs });
-    onShowToast(`Sleep logged: ${hrs} hrs`);
-  };
-
-  // Mood handler
-  const handleSetMood = (moodVal: number) => {
-    onUpdateDailyLog({ mood: moodVal });
-    onShowToast(`Mood check-in saved`);
-  };
-
-  // Notes save
-  const handleSaveNotes = () => {
-    onUpdateDailyLog({ notes: notesInput });
-    setIsEditingNotes(false);
-    onShowToast('Notes updated');
-  };
-
   // Calorie calculations
   const calorieTarget = settings.dailyCalorieTarget || 2200;
   const caloriesIn = dailyLog.caloriesIn || 0;
   const caloriesBurned = dailyLog.caloriesBurned || 0;
   const remainingCalories = calorieTarget - caloriesIn + caloriesBurned;
   const isCaloriesOver = remainingCalories < 0;
+
+  // Calorie SVG Ring math
+  const ringRadius = 42;
+  const ringCircumference = 2 * Math.PI * ringRadius;
+  const calorieRatio = Math.min(1, Math.max(0, caloriesIn / calorieTarget));
+  const strokeDashoffset = ringCircumference * (1 - calorieRatio);
 
   // Water calculations
   const waterTarget = settings.dailyWaterTarget || 3.0;
@@ -115,6 +70,72 @@ export const TodayTab: React.FC<TodayTabProps> = ({
   const stepsRemaining = Math.max(0, stepTarget - stepVal);
   const stepsPct = Math.min(100, Math.round((stepVal / stepTarget) * 100));
 
+  // Water handlers with Undo
+  const handleAddWater = (litres: number) => {
+    triggerHaptic(15);
+    const prevVal = dailyLog.water || 0;
+    const nextVal = Math.max(0, Math.round((prevVal + litres) * 100) / 100);
+    onUpdateDailyLog({ water: nextVal });
+
+    onShowToast(`Water: ${nextVal} L`, 'Undo', () => {
+      onUpdateDailyLog({ water: prevVal });
+    });
+  };
+
+  // Steps handlers with Undo
+  const handleAddSteps = (amount: number) => {
+    triggerHaptic(15);
+    const prevVal = dailyLog.steps || 0;
+    const nextVal = Math.max(0, prevVal + amount);
+    onUpdateDailyLog({ steps: nextVal });
+    setStepsInput(String(nextVal));
+
+    onShowToast(`+${amount.toLocaleString()} steps`, 'Undo', () => {
+      onUpdateDailyLog({ steps: prevVal });
+      setStepsInput(String(prevVal));
+    });
+  };
+
+  const handleSaveStepsInput = () => {
+    const num = parseInt(stepsInput, 10);
+    if (!isNaN(num) && num >= 0) {
+      onUpdateDailyLog({ steps: num });
+      onShowToast(`Steps set to ${num.toLocaleString()}`);
+    }
+  };
+
+  // Weight save
+  const handleSaveWeight = () => {
+    const val = parseFloat(weightInput);
+    if (!isNaN(val) && val > 30 && val < 300) {
+      onUpdateDailyLog({ weight: val });
+      onShowToast(`Weight saved: ${val} kg`);
+    } else {
+      onShowToast('Please enter a valid weight');
+    }
+  };
+
+  // Sleep handler
+  const handleSetSleep = (hrs: number) => {
+    triggerHaptic(15);
+    onUpdateDailyLog({ sleep: hrs });
+    onShowToast(`Sleep logged: ${hrs} hrs`);
+  };
+
+  // Mood handler
+  const handleSetMood = (moodVal: number) => {
+    triggerHaptic(15);
+    onUpdateDailyLog({ mood: moodVal });
+    onShowToast(`Daily mood updated`);
+  };
+
+  // Notes save
+  const handleSaveNotes = () => {
+    onUpdateDailyLog({ notes: notesInput });
+    setIsEditingNotes(false);
+    onShowToast('Saved to your Sheet');
+  };
+
   const moods = [
     { value: 1, emoji: '😫', label: 'Tough' },
     { value: 2, emoji: '😐', label: 'Okay' },
@@ -123,307 +144,427 @@ export const TodayTab: React.FC<TodayTabProps> = ({
     { value: 5, emoji: '🔥', label: 'On Fire' }
   ];
 
+  const friendlyDate = new Date(`${dailyLog.date}T12:00:00`).toLocaleDateString('en-US', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short'
+  });
+
   return (
-    <div className="space-y-4 pb-28 animate-in fade-in duration-150">
+    <div className="space-y-3.5 pb-24 animate-in fade-in duration-150">
       
-      {/* 1. Daily Specimen Hero Card */}
-      <div className="specimen-card p-4 border border-[#D8D3C8]">
+      {/* 1. Hero Calorie Ring Card (L4, V5, L6 & Wireframe 3) */}
+      <div className="bg-white rounded-2xl p-4 border border-[#E2DACB] shadow-2xs">
         
-        {/* Top Catalog & Category Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-[#D8D3C8]/70 mb-3">
+        {/* Card Header */}
+        <div className="flex items-center justify-between pb-2.5 border-b border-[#E2DACB]/60 mb-3.5">
           <div className="flex items-center space-x-2">
-            <span className="font-label text-[10px] bg-[#2C2324] text-white px-2 py-0.5 rounded">
-              SPECIMEN // {dailyLog.date}
-            </span>
-            <span className="font-badge text-[11px] text-[#EB5E28] uppercase">
-              {dailyLog.day}
+            <span className="font-label text-[11px] text-[#5E5444]">
+              ENTRY · {friendlyDate.toUpperCase()}
             </span>
           </div>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1.5">
             <button
+              type="button"
               onClick={() => onOpenPhotoUploader('physique')}
-              className="p-1.5 rounded-xl btn-cold-foam text-[#2C2324] hover:text-[#EB5E28] transition-colors"
-              title="Attach Daily / Progress Photo"
+              className="p-1.5 rounded-lg bg-[#EEE9DD] text-[#2B2324] hover:text-[#C4501F] transition-colors"
+              title="Attach photo for today"
+              aria-label="Attach photo"
             >
-              <Camera className="w-4 h-4 text-[#EB5E28]" />
+              <Camera className="w-3.5 h-3.5 text-[#C4501F]" />
             </button>
 
             <button
+              type="button"
               onClick={() => onSelectDetail({ type: 'daily', item: dailyLog })}
-              className="font-button-s text-[11px] text-[#EB5E28] hover:underline flex items-center gap-0.5"
+              className="font-button-s text-xs text-[#C4501F] hover:underline flex items-center gap-0.5 ml-1"
             >
-              <span>INSPECT</span>
+              <span>Details</span>
               <ChevronRight className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
 
-        {/* Score & Subtitle */}
-        <div className="flex items-baseline justify-between mb-3">
+        {/* Hero Ring & Stats Layout (Wireframe 3) */}
+        <div className="flex items-center justify-between gap-4 py-1">
+          {/* Calorie Ring SVG */}
+          <div className="relative w-28 h-28 shrink-0 flex items-center justify-center">
+            <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
+              {/* Background Track */}
+              <circle
+                cx="50"
+                cy="50"
+                r={ringRadius}
+                fill="transparent"
+                stroke="#EEE9DD"
+                strokeWidth="8"
+              />
+              {/* Progress Fill */}
+              <circle
+                cx="50"
+                cy="50"
+                r={ringRadius}
+                fill="transparent"
+                stroke={isCaloriesOver ? '#B3261E' : '#C4501F'}
+                strokeWidth="8"
+                strokeDasharray={ringCircumference}
+                strokeDashoffset={strokeDashoffset}
+                strokeLinecap="round"
+                className="transition-all duration-500 ease-out"
+              />
+            </svg>
+
+            {/* Inner Center Big Hero Number */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+              <span className="font-score-xl text-2xl leading-none text-[#2B2324]">
+                {Math.abs(remainingCalories).toLocaleString()}
+              </span>
+              <span className="font-caption text-[11px] text-[#5E5444] mt-0.5 leading-none">
+                {isCaloriesOver ? 'kcal over' : 'kcal left'}
+              </span>
+            </div>
+          </div>
+
+          {/* Plain Numbers Beside Ring (L6) */}
+          <div className="flex-1 space-y-1.5 pl-2 border-l border-[#E2DACB]/60">
+            <div className="flex items-baseline justify-between text-xs">
+              <span className="font-caption text-[#5E5444]">Eaten</span>
+              <span className="font-score-m text-sm text-[#2B2324]">{caloriesIn.toLocaleString()}</span>
+            </div>
+            <div className="flex items-baseline justify-between text-xs">
+              <span className="font-caption text-[#5E5444]">Burned</span>
+              <span className="font-score-m text-sm text-[#C4501F]">
+                {caloriesBurned > 0 ? `+${caloriesBurned.toLocaleString()}` : '0'}
+              </span>
+            </div>
+            <div className="flex items-baseline justify-between text-xs pt-1 border-t border-[#E2DACB]/40">
+              <span className="font-caption text-[#5E5444]">Goal</span>
+              <span className="font-score-m text-sm text-[#2B2324]">{calorieTarget.toLocaleString()}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Macro Bars Underneath Ring (V5, L6) */}
+        <div className="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-[#E2DACB]/60">
           <div>
-            <div className="font-h2 text-[#2C2324] uppercase tracking-tight">
-              {dailyLog.dailyScore > 0 ? `${dailyLog.dailyScore}% Daily Score` : 'Log Daily Specimen'}
+            <div className="flex justify-between items-baseline mb-1">
+              <span className="font-caption text-[#2F6B2A] font-bold">Protein</span>
+              <span className="font-stat text-xs text-[#2B2324]">{dailyLog.protein} / {settings.dailyProteinTarget} g</span>
             </div>
-            <div className="font-body-s text-[#766754] mt-0.5">
-              {dailyLog.dailyScore >= 80 ? 'Consistency over intensity. On track.' : 'Show up daily. Progress, not perfection.'}
+            <div className="w-full h-1.5 bg-[#EEE9DD] rounded-full overflow-hidden">
+              <div
+                className="h-full bg-[#2F6B2A] rounded-full transition-all duration-300"
+                style={{ width: `${Math.min(100, (dailyLog.protein / (settings.dailyProteinTarget || 130)) * 100)}%` }}
+              />
             </div>
           </div>
 
-          <div className="px-3 py-1.5 rounded-xl bg-[#EFECE3] border border-[#D8D3C8] text-center">
-            <span className="font-score-m text-[#2C2324] tabular-nums">
-              {dailyLog.dailyScore > 0 ? `${dailyLog.dailyScore}%` : '--'}
-            </span>
+          <div>
+            <div className="flex justify-between items-baseline mb-1">
+              <span className="font-caption text-[#C4501F] font-bold">Carbs</span>
+              <span className="font-stat text-xs text-[#2B2324]">{dailyLog.carbs} / 250 g</span>
+            </div>
+            <div className="w-full h-1.5 bg-[#EEE9DD] rounded-full overflow-hidden">
+              <div
+                className="h-full bg-[#C4501F] rounded-full transition-all duration-300"
+                style={{ width: `${Math.min(100, (dailyLog.carbs / 250) * 100)}%` }}
+              />
+            </div>
+          </div>
+
+          <div>
+            <div className="flex justify-between items-baseline mb-1">
+              <span className="font-caption text-[#8A5A00] font-bold">Fat</span>
+              <span className="font-stat text-xs text-[#2B2324]">{dailyLog.fat} / 70 g</span>
+            </div>
+            <div className="w-full h-1.5 bg-[#EEE9DD] rounded-full overflow-hidden">
+              <div
+                className="h-full bg-[#8A5A00] rounded-full transition-all duration-300"
+                style={{ width: `${Math.min(100, (dailyLog.fat / 70) * 100)}%` }}
+              />
+            </div>
           </div>
         </div>
 
-        {/* Technical Specimen Tracks */}
-        <div className="space-y-0.5 pt-1">
-          <SpecimenTrack
-            label="Calories In"
-            value={caloriesIn.toLocaleString()}
-            unit="KCAL"
-            percent={Math.min(100, (caloriesIn / calorieTarget) * 100)}
-            dotColor="#2C2324"
-          />
-          <SpecimenTrack
-            label="Burned"
-            value={`+${caloriesBurned}`}
-            unit="KCAL"
-            percent={Math.min(100, (caloriesBurned / 600) * 100)}
-            dotColor="#EB5E28"
-          />
-          <SpecimenTrack
-            label="Remaining"
-            value={remainingCalories.toLocaleString()}
-            unit={isCaloriesOver ? 'OVER' : 'KCAL'}
-            percent={Math.max(4, Math.min(96, ((calorieTarget - caloriesIn) / calorieTarget) * 100))}
-            dotColor={isCaloriesOver ? '#EB5E28' : '#2E7D32'}
-          />
-        </div>
-
-        {/* Macros Breakdown pill bar */}
-        <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-[#D8D3C8]/60 text-xs">
-          <div className="bg-[#EFECE3] p-2 rounded-xl border border-[#D8D3C8]">
-            <span className="font-label text-[10px] text-[#2E7D32] block">Protein</span>
-            <strong className="text-[#2C2324] font-score-m text-base tabular-nums block">{dailyLog.protein}g</strong>
-            <span className="font-caption text-[#766754] tabular-nums block">/{settings.dailyProteinTarget}g</span>
-          </div>
-          <div className="bg-[#EFECE3] p-2 rounded-xl border border-[#D8D3C8]">
-            <span className="font-label text-[10px] text-[#EB5E28] block">Carbs</span>
-            <strong className="text-[#2C2324] font-score-m text-base tabular-nums block">{dailyLog.carbs}g</strong>
-            <span className="font-caption text-[#766754] block">fuel</span>
-          </div>
-          <div className="bg-[#EFECE3] p-2 rounded-xl border border-[#D8D3C8]">
-            <span className="font-label text-[10px] text-[#766754] block">Fats</span>
-            <strong className="text-[#2C2324] font-score-m text-base tabular-nums block">{dailyLog.fat}g</strong>
-            <span className="font-caption text-[#766754] block">lipids</span>
-          </div>
-        </div>
       </div>
 
-      {/* 2. Duolingo Daily Quests Widget & Mystery Chest */}
+      {/* 2. Quick-Log Action Row (L4 & Wireframe 4) */}
+      <div className="grid grid-cols-4 gap-2">
+        <button
+          type="button"
+          onClick={() => {
+            triggerHaptic(10);
+            onOpenAddModal?.('food');
+          }}
+          className="py-2.5 px-1 rounded-xl bg-white border border-[#E2DACB] hover:bg-[#EEE9DD] shadow-2xs flex flex-col items-center justify-center transition-all active:scale-95 text-[#2B2324]"
+        >
+          <div className="p-1 rounded-lg bg-[#F5F2EA] text-[#C4501F] mb-1">
+            <UtensilsCrossed className="w-3.5 h-3.5" />
+          </div>
+          <span className="font-button-s text-xs">+ Meal</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            triggerHaptic(10);
+            onOpenAddModal?.('workout');
+          }}
+          className="py-2.5 px-1 rounded-xl bg-white border border-[#E2DACB] hover:bg-[#EEE9DD] shadow-2xs flex flex-col items-center justify-center transition-all active:scale-95 text-[#2B2324]"
+        >
+          <div className="p-1 rounded-lg bg-[#F5F2EA] text-[#2F6B2A] mb-1">
+            <Dumbbell className="w-3.5 h-3.5" />
+          </div>
+          <span className="font-button-s text-xs">+ Train</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => handleAddWater(0.25)}
+          className="py-2.5 px-1 rounded-xl bg-white border border-[#E2DACB] hover:bg-[#EEE9DD] shadow-2xs flex flex-col items-center justify-center transition-all active:scale-95 text-[#2B2324]"
+        >
+          <div className="p-1 rounded-lg bg-[#F5F2EA] text-[#2F5D8A] mb-1">
+            <Droplets className="w-3.5 h-3.5" />
+          </div>
+          <span className="font-button-s text-xs">+ Water</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            triggerHaptic(10);
+            const el = document.getElementById('weight-input-field');
+            el?.focus();
+            el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }}
+          className="py-2.5 px-1 rounded-xl bg-white border border-[#E2DACB] hover:bg-[#EEE9DD] shadow-2xs flex flex-col items-center justify-center transition-all active:scale-95 text-[#2B2324]"
+        >
+          <div className="p-1 rounded-lg bg-[#F5F2EA] text-[#8A5A00] mb-1">
+            <Scale className="w-3.5 h-3.5" />
+          </div>
+          <span className="font-button-s text-xs">+ Weight</span>
+        </button>
+      </div>
+
+      {/* 3. Today's Goals (Wireframe 5, I3, V2) */}
       <QuestsWidget
         quests={gamification.quests}
         onClaimQuest={onClaimQuest}
         onClaimChest={onClaimChest}
         chestClaimed={gamification.chestClaimedDate === dailyLog.date}
         onOpenBadgesModal={onOpenBadgesModal}
+        onQuickAddWater={handleAddWater}
+        onQuickAddSteps={handleAddSteps}
+        onQuickLogMeal={() => onOpenAddModal?.('food')}
       />
 
-      {/* 3. Water Intake Card */}
-      <div className="specimen-card p-4 border border-[#D8D3C8]">
+      {/* 4. Hydration Card */}
+      <div className="bg-white rounded-2xl p-4 border border-[#E2DACB] shadow-2xs">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center space-x-2">
-            <div className="p-2 rounded-xl bg-[#EFECE3] text-[#2C2324] border border-[#D8D3C8]">
-              <Droplets className="w-4 h-4 stroke-[2.5]" />
+            <div className="p-1.5 rounded-lg bg-[#F5F2EA] text-[#2F5D8A]">
+              <Droplets className="w-4 h-4" />
             </div>
             <div>
-              <div className="font-h3 text-base text-[#2C2324] uppercase">Hydration</div>
-              <div className="font-caption text-[#766754]">
-                {waterRemaining > 0 ? `${waterVal} L Drank • ${waterRemaining} L to go` : `Target reached (${waterVal} L)`}
+              <div className="font-title text-sm text-[#2B2324]">Hydration</div>
+              <div className="font-caption text-[11px] text-[#5E5444]">
+                {waterRemaining > 0 ? `${waterVal} L drank · ${waterRemaining} L to go` : `Target reached (${waterVal} L)`}
               </div>
             </div>
           </div>
           <div className="text-right">
-            <span className="font-score-m text-2xl text-[#2C2324] tabular-nums">{waterVal}</span>
-            <span className="font-caption text-[#766754] tabular-nums"> / {waterTarget} L</span>
+            <span className="font-score-m text-lg text-[#2B2324]">{waterVal}</span>
+            <span className="font-caption text-[#5E5444]"> / {waterTarget} L</span>
           </div>
         </div>
 
-        {/* Specimen progress track */}
-        <div className="w-full h-2 bg-[#EFECE3] rounded-full overflow-hidden border border-[#D8D3C8] mb-3">
+        {/* Track bar */}
+        <div className="w-full h-2 bg-[#EEE9DD] rounded-full overflow-hidden mb-3">
           <div
-            className="h-full bg-[#EB5E28] rounded-full transition-all duration-300"
+            className="h-full bg-[#2F5D8A] rounded-full transition-all duration-300"
             style={{ width: `${waterPct}%` }}
-          ></div>
+          />
         </div>
 
-        {/* Tactile 3D Quick Tap Buttons */}
+        {/* Quick tap buttons */}
         <div className="flex items-center gap-2">
           <button
+            type="button"
             onClick={() => handleAddWater(-0.25)}
-            className="p-2 btn-3d-foam rounded-xl font-button-s transition-all"
+            className="p-2 btn-cold-foam rounded-xl font-button-s"
             title="Subtract 250ml"
+            aria-label="Subtract 250ml"
           >
-            <Minus className="w-3.5 h-3.5 text-[#766754]" />
+            <Minus className="w-3.5 h-3.5 text-[#5E5444]" />
           </button>
           <button
+            type="button"
             onClick={() => handleAddWater(0.25)}
-            className="flex-1 py-2 btn-3d-foam rounded-xl font-button-s text-xs flex items-center justify-center gap-1 text-[#2C2324]"
+            className="flex-1 py-2 btn-cold-foam rounded-xl font-button-s text-xs flex items-center justify-center gap-1 text-[#2B2324]"
           >
-            <Plus className="w-3 h-3 text-[#EB5E28]" /> 250ml
+            <Plus className="w-3 h-3 text-[#2F5D8A]" /> 250 ml
           </button>
           <button
+            type="button"
             onClick={() => handleAddWater(0.5)}
-            className="flex-1 py-2 btn-3d-foam rounded-xl font-button-s text-xs flex items-center justify-center gap-1 text-[#2C2324]"
+            className="flex-1 py-2 btn-cold-foam rounded-xl font-button-s text-xs flex items-center justify-center gap-1 text-[#2B2324]"
           >
-            <Plus className="w-3 h-3 text-[#EB5E28]" /> 500ml
+            <Plus className="w-3 h-3 text-[#2F5D8A]" /> 500 ml
           </button>
           <button
+            type="button"
             onClick={() => handleAddWater(1.0)}
-            className="flex-1 py-2 btn-3d-santiago rounded-xl font-button-s text-xs flex items-center justify-center gap-1"
+            className="flex-1 py-2 btn-ember rounded-xl font-button-s text-xs flex items-center justify-center gap-1"
           >
-            <Plus className="w-3 h-3 text-white" /> 1.0L
+            <Plus className="w-3 h-3 text-white" /> 1.0 L
           </button>
         </div>
       </div>
 
-      {/* 4. Steps Counter Card */}
-      <div className="specimen-card p-4 border border-[#D8D3C8]">
+      {/* 5. Movement & Steps Card */}
+      <div className="bg-white rounded-2xl p-4 border border-[#E2DACB] shadow-2xs">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center space-x-2">
-            <div className="p-2 rounded-xl bg-[#EFECE3] text-[#EB5E28] border border-[#D8D3C8]">
-              <Footprints className="w-4 h-4 stroke-[2.5]" />
+            <div className="p-1.5 rounded-lg bg-[#F5F2EA] text-[#C4501F]">
+              <Footprints className="w-4 h-4" />
             </div>
             <div>
-              <div className="font-h3 text-base text-[#2C2324] uppercase">Daily Movement</div>
-              <div className="font-caption text-[#766754]">
-                {stepsRemaining > 0 ? `${stepVal.toLocaleString()} hit • ${stepsRemaining.toLocaleString()} to goal` : `Goal Reached!`}
+              <div className="font-title text-sm text-[#2B2324]">Movement</div>
+              <div className="font-caption text-[11px] text-[#5E5444]">
+                {stepsRemaining > 0 ? `${stepVal.toLocaleString()} steps · ${stepsRemaining.toLocaleString()} to goal` : `Goal Reached!`}
               </div>
             </div>
           </div>
           <div className="text-right">
-            <span className="font-score-m text-2xl text-[#EB5E28] tabular-nums">{stepVal.toLocaleString()}</span>
-            <span className="font-caption text-[#766754] tabular-nums"> / {stepTarget.toLocaleString()}</span>
+            <span className="font-score-m text-lg text-[#2B2324]">{stepVal.toLocaleString()}</span>
+            <span className="font-caption text-[#5E5444]"> / {stepTarget.toLocaleString()}</span>
           </div>
         </div>
 
-        {/* Progress bar */}
-        <div className="w-full h-2 bg-[#EFECE3] rounded-full overflow-hidden border border-[#D8D3C8] mb-3">
+        {/* Track bar */}
+        <div className="w-full h-2 bg-[#EEE9DD] rounded-full overflow-hidden mb-3">
           <div
-            className="h-full bg-[#EB5E28] rounded-full transition-all duration-300"
+            className="h-full bg-[#C4501F] rounded-full transition-all duration-300"
             style={{ width: `${stepsPct}%` }}
-          ></div>
+          />
         </div>
 
-        {/* Quick step additions */}
-        <div className="flex items-center gap-2 mb-2.5">
+        {/* Quick add row */}
+        <div className="flex items-center gap-2 mb-2">
           <button
+            type="button"
             onClick={() => handleAddSteps(1000)}
-            className="flex-1 py-2 btn-3d-foam rounded-xl font-button-s text-xs text-[#2C2324]"
+            className="flex-1 py-2 btn-cold-foam rounded-xl font-button-s text-xs text-[#2B2324]"
           >
             +1,000
           </button>
           <button
+            type="button"
             onClick={() => handleAddSteps(2500)}
-            className="flex-1 py-2 btn-3d-foam rounded-xl font-button-s text-xs text-[#2C2324]"
+            className="flex-1 py-2 btn-cold-foam rounded-xl font-button-s text-xs text-[#2B2324]"
           >
             +2,500
           </button>
           <button
+            type="button"
             onClick={() => handleAddSteps(5000)}
-            className="flex-1 py-2 btn-3d-santiago rounded-xl font-button-s text-xs"
+            className="flex-1 py-2 btn-ember rounded-xl font-button-s text-xs"
           >
             +5,000
           </button>
         </div>
 
-        {/* Direct Step Input */}
         <div className="flex items-center gap-2">
           <input
             type="number"
             placeholder="Type exact steps..."
             value={stepsInput}
             onChange={(e) => setStepsInput(e.target.value)}
-            className="flex-1 bg-white border border-[#D8D3C8] rounded-xl px-3 py-2 font-stat text-xs font-bold text-[#2C2324] placeholder-[#766754] focus:border-[#EB5E28] tabular-nums"
+            className="flex-1 bg-white border border-[#E2DACB] rounded-xl px-3 py-1.5 font-stat text-xs text-[#2B2324] placeholder-[#5E5444]/60"
           />
           <button
+            type="button"
             onClick={handleSaveStepsInput}
-            className="px-4 py-2 btn-gold-black font-button-s uppercase tracking-wider rounded-xl"
+            className="px-4 py-1.5 btn-gold-black font-button-s text-xs rounded-xl"
           >
             Set
           </button>
         </div>
       </div>
 
-      {/* 5. Weight & Sleep Two-Column Grid */}
+      {/* 6. Weight & Sleep Two-Column Grid */}
       <div className="grid grid-cols-2 gap-3">
-        
         {/* Morning Weight */}
-        <div className="specimen-card p-4 border border-[#D8D3C8]">
-          <div className="flex items-center justify-between mb-2">
+        <div className="bg-white rounded-2xl p-3.5 border border-[#E2DACB] shadow-2xs">
+          <div className="flex items-center justify-between mb-1.5">
             <div className="flex items-center space-x-1.5">
-              <div className="p-1.5 rounded-lg bg-[#EFECE3] text-[#2C2324] border border-[#D8D3C8]">
-                <Scale className="w-3.5 h-3.5 stroke-[2.5]" />
+              <div className="p-1 rounded-md bg-[#F5F2EA] text-[#2B2324]">
+                <Scale className="w-3.5 h-3.5" />
               </div>
-              <div className="font-h3 text-xs text-[#2C2324] uppercase">Weight (kg)</div>
+              <span className="font-title text-xs text-[#2B2324]">Weight (kg)</span>
             </div>
             
             <button
+              type="button"
               onClick={() => onOpenPhotoUploader('scale')}
-              className="text-[#766754] hover:text-[#EB5E28] p-1"
-              title="Snap Scale Photo"
+              className="text-[#5E5444] hover:text-[#C4501F] p-1"
+              title="Snap scale photo"
+              aria-label="Snap scale photo"
             >
               <Camera className="w-3.5 h-3.5" />
             </button>
           </div>
           
-          <div className="flex items-center gap-1.5 my-2">
+          <div className="flex items-center gap-1.5 my-1.5">
             <input
+              id="weight-input-field"
               type="number"
               step="0.1"
               placeholder="78.0"
               value={weightInput}
               onChange={(e) => setWeightInput(e.target.value)}
-              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 font-stat font-bold text-base text-[#2C2324] placeholder-[#766754] focus:border-[#EB5E28] tabular-nums"
+              className="w-full bg-white border border-[#E2DACB] rounded-xl px-2.5 py-1 font-stat text-sm text-[#2B2324]"
             />
             <button
+              type="button"
               onClick={handleSaveWeight}
-              className="p-2.5 btn-gold-black rounded-xl text-white flex items-center justify-center shrink-0"
+              className="p-2 btn-gold-black rounded-xl text-white flex items-center justify-center shrink-0"
               title="Save weight"
+              aria-label="Save weight"
             >
-              <Check className="w-4 h-4 stroke-[3]" />
+              <Check className="w-3.5 h-3.5 stroke-[3]" />
             </button>
           </div>
-          <div className="font-caption text-[#766754] tabular-nums">
+          <div className="font-caption text-[11px] text-[#5E5444]">
             Goal: {settings.goalWeightKg} kg
           </div>
         </div>
 
         {/* Sleep Hours */}
-        <div className="specimen-card p-4 border border-[#D8D3C8]">
-          <div className="flex items-center space-x-1.5 mb-2">
-            <div className="p-1.5 rounded-lg bg-[#EFECE3] text-[#766754] border border-[#D8D3C8]">
-              <Moon className="w-3.5 h-3.5 stroke-[2.5]" />
+        <div className="bg-white rounded-2xl p-3.5 border border-[#E2DACB] shadow-2xs">
+          <div className="flex items-center space-x-1.5 mb-1.5">
+            <div className="p-1 rounded-md bg-[#F5F2EA] text-[#5E5444]">
+              <Moon className="w-3.5 h-3.5" />
             </div>
-            <div className="font-h3 text-xs text-[#2C2324] uppercase">Sleep (hrs)</div>
+            <span className="font-title text-xs text-[#2B2324]">Sleep</span>
           </div>
 
-          <div className="flex items-center justify-between my-2">
-            <span className="font-score-m text-xl text-[#2C2324] tabular-nums">{dailyLog.sleep || 0}</span>
-            <span className="font-caption text-[#766754] tabular-nums">/ {settings.dailySleepTarget}h target</span>
+          <div className="flex items-center justify-between my-1">
+            <span className="font-score-m text-lg text-[#2B2324]">{dailyLog.sleep || 0} h</span>
+            <span className="font-caption text-[11px] text-[#5E5444]">of {settings.dailySleepTarget} h</span>
           </div>
 
-          <div className="flex gap-1">
+          <div className="flex gap-1 mt-1">
             {[6, 7, 7.5, 8].map((h) => (
               <button
                 key={h}
+                type="button"
                 onClick={() => handleSetSleep(h)}
-                className={`flex-1 py-1 font-stat text-[11px] font-bold rounded-lg border transition-all tabular-nums ${
+                className={`flex-1 py-1 font-stat text-[11px] rounded-lg border transition-all ${
                   dailyLog.sleep === h
-                    ? 'bg-[#2C2324] text-white border-[#2C2324]'
-                    : 'bg-[#EFECE3] text-[#766754] border-[#D8D3C8] hover:bg-[#e6e2d7]'
+                    ? 'bg-[#2B2324] text-white border-[#2B2324]'
+                    : 'bg-[#F5F2EA] text-[#5E5444] border-[#E2DACB] hover:bg-[#EEE9DD]'
                 }`}
               >
                 {h}h
@@ -431,19 +572,15 @@ export const TodayTab: React.FC<TodayTabProps> = ({
             ))}
           </div>
         </div>
-
       </div>
 
-      {/* 6. Daily Mood Selector */}
-      <div className="specimen-card p-4 border border-[#D8D3C8]">
-        <div className="flex items-center space-x-2 mb-3">
-          <div className="p-1.5 rounded-lg bg-[#EFECE3] text-[#EB5E28] border border-[#D8D3C8]">
-            <Smile className="w-4 h-4 stroke-[2.5]" />
+      {/* 7. Daily Mood */}
+      <div className="bg-white rounded-2xl p-3.5 border border-[#E2DACB] shadow-2xs">
+        <div className="flex items-center space-x-2 mb-2.5">
+          <div className="p-1 rounded-md bg-[#F5F2EA] text-[#C4501F]">
+            <Smile className="w-3.5 h-3.5" />
           </div>
-          <div>
-            <div className="text-xs font-display font-bold uppercase tracking-wider text-[#2C2324]">Daily Mood & Energy</div>
-            <div className="text-[10px] font-mono text-[#766754]">Check in honestly with your specimen</div>
-          </div>
+          <span className="font-title text-xs text-[#2B2324]">Daily energy & mood</span>
         </div>
 
         <div className="grid grid-cols-5 gap-1.5">
@@ -452,15 +589,16 @@ export const TodayTab: React.FC<TodayTabProps> = ({
             return (
               <button
                 key={m.value}
+                type="button"
                 onClick={() => handleSetMood(m.value)}
                 className={`flex flex-col items-center py-2 px-1 rounded-xl border transition-all active:scale-95 ${
                   isSelected
-                    ? 'bg-[#FFFFFF] border-2 border-[#EB5E28] shadow-xs'
-                    : 'bg-[#EFECE3] border-[#D8D3C8] hover:bg-[#e6e2d7]'
+                    ? 'bg-[#FBE8DE] border-2 border-[#C4501F] shadow-xs'
+                    : 'bg-[#F5F2EA] border-[#E2DACB] hover:bg-[#EEE9DD]'
                 }`}
               >
-                <span className="text-2xl">{m.emoji}</span>
-                <span className={`text-[10px] mt-1 font-mono font-bold ${isSelected ? 'text-[#EB5E28]' : 'text-[#766754]'}`}>
+                <span className="text-xl">{m.emoji}</span>
+                <span className={`text-[10px] mt-1 font-caption ${isSelected ? 'text-[#C4501F] font-bold' : 'text-[#5E5444]'}`}>
                   {m.label}
                 </span>
               </button>
@@ -469,70 +607,25 @@ export const TodayTab: React.FC<TodayTabProps> = ({
         </div>
       </div>
 
-      {/* 7. Quick Jump Activity Cards */}
-      <div className="space-y-2">
-        {/* Workout quick card */}
-        <div
-          onClick={() => onNavigateTab('workout')}
-          className="specimen-card hover:bg-[#EFECE3]/50 active:scale-[0.99] cursor-pointer p-3.5 border border-[#D8D3C8] flex items-center justify-between transition-all"
-        >
-          <div className="flex items-center space-x-3">
-            <div className="p-2 rounded-xl bg-[#EFECE3] text-[#EB5E28] border border-[#D8D3C8]">
-              <Dumbbell className="w-4 h-4 stroke-[2.5]" />
-            </div>
-            <div>
-              <div className="text-xs font-display font-bold uppercase tracking-wider text-[#2C2324]">Workout Archive</div>
-              <div className="text-[11px] font-mono text-[#766754]">
-                {dailyLog.workoutDone
-                  ? `Completed • ${(dailyLog.workoutVolume || 0).toLocaleString()} kg volume`
-                  : 'No workout logged yet'}
-              </div>
-            </div>
-          </div>
-          <ArrowRight className="w-4 h-4 text-[#766754]" />
-        </div>
-
-        {/* Work tasks quick card */}
-        <div
-          onClick={() => onNavigateTab('work')}
-          className="specimen-card hover:bg-[#EFECE3]/50 active:scale-[0.99] cursor-pointer p-3.5 border border-[#D8D3C8] flex items-center justify-between transition-all"
-        >
-          <div className="flex items-center space-x-3">
-            <div className="p-2 rounded-xl bg-[#EFECE3] text-[#2C2324] border border-[#D8D3C8]">
-              <Briefcase className="w-4 h-4 stroke-[2.5]" />
-            </div>
-            <div>
-              <div className="text-xs font-display font-bold uppercase tracking-wider text-[#2C2324]">Productivity & Tasks</div>
-              <div className="text-[11px] font-mono text-[#766754]">
-                {dailyLog.workHours > 0
-                  ? `${dailyLog.workHours} hours logged`
-                  : 'Log work, study, and tasks'}
-              </div>
-            </div>
-          </div>
-          <ArrowRight className="w-4 h-4 text-[#766754]" />
-        </div>
-      </div>
-
-      {/* 8. Daily Notes Card */}
-      <div className="specimen-card p-4 border border-[#D8D3C8]">
+      {/* 8. Daily Notes & Observations (V3: Plain copy) */}
+      <div className="bg-white rounded-2xl p-3.5 border border-[#E2DACB] shadow-2xs">
         <div className="flex items-center justify-between mb-2">
-          <div className="text-xs font-display font-bold uppercase tracking-wider text-[#2C2324]">
-            Notes & Reflections
-          </div>
+          <span className="font-title text-xs text-[#2B2324]">Notes & observations</span>
           {!isEditingNotes ? (
             <button
+              type="button"
               onClick={() => setIsEditingNotes(true)}
-              className="text-[11px] font-mono font-bold text-[#EB5E28] hover:underline"
+              className="text-xs font-button-s text-[#C4501F] hover:underline"
             >
-              EDIT
+              Edit
             </button>
           ) : (
             <button
+              type="button"
               onClick={handleSaveNotes}
-              className="text-[11px] font-mono font-bold text-white bg-[#2C2324] px-2.5 py-0.5 rounded-md"
+              className="text-xs font-button-s text-white bg-[#2B2324] px-2.5 py-0.5 rounded-lg"
             >
-              SAVE
+              Save
             </button>
           )}
         </div>
@@ -542,13 +635,13 @@ export const TodayTab: React.FC<TodayTabProps> = ({
             value={notesInput}
             onChange={(e) => setNotesInput(e.target.value)}
             rows={3}
-            placeholder="Type your reflections here (syncs to Column T in Google Sheets)..."
-            className="w-full bg-white border border-[#D8D3C8] rounded-xl p-2.5 text-xs text-[#2C2324] font-sans focus:border-[#EB5E28]"
+            placeholder="Type your notes here (saved to your Sheet)..."
+            className="w-full bg-white border border-[#E2DACB] rounded-xl p-2.5 text-xs text-[#2B2324] font-body-m focus:border-[#C4501F]"
           />
         ) : (
           <div
             onClick={() => setIsEditingNotes(true)}
-            className="text-xs text-[#766754] italic p-3 bg-[#EFECE3] rounded-xl border border-[#D8D3C8] cursor-pointer min-h-[48px]"
+            className="text-xs text-[#5E5444] p-3 bg-[#F5F2EA] rounded-xl border border-[#E2DACB] cursor-pointer min-h-[44px]"
           >
             {dailyLog.notes || 'Tap to add personal observations for today...'}
           </div>
