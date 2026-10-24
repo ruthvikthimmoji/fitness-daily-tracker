@@ -71,11 +71,11 @@ export const AddWorkoutModal: React.FC<AddWorkoutModalProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-[#D8D3C8]/70">
           <div className="flex items-center space-x-2">
-            <div className="p-2 rounded-xl bg-[#EFECE3] text-[#EB5E28] border border-[#D8D3C8]">
+            <div className="p-2 rounded-xl bg-[#EFECE3] text-[#FF5B04] border border-[#D8D3C8]">
               <Dumbbell className="w-4 h-4 stroke-[2.5]" />
             </div>
             <div>
-              <div className="font-label text-[#EB5E28]">
+              <div className="font-label text-[#FF5B04]">
                 // ARCHIVE // EXERCISE SPECIMEN
               </div>
               <h2 className="font-h2 text-[#2C2324]">
@@ -124,7 +124,7 @@ export const AddWorkoutModal: React.FC<AddWorkoutModalProps> = ({
               placeholder="e.g. Bench Press or Squats"
               value={exercise}
               onChange={(e) => setExercise(e.target.value)}
-              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-2 font-body-m text-[#2C2324] font-bold placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
+              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-2 font-body-m text-[#2C2324] font-bold placeholder-[#766754]/50 focus:outline-none focus:border-[#FF5B04]"
             />
           </div>
 
@@ -137,7 +137,7 @@ export const AddWorkoutModal: React.FC<AddWorkoutModalProps> = ({
                 placeholder="4"
                 value={sets}
                 onChange={(e) => setSets(e.target.value)}
-                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#EB5E28]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#FF5B04]"
               />
             </div>
             <div>
@@ -147,18 +147,18 @@ export const AddWorkoutModal: React.FC<AddWorkoutModalProps> = ({
                 placeholder="10"
                 value={reps}
                 onChange={(e) => setReps(e.target.value)}
-                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#EB5E28]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#FF5B04]"
               />
             </div>
             <div>
-              <label className="font-label text-[#EB5E28] block mb-0.5">Weight (kg)</label>
+              <label className="font-label text-[#FF5B04] block mb-0.5">Weight (kg)</label>
               <input
                 type="number"
                 step="0.5"
                 placeholder="kg"
                 value={weightKg}
                 onChange={(e) => setWeightKg(e.target.value)}
-                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#EB5E28]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#FF5B04]"
               />
             </div>
           </div>
@@ -180,17 +180,17 @@ export const AddWorkoutModal: React.FC<AddWorkoutModalProps> = ({
                 placeholder="e.g. 45"
                 value={durationMin}
                 onChange={(e) => setDurationMin(e.target.value)}
-                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#EB5E28]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#FF5B04]"
               />
             </div>
             <div>
-              <label className="font-label text-[#EB5E28] block mb-0.5">Calories Burned</label>
+              <label className="font-label text-[#FF5B04] block mb-0.5">Calories Burned</label>
               <input
                 type="number"
                 placeholder="e.g. 300"
                 value={caloriesBurned}
                 onChange={(e) => setCaloriesBurned(e.target.value)}
-                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#EB5E28]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2.5 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#FF5B04]"
               />
             </div>
           </div>
@@ -203,7 +203,7 @@ export const AddWorkoutModal: React.FC<AddWorkoutModalProps> = ({
               placeholder="e.g. RPE 8, felt strong"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-1.5 font-body-m text-[#2C2324] placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
+              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-1.5 font-body-m text-[#2C2324] placeholder-[#766754]/50 focus:outline-none focus:border-[#FF5B04]"
             />
           </div>
 

@@ -1,33 +1,55 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: 'Fredoka', 'SF Pro Rounded', system-ui, -apple-system, sans-serif;
-  --font-body: 'Nunito', system-ui, -apple-system, sans-serif;
-  --font-sans: 'Nunito', system-ui, -apple-system, sans-serif;
-  --font-mono: 'IBM Plex Mono', 'Rubik', monospace, sans-serif;
-  --font-number: 'Rubik', monospace, sans-serif;
+  --font-display: 'Instagram Sans', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-body: 'Instagram Sans', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Instagram Sans', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Plus Jakarta Sans', monospace, sans-serif;
+  --font-number: 'Plus Jakarta Sans', system-ui, monospace, sans-serif;
 }
 
 @layer base {
   :root {
-    /* FIELD NOTEBOOK COLOR TOKENS (Design Guide Section 5) */
-    --cream: #F5F2EA;       /* Page background */
-    --paper: #FFFFFF;       /* Cards */
-    --tint: #EEE9DD;        /* Tiles, inputs */
-    --line: #E2DACB;        /* 1 px borders */
-    --ink: #2B2324;         /* Text, nav, primary dark */
-    --muted: #5E5444;       /* Secondary text */
-    --ember: #C4501F;       /* Buttons, fills (white text 4.65:1) */
-    --ember-text: #A83F17;  /* Small orange text (5.54:1 on cream) */
-    --ember-bright: #E8743F;/* Accent on dark surfaces only */
-    --ember-tint: #FBE8DE;  /* Selected chip, highlight */
-    --leaf: #2F6B2A;        /* Protein, success */
-    --leaf-tint: #E3EEDF;   /* Success bg */
-    --water: #2F5D8A;       /* Hydration, info */
-    --water-tint: #E1EAF3;  /* Info bg */
-    --amber: #8A5A00;       /* Fats, warning */
-    --amber-tint: #F6EBCF;  /* Warning bg */
-    --error: #B3261E;       /* Errors, failed sync */
+    /* BRAND COLOR PALETTE (Flame Orange + Deep Sea Green + Dark Slate Blue + Wild Sand) */
+    --primary: #FF5B04;        /* 02: Flame Orange (Primary) */
+    --flame-orange: #FF5B04;
+    --flame-hover: #E04B00;
+    --flame-tint: #FFF0E8;
+    --flame-glow: rgba(255, 91, 4, 0.35);
+
+    --secondary: #075056;      /* 03: Deep Sea Green (Secondary) */
+    --deep-sea: #075056;
+    --deep-sea-tint: #E6F2F3;
+    --deep-sea-hover: #09636A;
+
+    --tertiary: #16232B;       /* 01: Dark Slate Blue (Tertiary) */
+    --dark-slate: #16232B;
+    --slate-muted: #526673;
+
+    --wild-sand: #E4EEF0;      /* 04: Wild Sand (Page Background) */
+    --bg-page: #E4EEF0;
+    --surface: #FFFFFF;
+    --surface-tint: #F3F7F8;
+    --border-subtle: #CADCE0;
+
+    /* Semantic Compatibility Tokens */
+    --cream: #E4EEF0;       /* Page background (Wild Sand) */
+    --paper: #FFFFFF;       /* Cards (Pure white) */
+    --tint: #DCE8EB;        /* Subtle inputs / active chips */
+    --line: #CADCE0;        /* 1 px borders */
+    --ink: #16232B;         /* Text, nav, primary dark (Dark Slate Blue) */
+    --muted: #526673;       /* Secondary text */
+    --ember: #FF5B04;       /* Primary CTA / Flame Orange */
+    --ember-text: #E04B00;  /* High-contrast Flame Orange for small text */
+    --ember-bright: #FF7529;/* Accent bright */
+    --ember-tint: #FFF0E8;  /* Flame tint highlight */
+    --leaf: #075056;        /* Deep Sea Green */
+    --leaf-tint: #E6F2F3;   /* Deep Sea Green tint */
+    --water: #075056;       /* Hydration / Deep Sea */
+    --water-tint: #E6F2F3;
+    --amber: #B25E00;       /* Warning */
+    --amber-tint: #FFF5E5;
+    --error: #D32F2F;       /* Errors */
 
     /* Radii & Spacing Tokens */
     --r-card: 20px;
@@ -43,14 +65,14 @@
     --appbar-h: 56px;
     --nav-h: 64px;
     --tap: 48px;
-    --shadow: 0 1px 2px rgba(43,35,36,.06), 0 8px 24px rgba(43,35,36,.06);
+    --shadow: 0 1px 3px rgba(22, 35, 43, 0.05), 0 8px 24px rgba(22, 35, 43, 0.06);
 
-    /* Typography font families */
-    --font-display: 'Fredoka', 'SF Pro Rounded', system-ui, -apple-system, sans-serif;
-    --font-body: 'Nunito', system-ui, -apple-system, sans-serif;
-    --font-sans: 'Nunito', system-ui, -apple-system, sans-serif;
-    --font-mono: 'IBM Plex Mono', 'Rubik', monospace, sans-serif;
-    --font-number: 'Rubik', monospace, sans-serif;
+    /* Typography font families (Instagram Sans first) */
+    --font-display: 'Instagram Sans', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-body: 'Instagram Sans', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-sans: 'Instagram Sans', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'Plus Jakarta Sans', monospace, sans-serif;
+    --font-number: 'Plus Jakarta Sans', system-ui, monospace, sans-serif;
 
     /* Compatibility aliases */
     --color-santiago: var(--ember);
@@ -63,15 +85,17 @@
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --cream: #1E1819;
-      --paper: #2B2324;
-      --tint: #362D2E;
-      --line: #463B3C;
-      --ink: #F5F2EA;
-      --muted: #BDB3A5;
-      --ember: #E8743F;
-      --ember-text: #F09A72;
-      --ember-tint: #4A2A1D;
+      --cream: #0E161C;
+      --paper: #16232B;
+      --tint: #1F2E38;
+      --line: #2A3C47;
+      --ink: #E4EEF0;
+      --muted: #95AAB5;
+      --ember: #FF5B04;
+      --ember-text: #FF7529;
+      --ember-tint: #381A0B;
+      --leaf: #0EA1AD;
+      --leaf-tint: #07383C;
     }
   }
 

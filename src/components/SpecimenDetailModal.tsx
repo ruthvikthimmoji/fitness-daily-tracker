@@ -125,16 +125,16 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
-      <div className="w-full max-w-md bg-white rounded-t-2xl sm:rounded-2xl border border-[#E2DACB] p-5 shadow-2xl max-h-[92vh] overflow-y-auto">
+      <div className="w-full max-w-md bg-white rounded-t-2xl sm:rounded-2xl border border-[#CADCE0] p-5 shadow-2xl max-h-[92vh] overflow-y-auto">
         
         {/* Header bar */}
-        <div className="flex items-center justify-between pb-3 border-b border-[#E2DACB]">
+        <div className="flex items-center justify-between pb-3 border-b border-[#CADCE0]">
           <div className="flex items-center space-x-2">
-            <span className="font-label text-[10px] bg-[#2B2324] text-white px-2 py-0.5 rounded uppercase tracking-wider">
+            <span className="font-label text-[10px] bg-[#16232B] text-white px-2 py-0.5 rounded uppercase tracking-wider">
               {getCatalogCode()}
             </span>
-            <span className="font-caption text-[#5E5444] flex items-center gap-1">
-              <Calendar className="w-3 h-3 text-[#C4501F]" />
+            <span className="font-caption text-[#526673] flex items-center gap-1">
+              <Calendar className="w-3 h-3 text-[#FF5B04]" />
               {detail.type === 'photo' ? detail.item.date : (detail.item as any).date}
             </span>
           </div>
@@ -144,7 +144,7 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
               <button
                 type="button"
                 onClick={handleDownload}
-                className="p-1.5 text-[#C4501F] hover:bg-[#F5F2EA] rounded-lg transition-colors"
+                className="p-1.5 text-[#FF5B04] hover:bg-[#E4EEF0] rounded-lg transition-colors"
                 title="Download photo"
               >
                 <Download className="w-4 h-4 stroke-[2.5]" />
@@ -165,7 +165,7 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="p-1.5 text-[#5E5444] hover:text-[#2B2324] rounded-lg hover:bg-[#F5F2EA] transition-colors"
+              className="p-1.5 text-[#526673] hover:text-[#16232B] rounded-lg hover:bg-[#E4EEF0] transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -175,7 +175,7 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
         {/* Hero Visual */}
         <div className="mt-3.5">
           {selectedPhoto ? (
-            <div className="relative w-full aspect-16/10 rounded-xl overflow-hidden border border-[#E2DACB] bg-[#2B2324] group">
+            <div className="relative w-full aspect-16/10 rounded-xl overflow-hidden border border-[#CADCE0] bg-[#16232B] group">
               <img
                 src={selectedPhoto.dataUrl}
                 alt={getTitle()}
@@ -185,20 +185,20 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
                 <button
                   type="button"
                   onClick={handleDownload}
-                  className="px-2.5 py-1 rounded-lg bg-[#2B2324]/85 backdrop-blur-md text-white font-button-s text-xs flex items-center gap-1 shadow-md hover:bg-[#2B2324]"
+                  className="px-2.5 py-1 rounded-lg bg-[#16232B]/85 backdrop-blur-md text-white font-button-s text-xs flex items-center gap-1 shadow-md hover:bg-[#16232B]"
                 >
-                  <Download className="w-3 h-3 text-[#C4501F]" />
+                  <Download className="w-3 h-3 text-[#FF5B04]" />
                   <span>Save to Phone</span>
                 </button>
               </div>
             </div>
           ) : (
-            <div className="w-full h-24 rounded-xl border border-[#E2DACB] bg-[#F5F2EA] flex items-center justify-between px-5">
+            <div className="w-full h-24 rounded-xl border border-[#CADCE0] bg-[#E4EEF0] flex items-center justify-between px-5">
               <div>
-                <span className="font-label text-[9px] uppercase tracking-wider text-[#5E5444] block">
+                <span className="font-label text-[9px] uppercase tracking-wider text-[#526673] block">
                   {getSubtitle()}
                 </span>
-                <span className="font-h2 text-base text-[#2B2324] tracking-tight block mt-0.5">
+                <span className="font-h2 text-base text-[#16232B] tracking-tight block mt-0.5">
                   {getTitle()}
                 </span>
               </div>
@@ -217,10 +217,10 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
                         : 'other';
                     onOpenPhotoUploader(cat);
                   }}
-                  className="p-2.5 rounded-xl bg-white border border-[#E2DACB] text-[#2B2324] shadow-xs hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5 font-button-s text-xs"
+                  className="p-2.5 rounded-xl bg-white border border-[#CADCE0] text-[#16232B] shadow-xs hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5 font-button-s text-xs"
                   title="Attach Photo"
                 >
-                  <Camera className="w-4 h-4 text-[#C4501F]" />
+                  <Camera className="w-4 h-4 text-[#FF5B04]" />
                   <span>Attach Photo</span>
                 </button>
               )}
@@ -229,18 +229,18 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
         </div>
 
         {/* Title */}
-        <div className="mt-3 pb-2 border-b border-[#E2DACB]/60 flex items-baseline justify-between">
+        <div className="mt-3 pb-2 border-b border-[#CADCE0]/60 flex items-baseline justify-between">
           <div>
-            <h1 className="font-h2 text-lg text-[#2B2324] tracking-tight">
+            <h1 className="font-h2 text-lg text-[#16232B] tracking-tight">
               {getTitle()}
             </h1>
-            <div className="font-caption text-[#5E5444] mt-0.5">
+            <div className="font-caption text-[#526673] mt-0.5">
               {getSubtitle()}
             </div>
           </div>
 
           <div className="text-right">
-            <span className="font-label text-[10px] text-[#2F6B2A] px-2 py-0.5 bg-[#E3EEDF] border border-[#E2DACB] rounded">
+            <span className="font-label text-[10px] text-[#075056] px-2 py-0.5 bg-[#E6F2F3] border border-[#CADCE0] rounded">
               VERIFIED
             </span>
           </div>
@@ -248,27 +248,27 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
 
         {/* Technical Specs */}
         <div className="mt-3 space-y-0.5">
-          <div className="font-label text-[#5E5444] pb-1">
+          <div className="font-label text-[#526673] pb-1">
             DETAILS & SPECIFICATIONS
           </div>
 
           {detail.type === 'workout' && (
             <>
-              <SpecimenTrack label="Sets" value={detail.item.sets} unit="sets" percent={(detail.item.sets / 8) * 100} dotColor="#C4501F" />
-              <SpecimenTrack label="Reps / Set" value={detail.item.reps} unit="reps" percent={(detail.item.reps / 25) * 100} dotColor="#C4501F" />
-              <SpecimenTrack label="Load / Bar" value={detail.item.weightKg} unit="kg" percent={Math.min(100, (detail.item.weightKg / 140) * 100)} dotColor="#2B2324" />
+              <SpecimenTrack label="Sets" value={detail.item.sets} unit="sets" percent={(detail.item.sets / 8) * 100} dotColor="#FF5B04" />
+              <SpecimenTrack label="Reps / Set" value={detail.item.reps} unit="reps" percent={(detail.item.reps / 25) * 100} dotColor="#FF5B04" />
+              <SpecimenTrack label="Load / Bar" value={detail.item.weightKg} unit="kg" percent={Math.min(100, (detail.item.weightKg / 140) * 100)} dotColor="#16232B" />
               <SpecimenTrack
                 label="Total Volume"
                 value={(detail.item.volumeKg || detail.item.sets * detail.item.reps * detail.item.weightKg).toLocaleString()}
                 unit="kg"
                 percent={Math.min(100, ((detail.item.volumeKg || 1000) / 4000) * 100)}
-                dotColor="#C4501F"
+                dotColor="#FF5B04"
               />
               {detail.item.caloriesBurned ? (
-                <SpecimenTrack label="Burned" value={detail.item.caloriesBurned} unit="kcal" percent={Math.min(100, (detail.item.caloriesBurned / 500) * 100)} dotColor="#C4501F" />
+                <SpecimenTrack label="Burned" value={detail.item.caloriesBurned} unit="kcal" percent={Math.min(100, (detail.item.caloriesBurned / 500) * 100)} dotColor="#FF5B04" />
               ) : null}
               {detail.item.durationMin ? (
-                <SpecimenTrack label="Duration" value={detail.item.durationMin} unit="min" percent={Math.min(100, (detail.item.durationMin / 90) * 100)} dotColor="#5E5444" />
+                <SpecimenTrack label="Duration" value={detail.item.durationMin} unit="min" percent={Math.min(100, (detail.item.durationMin / 90) * 100)} dotColor="#526673" />
               ) : null}
             </>
           )}
@@ -276,29 +276,29 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
           {detail.type === 'food' && (
             <>
               <SpecimenTrack label="Serving / Qty" value={detail.item.quantity || '1 serving'} />
-              <SpecimenTrack label="Calories" value={detail.item.calories} unit="kcal" percent={Math.min(100, (detail.item.calories / 1000) * 100)} dotColor="#C4501F" />
-              <SpecimenTrack label="Protein" value={detail.item.protein} unit="g" percent={Math.min(100, (detail.item.protein / 60) * 100)} dotColor="#2F6B2A" />
-              <SpecimenTrack label="Carbohydrates" value={detail.item.carbs} unit="g" percent={Math.min(100, (detail.item.carbs / 100) * 100)} dotColor="#C4501F" />
-              <SpecimenTrack label="Fats" value={detail.item.fat} unit="g" percent={Math.min(100, (detail.item.fat / 40) * 100)} dotColor="#8A5A00" />
+              <SpecimenTrack label="Calories" value={detail.item.calories} unit="kcal" percent={Math.min(100, (detail.item.calories / 1000) * 100)} dotColor="#FF5B04" />
+              <SpecimenTrack label="Protein" value={detail.item.protein} unit="g" percent={Math.min(100, (detail.item.protein / 60) * 100)} dotColor="#075056" />
+              <SpecimenTrack label="Carbohydrates" value={detail.item.carbs} unit="g" percent={Math.min(100, (detail.item.carbs / 100) * 100)} dotColor="#FF5B04" />
+              <SpecimenTrack label="Fats" value={detail.item.fat} unit="g" percent={Math.min(100, (detail.item.fat / 40) * 100)} dotColor="#B25E00" />
             </>
           )}
 
           {detail.type === 'daily' && (
             <>
-              <SpecimenTrack label="Daily Score" value={detail.item.dailyScore} unit="%" percent={detail.item.dailyScore} dotColor="#C4501F" />
-              <SpecimenTrack label="Body Mass" value={detail.item.weight !== null ? detail.item.weight : '--'} unit="kg" percent={detail.item.weight ? Math.min(100, (detail.item.weight / 100) * 100) : undefined} dotColor="#C4501F" />
-              <SpecimenTrack label="Hydration" value={detail.item.water || 0} unit="L" percent={Math.min(100, ((detail.item.water || 0) / 3.5) * 100)} dotColor="#2F5D8A" />
-              <SpecimenTrack label="Movement" value={(detail.item.steps || 0).toLocaleString()} unit="steps" percent={Math.min(100, ((detail.item.steps || 0) / 12000) * 100)} dotColor="#C4501F" />
-              <SpecimenTrack label="Sleep" value={detail.item.sleep || 0} unit="hrs" percent={Math.min(100, ((detail.item.sleep || 0) / 9) * 100)} dotColor="#5E5444" />
+              <SpecimenTrack label="Daily Score" value={detail.item.dailyScore} unit="%" percent={detail.item.dailyScore} dotColor="#FF5B04" />
+              <SpecimenTrack label="Body Mass" value={detail.item.weight !== null ? detail.item.weight : '--'} unit="kg" percent={detail.item.weight ? Math.min(100, (detail.item.weight / 100) * 100) : undefined} dotColor="#FF5B04" />
+              <SpecimenTrack label="Hydration" value={detail.item.water || 0} unit="L" percent={Math.min(100, ((detail.item.water || 0) / 3.5) * 100)} dotColor="#075056" />
+              <SpecimenTrack label="Movement" value={(detail.item.steps || 0).toLocaleString()} unit="steps" percent={Math.min(100, ((detail.item.steps || 0) / 12000) * 100)} dotColor="#FF5B04" />
+              <SpecimenTrack label="Sleep" value={detail.item.sleep || 0} unit="hrs" percent={Math.min(100, ((detail.item.sleep || 0) / 9) * 100)} dotColor="#526673" />
               <SpecimenTrack label="Workout Done" value={detail.item.workoutDone ? 'YES' : 'NO'} />
-              <SpecimenTrack label="Calories In" value={(detail.item.caloriesIn || 0).toLocaleString()} unit="kcal" percent={Math.min(100, ((detail.item.caloriesIn || 0) / 2500) * 100)} dotColor="#C4501F" />
+              <SpecimenTrack label="Calories In" value={(detail.item.caloriesIn || 0).toLocaleString()} unit="kcal" percent={Math.min(100, ((detail.item.caloriesIn || 0) / 2500) * 100)} dotColor="#FF5B04" />
             </>
           )}
 
           {detail.type === 'work' && (
             <>
               <SpecimenTrack label="Category" value={detail.item.category} />
-              <SpecimenTrack label="Duration" value={detail.item.hours} unit="hrs" percent={Math.min(100, (detail.item.hours / 8) * 100)} dotColor="#C4501F" />
+              <SpecimenTrack label="Duration" value={detail.item.hours} unit="hrs" percent={Math.min(100, (detail.item.hours / 8) * 100)} dotColor="#FF5B04" />
               <SpecimenTrack label="Status" value={detail.item.status} />
             </>
           )}
@@ -318,11 +318,11 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
         (detail.type === 'daily' && detail.item.notes) ||
         (detail.type === 'work' && detail.item.notes) ||
         (detail.type === 'photo' && detail.item.caption) ? (
-          <div className="mt-3.5 p-3 rounded-xl bg-[#F5F2EA] border border-[#E2DACB]">
-            <div className="font-label text-[10px] text-[#5E5444] mb-1">
+          <div className="mt-3.5 p-3 rounded-xl bg-[#E4EEF0] border border-[#CADCE0]">
+            <div className="font-label text-[10px] text-[#526673] mb-1">
               Notes & observations
             </div>
-            <div className="font-body-m text-xs text-[#2B2324] whitespace-pre-wrap">
+            <div className="font-body-m text-xs text-[#16232B] whitespace-pre-wrap">
               {detail.type === 'photo'
                 ? detail.item.caption
                 : (detail.item as any).notes}
@@ -332,9 +332,9 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
 
         {/* Photos strip */}
         {associatedPhotos.length > 1 && (
-          <div className="mt-3.5 pt-3 border-t border-[#E2DACB]">
-            <div className="font-label text-[10px] text-[#5E5444] mb-2 flex items-center gap-1">
-              <Tag className="w-3 h-3 text-[#C4501F]" />
+          <div className="mt-3.5 pt-3 border-t border-[#CADCE0]">
+            <div className="font-label text-[10px] text-[#526673] mb-2 flex items-center gap-1">
+              <Tag className="w-3 h-3 text-[#FF5B04]" />
               <span>Related Photos ({associatedPhotos.length})</span>
             </div>
             <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
@@ -345,8 +345,8 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
                   onClick={() => setSelectedPhoto(p)}
                   className={`w-14 h-14 rounded-lg overflow-hidden border shrink-0 transition-all ${
                     selectedPhoto?.id === p.id
-                      ? 'border-[#C4501F] ring-2 ring-[#C4501F]/30 scale-105'
-                      : 'border-[#E2DACB] opacity-70 hover:opacity-100'
+                      ? 'border-[#FF5B04] ring-2 ring-[#FF5B04]/30 scale-105'
+                      : 'border-[#CADCE0] opacity-70 hover:opacity-100'
                   }`}
                 >
                   <img src={p.dataUrl} alt="Thumbnail" className="w-full h-full object-cover" />
@@ -357,7 +357,7 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
         )}
 
         {/* Action Controls */}
-        <div className="mt-4 pt-3 border-t border-[#E2DACB] flex items-center gap-2">
+        <div className="mt-4 pt-3 border-t border-[#CADCE0] flex items-center gap-2">
           {selectedPhoto && (
             <button
               type="button"

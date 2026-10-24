@@ -167,4 +167,4 @@ export interface StoredPhoto {
   height?: number;
 }
 
-export type TabType = 'today' | 'workout' | 'food' | 'vault' | 'work' | 'dashboard';
+export type TabType = 'dashboard' | 'fitness' | 'work' | 'personal' | 'today' | 'workout' | 'food' | 'vault';

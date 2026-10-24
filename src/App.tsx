@@ -3,10 +3,10 @@ import confetti from 'canvas-confetti';
 import { Header } from './components/Header';
 import { BottomNav } from './components/BottomNav';
 import { TodayTab } from './components/TodayTab';
-import { FoodTab } from './components/FoodTab';
-import { WorkoutTab } from './components/WorkoutTab';
+import { FitnessTab } from './components/FitnessTab';
 import { WorkTab } from './components/WorkTab';
-import { DashboardTab } from './components/DashboardTab';
+import { PersonalTab } from './components/PersonalTab';
+import { EasyLogModal } from './components/EasyLogModal';
 import { SettingsModal } from './components/SettingsModal';
 import { InstallModal } from './components/InstallModal';
 import { AddFoodModal } from './components/AddFoodModal';
@@ -68,7 +68,8 @@ import {
 import { toLocalIso, triggerHaptic } from './utils/formatters';
 
 export function App() {
-  const [currentTab, setCurrentTab] = useState<TabType>('today');
+  const [currentTab, setCurrentTab] = useState<TabType>('dashboard');
+  const [isEasyLogOpen, setIsEasyLogOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string>(toLocalIso());
   const [syncStatus, setSyncStatus] = useState<'idle' | 'syncing' | 'synced' | 'error' | 'offline'>('idle');
   const [lastSyncTime, setLastSyncTimeState] = useState<string | null>(getLastSyncTime());
@@ -503,12 +504,12 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F2EA] text-[#2B2324] flex flex-col font-body selection:bg-[#C4501F] selection:text-white">
+    <div className="min-h-screen bg-[#E4EEF0] text-[#16232B] flex flex-col font-body selection:bg-[#FF5B04] selection:text-white">
       
-      {/* Toast Notification with Undo (I1) */}
+      {/* Toast Notification with Undo */}
       <Toast toast={toastState} onClear={() => setToastState(null)} />
 
-      {/* Slim 56px App Bar (L1, V8, I2) */}
+      {/* Slim 56px App Bar */}
       <Header
         currentTab={currentTab}
         selectedDate={selectedDate}
@@ -522,9 +523,9 @@ export function App() {
         loggedDates={loggedDates}
       />
 
-      {/* Main Screen Content with Padding (L3) */}
+      {/* Main Screen Content with Padding */}
       <main className="flex-1 max-w-md mx-auto w-full px-3.5 pt-3 app-content">
-        {currentTab === 'today' && (
+        {(currentTab === 'dashboard' || currentTab === 'today') && (
           <TodayTab
             dailyLog={dailyLog}
             settings={settings}
@@ -545,59 +546,84 @@ export function App() {
           />
         )}
 
-        {currentTab === 'workout' && (
-          <WorkoutTab
+        {(currentTab === 'fitness' || currentTab === 'workout' || currentTab === 'food') && (
+          <FitnessTab
             workoutItems={workoutItems}
-            onOpenAddModal={handleOpenAddWorkout}
-            onDeleteWorkout={handleDeleteWorkout}
-            onQuickAdd={handleQuickAddWorkout}
-            onSelectDetail={(item) => handleSelectLogDetail({ type: 'workout', item })}
-            onOpenPhotoUploader={handleOpenPhotoUploader}
-          />
-        )}
-
-        {currentTab === 'food' && (
-          <FoodTab
             foodItems={foodItems}
             settings={settings}
-            onOpenAddModal={handleOpenAddFood}
+            history={history}
+            onOpenAddWorkoutModal={handleOpenAddWorkout}
+            onOpenAddFoodModal={handleOpenAddFood}
+            onDeleteWorkout={handleDeleteWorkout}
             onDeleteFood={handleDeleteFood}
-            onQuickAdd={handleQuickAddFood}
-            onSelectDetail={(item) => handleSelectLogDetail({ type: 'food', item })}
+            onQuickAddWorkout={handleQuickAddWorkout}
+            onQuickAddFood={handleQuickAddFood}
+            onSelectWorkoutDetail={(item) => handleSelectLogDetail({ type: 'workout', item })}
+            onSelectFoodDetail={(item) => handleSelectLogDetail({ type: 'food', item })}
             onOpenPhotoUploader={handleOpenPhotoUploader}
+            onShowToast={showToast}
           />
         )}
 
         {currentTab === 'work' && (
           <WorkTab
             workItems={workItems}
+            history={history}
             onOpenAddModal={handleOpenAddWork}
             onDeleteWork={handleDeleteWork}
             onToggleStatus={handleToggleWorkStatus}
             onQuickAdd={handleQuickAddWork}
             onSelectDetail={(item) => handleSelectLogDetail({ type: 'work', item })}
+            onShowToast={showToast}
           />
         )}
 
-        {currentTab === 'dashboard' && (
-          <DashboardTab
+        {(currentTab === 'personal' || currentTab === 'vault') && (
+          <PersonalTab
+            settings={settings}
             kpis={kpis}
             history={history}
-            settings={settings}
+            gamification={gamification}
+            onUpdateSettings={handleSaveSettings}
             onAddMeasurement={handleAddMeasurement}
             onSaveWeight={(w) => handleUpdateDailyLog({ weight: w })}
             onShowToast={showToast}
             onOpenPhotoUploader={handleOpenPhotoUploader}
             onSelectPhotoDetail={(photo) => handleSelectLogDetail({ type: 'photo', item: photo })}
+            onOpenBadgesModal={() => setIsBadgesModalOpen(true)}
           />
         )}
       </main>
 
-      {/* Subtle bottom gradient fade overlay (L3) */}
+      {/* Subtle bottom gradient fade overlay */}
       <div className="app-fade-bottom" />
 
-      {/* 5-Item Thumb-friendly Bottom Navigation (L2) */}
-      <BottomNav currentTab={currentTab} onSelectTab={setCurrentTab} />
+      {/* 5-Item Thumb-friendly Bottom Navigation with Easy Log Center + button */}
+      <BottomNav
+        currentTab={currentTab}
+        onSelectTab={setCurrentTab}
+        onOpenEasyLog={() => setIsEasyLogOpen(true)}
+      />
+
+      {/* Easy Log Action Modal */}
+      <EasyLogModal
+        isOpen={isEasyLogOpen}
+        onClose={() => setIsEasyLogOpen(false)}
+        onOpenWorkout={() => handleOpenAddWorkout()}
+        onOpenFood={() => handleOpenAddFood()}
+        onAddWater={(litres) => {
+          const prev = dailyLog.water || 0;
+          const next = Math.max(0, Math.round((prev + litres) * 100) / 100);
+          handleUpdateDailyLog({ water: next });
+          showToast(`Water: ${next} L`, 'Undo', () => {
+            handleUpdateDailyLog({ water: prev });
+          });
+        }}
+        onSaveWeight={(w) => handleUpdateDailyLog({ weight: w })}
+        onOpenWork={() => handleOpenAddWork()}
+        onOpenPhoto={(cat) => handleOpenPhotoUploader(cat)}
+        currentWeight={dailyLog.weight}
+      />
 
       {/* Modals */}
       <SpecimenDetailModal

@@ -32,9 +32,9 @@ export const Toast: React.FC<ToastProps> = ({ toast, onClear }) => {
 
   return (
     <div className="fixed bottom-20 sm:bottom-24 left-1/2 -translate-x-1/2 z-50 px-4 w-full max-w-sm pointer-events-auto transition-all duration-300">
-      <div className="bg-[#2B2324] text-[#F5F2EA] font-body-m text-xs px-4 py-3 rounded-2xl shadow-2xl border border-[#E2DACB]/20 flex items-center justify-between gap-3 animate-in fade-in slide-in-from-bottom-3">
+      <div className="bg-[#16232B] text-[#E4EEF0] font-body-m text-xs px-4 py-3 rounded-2xl shadow-2xl border border-[#CADCE0]/20 flex items-center justify-between gap-3 animate-in fade-in slide-in-from-bottom-3">
         <div className="flex items-center space-x-2.5 min-w-0">
-          <CheckCircle2 className="w-4 h-4 text-[#C4501F] shrink-0" />
+          <CheckCircle2 className="w-4 h-4 text-[#FF5B04] shrink-0" />
           <span className="truncate font-semibold">{message}</span>
         </div>
         {actionLabel && onAction && (
@@ -44,7 +44,7 @@ export const Toast: React.FC<ToastProps> = ({ toast, onClear }) => {
               onAction();
               onClear();
             }}
-            className="px-2.5 py-1 rounded-lg bg-[#C4501F] hover:bg-[#A83F17] text-white font-button-s text-xs font-bold uppercase tracking-wider shrink-0 transition-colors shadow-xs"
+            className="px-2.5 py-1 rounded-lg bg-[#FF5B04] hover:bg-[#E04B00] text-white font-button-s text-xs font-bold uppercase tracking-wider shrink-0 transition-colors shadow-xs"
           >
             {actionLabel}
           </button>

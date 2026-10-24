@@ -58,11 +58,11 @@ export const AddWorkModal: React.FC<AddWorkModalProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-[#D8D3C8]/70">
           <div className="flex items-center space-x-2">
-            <div className="p-2 rounded-xl bg-[#EFECE3] text-[#EB5E28] border border-[#D8D3C8]">
+            <div className="p-2 rounded-xl bg-[#EFECE3] text-[#FF5B04] border border-[#D8D3C8]">
               <Briefcase className="w-4 h-4 stroke-[2.5]" />
             </div>
             <div>
-              <div className="font-label text-[#EB5E28]">
+              <div className="font-label text-[#FF5B04]">
                 // ARCHIVE // FOCUS & WORK SPECIMEN
               </div>
               <h2 className="font-h2 text-[#2C2324]">
@@ -111,7 +111,7 @@ export const AddWorkModal: React.FC<AddWorkModalProps> = ({
               placeholder="e.g. Finish project report"
               value={task}
               onChange={(e) => setTask(e.target.value)}
-              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-2 font-body-m text-[#2C2324] font-bold placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
+              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-2 font-body-m text-[#2C2324] font-bold placeholder-[#766754]/50 focus:outline-none focus:border-[#FF5B04]"
             />
           </div>
 
@@ -126,7 +126,7 @@ export const AddWorkModal: React.FC<AddWorkModalProps> = ({
                 placeholder="1.5"
                 value={hours}
                 onChange={(e) => setHours(e.target.value)}
-                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#EB5E28]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#FF5B04]"
               />
             </div>
 
@@ -140,7 +140,7 @@ export const AddWorkModal: React.FC<AddWorkModalProps> = ({
                     onClick={() => setStatus(s)}
                     className={`flex-1 py-1.5 font-button-s text-xs rounded-xl border transition-all ${
                       status === s
-                        ? s === 'Done' ? 'bg-[#2C2324] text-white border-[#2C2324]' : 'bg-[#EB5E28] text-white border-[#EB5E28]'
+                        ? s === 'Done' ? 'bg-[#2C2324] text-white border-[#2C2324]' : 'bg-[#FF5B04] text-white border-[#FF5B04]'
                         : 'bg-[#EFECE3] text-[#766754] border-[#D8D3C8]'
                     }`}
                   >
@@ -159,7 +159,7 @@ export const AddWorkModal: React.FC<AddWorkModalProps> = ({
               placeholder="e.g. Deep focus session, completed all milestones"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-1.5 font-body-m text-[#2C2324] placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
+              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-1.5 font-body-m text-[#2C2324] placeholder-[#766754]/50 focus:outline-none focus:border-[#FF5B04]"
             />
           </div>
 

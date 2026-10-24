@@ -60,7 +60,7 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
 
     try {
       setIsProcessing(true);
-      const saved = await savePhoto({
+      const photo = await savePhoto({
         date: selectedDate,
         category,
         dataUrl: previewUrl,
@@ -68,44 +68,42 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
         logId: linkedLogId
       });
 
-      onPhotoSaved(saved);
-      setPreviewUrl(null);
-      setCaption('');
+      onPhotoSaved(photo);
       onClose();
     } catch (err) {
-      console.error('Failed to save photo:', err);
-      setErrorMessage('Failed to save photo to your secure vault.');
+      console.error('Save photo error:', err);
+      setErrorMessage('Failed to save photo to private local storage.');
     } finally {
       setIsProcessing(false);
     }
   };
 
-  const categories = [
-    { id: 'workout', label: 'Workout', tag: 'WOD' },
-    { id: 'physique', label: 'Physique', tag: 'PROG' },
-    { id: 'food', label: 'Meal', tag: 'FUEL' },
-    { id: 'scale', label: 'Scale', tag: 'MASS' },
-    { id: 'other', label: 'Other', tag: 'MISC' }
-  ] as const;
+  const categories: { id: 'workout' | 'physique' | 'food' | 'scale' | 'other'; label: string; tag: string }[] = [
+    { id: 'workout', label: 'Workout', tag: 'GYM' },
+    { id: 'physique', label: 'Physique', tag: 'BODY' },
+    { id: 'food', label: 'Meal', tag: 'DIET' },
+    { id: 'scale', label: 'Scale', tag: 'WEIGHT' },
+    { id: 'other', label: 'Other', tag: 'LOG' },
+  ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
-      <div className="w-full max-w-md bg-white rounded-t-2xl sm:rounded-2xl border border-[#E2DACB] p-5 shadow-2xl max-h-[92vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-[#16232B]/60 backdrop-blur-sm animate-in fade-in duration-150">
+      <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-[#CADCE0] p-5 shadow-2xl max-h-[90vh] overflow-y-auto">
         
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-[#E2DACB]/80">
+        <div className="flex items-center justify-between pb-3 border-b border-[#CADCE0]">
           <div>
-            <div className="font-label text-[10px] text-[#C4501F]">
-              PHOTO ATTACHMENT · {selectedDate}
+            <div className="font-label text-[10px] text-[#FF5B04] font-bold">
+              PHOTO LOG · {selectedDate}
             </div>
-            <h2 className="font-h2 text-base text-[#2B2324] mt-0.5">
+            <h2 className="font-h2 text-base text-[#16232B] mt-0.5">
               Attach Photo
             </h2>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 text-[#5E5444] hover:text-[#2B2324] rounded-lg hover:bg-[#F5F2EA] transition-colors"
+            className="p-1.5 text-[#526673] hover:text-[#16232B] rounded-xl hover:bg-[#E4EEF0] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -121,7 +119,7 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
         <div className="mt-4 space-y-4">
           
           {/* Photo Preview / Picker Box */}
-          <div className="w-full aspect-4/3 rounded-xl border-2 border-dashed border-[#E2DACB] overflow-hidden bg-[#F5F2EA] flex flex-col items-center justify-center relative">
+          <div className="w-full aspect-4/3 rounded-2xl border-2 border-dashed border-[#CADCE0] overflow-hidden bg-[#E4EEF0]/40 flex flex-col items-center justify-center relative">
             {previewUrl ? (
               <div className="relative w-full h-full group">
                 <img
@@ -133,15 +131,15 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="px-3 py-1.5 bg-white text-[#2B2324] rounded-lg font-button-s shadow-md text-xs"
+                    className="px-3 py-1.5 bg-white text-[#16232B] rounded-xl font-button-s shadow-md text-xs"
                   >
                     Change Photo
                   </button>
                 </div>
               </div>
             ) : isProcessing ? (
-              <div className="flex flex-col items-center text-[#5E5444]">
-                <div className="w-8 h-8 border-2 border-[#E2DACB] border-t-[#C4501F] rounded-full animate-spin" />
+              <div className="flex flex-col items-center text-[#526673]">
+                <div className="w-8 h-8 border-2 border-[#CADCE0] border-t-[#FF5B04] rounded-full animate-spin" />
                 <span className="font-caption text-xs mt-2">Compressing photo...</span>
               </div>
             ) : (
@@ -150,7 +148,7 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
                   <button
                     type="button"
                     onClick={() => cameraInputRef.current?.click()}
-                    className="p-3.5 rounded-full bg-white text-[#C4501F] border border-[#E2DACB] shadow-2xs hover:scale-105 active:scale-95 transition-all"
+                    className="p-3.5 rounded-2xl bg-white text-[#FF5B04] border border-[#CADCE0] shadow-2xs hover:scale-105 active:scale-95 transition-all"
                     title="Take photo with camera"
                   >
                     <Camera className="w-5 h-5" />
@@ -158,14 +156,14 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="p-3.5 rounded-full bg-white text-[#2B2324] border border-[#E2DACB] shadow-2xs hover:scale-105 active:scale-95 transition-all"
+                    className="p-3.5 rounded-2xl bg-white text-[#16232B] border border-[#CADCE0] shadow-2xs hover:scale-105 active:scale-95 transition-all"
                     title="Upload from gallery"
                   >
                     <Upload className="w-5 h-5" />
                   </button>
                 </div>
-                <div className="font-title text-xs text-[#2B2324]">Take Photo or Upload</div>
-                <div className="font-caption text-[11px] text-[#5E5444] mt-0.5">
+                <div className="font-title text-xs text-[#16232B]">Take Photo or Upload</div>
+                <div className="font-caption text-[11px] text-[#526673] mt-0.5">
                   Saved privately to your device
                 </div>
               </div>
@@ -191,8 +189,8 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
 
           {/* Category Selector */}
           <div>
-            <label className="block font-label text-[10px] text-[#5E5444] mb-1.5">
-              CATEGORY
+            <label className="block font-label text-[10px] text-[#526673] mb-1.5 uppercase tracking-wider">
+              Category
             </label>
             <div className="grid grid-cols-5 gap-1.5">
               {categories.map((c) => {
@@ -204,8 +202,8 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
                     onClick={() => setCategory(c.id)}
                     className={`py-2 px-1 rounded-xl text-center border font-button-s transition-all ${
                       isSelected
-                        ? 'bg-[#2B2324] text-white border-[#2B2324] shadow-xs'
-                        : 'bg-[#F5F2EA] text-[#5E5444] border-[#E2DACB] hover:bg-[#EEE9DD]'
+                        ? 'bg-[#16232B] text-white border-[#16232B] shadow-xs font-bold'
+                        : 'bg-white text-[#526673] border-[#CADCE0] hover:bg-[#E4EEF0]'
                     }`}
                   >
                     <div className="text-[11px] leading-tight font-semibold">{c.label}</div>
@@ -218,15 +216,15 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
 
           {/* Caption / Notes Input */}
           <div>
-            <label className="block font-label text-[10px] text-[#5E5444] mb-1.5">
-              NOTES / CAPTION (OPTIONAL)
+            <label className="block font-label text-[10px] text-[#526673] mb-1.5 uppercase tracking-wider">
+              Notes / Caption (Optional)
             </label>
             <input
               type="text"
               placeholder="e.g. Post-workout pump, healthy lunch..."
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl font-body-m text-xs text-[#2B2324] border border-[#E2DACB] focus:border-[#C4501F] bg-white"
+              className="w-full px-3 py-2 rounded-xl font-body-m text-xs text-[#16232B] border border-[#CADCE0] focus:border-[#FF5B04] bg-white"
             />
           </div>
 
@@ -236,10 +234,10 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
               type="button"
               onClick={handleSave}
               disabled={!previewUrl || isProcessing}
-              className={`w-full py-3 rounded-xl font-button-l text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all ${
+              className={`w-full py-3 rounded-2xl font-button-l text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all ${
                 previewUrl && !isProcessing
-                  ? 'btn-ember shadow-xs'
-                  : 'bg-[#EEE9DD] text-[#5E5444]/50 border border-[#E2DACB] cursor-not-allowed'
+                  ? 'bg-[#FF5B04] text-white shadow-md hover:scale-[1.01] active:scale-[0.99]'
+                  : 'bg-[#E4EEF0] text-[#526673]/50 border border-[#CADCE0] cursor-not-allowed'
               }`}
             >
               <Check className="w-4 h-4 stroke-[2.5]" />

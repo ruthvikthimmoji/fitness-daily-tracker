@@ -66,11 +66,11 @@ export const AddFoodModal: React.FC<AddFoodModalProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-[#D8D3C8]/70">
           <div className="flex items-center space-x-2">
-            <div className="p-2 rounded-xl bg-[#EFECE3] text-[#EB5E28] border border-[#D8D3C8]">
+            <div className="p-2 rounded-xl bg-[#EFECE3] text-[#FF5B04] border border-[#D8D3C8]">
               <UtensilsCrossed className="w-4 h-4 stroke-[2.5]" />
             </div>
             <div>
-              <div className="font-label text-[#EB5E28]">
+              <div className="font-label text-[#FF5B04]">
                 // ARCHIVE // NUTRITION SPECIMEN
               </div>
               <h2 className="font-h2 text-[#2C2324]">
@@ -119,7 +119,7 @@ export const AddFoodModal: React.FC<AddFoodModalProps> = ({
               placeholder="e.g. Oats with banana"
               value={foodItem}
               onChange={(e) => setFoodItem(e.target.value)}
-              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-2 font-body-m text-[#2C2324] font-bold placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
+              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-2 font-body-m text-[#2C2324] font-bold placeholder-[#766754]/50 focus:outline-none focus:border-[#FF5B04]"
             />
           </div>
 
@@ -131,20 +131,20 @@ export const AddFoodModal: React.FC<AddFoodModalProps> = ({
               placeholder="e.g. 1 bowl, 200g, 2 eggs"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
-              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-1.5 font-body-m text-[#2C2324] font-bold placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
+              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-1.5 font-body-m text-[#2C2324] font-bold placeholder-[#766754]/50 focus:outline-none focus:border-[#FF5B04]"
             />
           </div>
 
           {/* Calories and Macros Grid */}
           <div className="grid grid-cols-4 gap-1.5">
             <div>
-              <label className="font-label text-[#EB5E28] block mb-0.5">Calories</label>
+              <label className="font-label text-[#FF5B04] block mb-0.5">Calories</label>
               <input
                 type="number"
                 placeholder="kcal"
                 value={calories}
                 onChange={(e) => setCalories(e.target.value)}
-                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#EB5E28]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#FF5B04]"
               />
             </div>
             <div>
@@ -155,18 +155,18 @@ export const AddFoodModal: React.FC<AddFoodModalProps> = ({
                 placeholder="g"
                 value={protein}
                 onChange={(e) => setProtein(e.target.value)}
-                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#EB5E28]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#FF5B04]"
               />
             </div>
             <div>
-              <label className="font-label text-[#EB5E28] block mb-0.5">Carbs (g)</label>
+              <label className="font-label text-[#FF5B04] block mb-0.5">Carbs (g)</label>
               <input
                 type="number"
                 step="0.5"
                 placeholder="g"
                 value={carbs}
                 onChange={(e) => setCarbs(e.target.value)}
-                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#EB5E28]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#FF5B04]"
               />
             </div>
             <div>
@@ -177,7 +177,7 @@ export const AddFoodModal: React.FC<AddFoodModalProps> = ({
                 placeholder="g"
                 value={fat}
                 onChange={(e) => setFat(e.target.value)}
-                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#EB5E28]"
+                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#FF5B04]"
               />
             </div>
           </div>
@@ -190,7 +190,7 @@ export const AddFoodModal: React.FC<AddFoodModalProps> = ({
               placeholder="e.g. post-workout breakfast"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-1.5 font-body-m text-[#2C2324] placeholder-[#766754]/50 focus:outline-none focus:border-[#EB5E28]"
+              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-1.5 font-body-m text-[#2C2324] placeholder-[#766754]/50 focus:outline-none focus:border-[#FF5B04]"
             />
           </div>
 

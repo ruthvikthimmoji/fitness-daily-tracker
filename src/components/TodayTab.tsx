@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Droplets, Footprints, Moon, Scale, Smile, Dumbbell, UtensilsCrossed, Plus, Minus, Check, Camera, ChevronRight } from 'lucide-react';
+import { Droplets, Footprints, Moon, Scale, Smile, Dumbbell, Plus, Minus, Check, Camera, ChevronRight, Briefcase, ArrowUpRight } from 'lucide-react';
 import { DailyLog, UserSettings, TabType, GamificationState } from '../types';
 import { QuestsWidget } from './QuestsWidget';
 import { LogDetailType } from './SpecimenDetailModal';
@@ -28,7 +28,7 @@ export const TodayTab: React.FC<TodayTabProps> = ({
   onClaimChest,
   onOpenBadgesModal,
   onUpdateDailyLog,
-  onNavigateTab: _onNavigateTab,
+  onNavigateTab,
   onShowToast,
   onSelectDetail,
   onOpenPhotoUploader,
@@ -69,6 +69,15 @@ export const TodayTab: React.FC<TodayTabProps> = ({
   const stepVal = dailyLog.steps || 0;
   const stepsRemaining = Math.max(0, stepTarget - stepVal);
   const stepsPct = Math.min(100, Math.round((stepVal / stepTarget) * 100));
+
+  // Daily Score (0-100%)
+  const dailyScore = dailyLog.dailyScore || Math.min(100, Math.round(
+    (Math.min(1, caloriesIn / calorieTarget) * 30) +
+    (Math.min(1, waterVal / waterTarget) * 20) +
+    (Math.min(1, stepVal / stepTarget) * 20) +
+    (dailyLog.workoutDone ? 20 : 0) +
+    (dailyLog.workHours >= 3 ? 10 : Math.round((dailyLog.workHours / 3) * 10))
+  ));
 
   // Water handlers with Undo
   const handleAddWater = (litres: number) => {
@@ -151,16 +160,19 @@ export const TodayTab: React.FC<TodayTabProps> = ({
   });
 
   return (
-    <div className="space-y-3.5 pb-24 animate-in fade-in duration-150">
+    <div className="space-y-4 pb-28 animate-in fade-in duration-150">
       
-      {/* 1. Hero Calorie Ring Card (L4, V5, L6 & Wireframe 3) */}
-      <div className="bg-white rounded-2xl p-4 border border-[#E2DACB] shadow-2xs">
+      {/* 1. OVERALL DASHBOARD HERO: Calorie & Macro Ring Card */}
+      <div className="bg-white rounded-3xl p-4 border border-[#CADCE0] shadow-xs">
         
-        {/* Card Header */}
-        <div className="flex items-center justify-between pb-2.5 border-b border-[#E2DACB]/60 mb-3.5">
+        {/* Card Header with Date & Score */}
+        <div className="flex items-center justify-between pb-3 border-b border-[#CADCE0]/60 mb-3.5">
           <div className="flex items-center space-x-2">
-            <span className="font-label text-[11px] text-[#5E5444]">
-              ENTRY · {friendlyDate.toUpperCase()}
+            <span className="font-label text-[10px] text-[#526673] uppercase tracking-wider">
+              DASHBOARD · {friendlyDate}
+            </span>
+            <span className="font-label text-[10px] px-2 py-0.5 rounded-full bg-[#E6F2F3] text-[#075056] font-bold">
+              {dailyScore}% Score
             </span>
           </div>
 
@@ -168,17 +180,17 @@ export const TodayTab: React.FC<TodayTabProps> = ({
             <button
               type="button"
               onClick={() => onOpenPhotoUploader('physique')}
-              className="p-1.5 rounded-lg bg-[#EEE9DD] text-[#2B2324] hover:text-[#C4501F] transition-colors"
+              className="p-1.5 rounded-xl bg-[#E4EEF0] text-[#16232B] hover:text-[#FF5B04] transition-colors"
               title="Attach photo for today"
               aria-label="Attach photo"
             >
-              <Camera className="w-3.5 h-3.5 text-[#C4501F]" />
+              <Camera className="w-3.5 h-3.5" />
             </button>
 
             <button
               type="button"
               onClick={() => onSelectDetail({ type: 'daily', item: dailyLog })}
-              className="font-button-s text-xs text-[#C4501F] hover:underline flex items-center gap-0.5 ml-1"
+              className="font-button-s text-xs text-[#FF5B04] hover:underline flex items-center gap-0.5 ml-1"
             >
               <span>Details</span>
               <ChevronRight className="w-3.5 h-3.5" />
@@ -186,7 +198,7 @@ export const TodayTab: React.FC<TodayTabProps> = ({
           </div>
         </div>
 
-        {/* Hero Ring & Stats Layout (Wireframe 3) */}
+        {/* Hero Ring & Stats Layout */}
         <div className="flex items-center justify-between gap-4 py-1">
           {/* Calorie Ring SVG */}
           <div className="relative w-28 h-28 shrink-0 flex items-center justify-center">
@@ -197,7 +209,7 @@ export const TodayTab: React.FC<TodayTabProps> = ({
                 cy="50"
                 r={ringRadius}
                 fill="transparent"
-                stroke="#EEE9DD"
+                stroke="#E4EEF0"
                 strokeWidth="8"
               />
               {/* Progress Fill */}
@@ -206,7 +218,7 @@ export const TodayTab: React.FC<TodayTabProps> = ({
                 cy="50"
                 r={ringRadius}
                 fill="transparent"
-                stroke={isCaloriesOver ? '#B3261E' : '#C4501F'}
+                stroke={isCaloriesOver ? '#D32F2F' : '#FF5B04'}
                 strokeWidth="8"
                 strokeDasharray={ringCircumference}
                 strokeDashoffset={strokeDashoffset}
@@ -217,44 +229,44 @@ export const TodayTab: React.FC<TodayTabProps> = ({
 
             {/* Inner Center Big Hero Number */}
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-              <span className="font-score-xl text-2xl leading-none text-[#2B2324]">
+              <span className="font-score-xl text-2xl leading-none text-[#16232B]">
                 {Math.abs(remainingCalories).toLocaleString()}
               </span>
-              <span className="font-caption text-[11px] text-[#5E5444] mt-0.5 leading-none">
+              <span className="font-caption text-[11px] text-[#526673] mt-0.5 leading-none">
                 {isCaloriesOver ? 'kcal over' : 'kcal left'}
               </span>
             </div>
           </div>
 
-          {/* Plain Numbers Beside Ring (L6) */}
-          <div className="flex-1 space-y-1.5 pl-2 border-l border-[#E2DACB]/60">
+          {/* Numbers Beside Ring */}
+          <div className="flex-1 space-y-1.5 pl-3 border-l border-[#CADCE0]/60">
             <div className="flex items-baseline justify-between text-xs">
-              <span className="font-caption text-[#5E5444]">Eaten</span>
-              <span className="font-score-m text-sm text-[#2B2324]">{caloriesIn.toLocaleString()}</span>
+              <span className="font-caption text-[#526673]">Eaten</span>
+              <span className="font-score-m text-sm text-[#16232B]">{caloriesIn.toLocaleString()}</span>
             </div>
             <div className="flex items-baseline justify-between text-xs">
-              <span className="font-caption text-[#5E5444]">Burned</span>
-              <span className="font-score-m text-sm text-[#C4501F]">
+              <span className="font-caption text-[#526673]">Burned</span>
+              <span className="font-score-m text-sm text-[#FF5B04]">
                 {caloriesBurned > 0 ? `+${caloriesBurned.toLocaleString()}` : '0'}
               </span>
             </div>
-            <div className="flex items-baseline justify-between text-xs pt-1 border-t border-[#E2DACB]/40">
-              <span className="font-caption text-[#5E5444]">Goal</span>
-              <span className="font-score-m text-sm text-[#2B2324]">{calorieTarget.toLocaleString()}</span>
+            <div className="flex items-baseline justify-between text-xs pt-1 border-t border-[#CADCE0]/40">
+              <span className="font-caption text-[#526673]">Target</span>
+              <span className="font-score-m text-sm text-[#16232B]">{calorieTarget.toLocaleString()}</span>
             </div>
           </div>
         </div>
 
-        {/* Macro Bars Underneath Ring (V5, L6) */}
-        <div className="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-[#E2DACB]/60">
+        {/* Macro Bars Underneath Ring */}
+        <div className="grid grid-cols-3 gap-2.5 mt-4 pt-3 border-t border-[#CADCE0]/60">
           <div>
             <div className="flex justify-between items-baseline mb-1">
-              <span className="font-caption text-[#2F6B2A] font-bold">Protein</span>
-              <span className="font-stat text-xs text-[#2B2324]">{dailyLog.protein} / {settings.dailyProteinTarget} g</span>
+              <span className="font-caption text-[11px] text-[#075056] font-bold">Protein</span>
+              <span className="font-caption text-[11px] text-[#16232B] font-semibold">{dailyLog.protein}/{settings.dailyProteinTarget}g</span>
             </div>
-            <div className="w-full h-1.5 bg-[#EEE9DD] rounded-full overflow-hidden">
+            <div className="w-full h-1.5 bg-[#E4EEF0] rounded-full overflow-hidden">
               <div
-                className="h-full bg-[#2F6B2A] rounded-full transition-all duration-300"
+                className="h-full bg-[#075056] rounded-full transition-all duration-300"
                 style={{ width: `${Math.min(100, (dailyLog.protein / (settings.dailyProteinTarget || 130)) * 100)}%` }}
               />
             </div>
@@ -262,12 +274,12 @@ export const TodayTab: React.FC<TodayTabProps> = ({
 
           <div>
             <div className="flex justify-between items-baseline mb-1">
-              <span className="font-caption text-[#C4501F] font-bold">Carbs</span>
-              <span className="font-stat text-xs text-[#2B2324]">{dailyLog.carbs} / 250 g</span>
+              <span className="font-caption text-[11px] text-[#FF5B04] font-bold">Carbs</span>
+              <span className="font-caption text-[11px] text-[#16232B] font-semibold">{dailyLog.carbs}/250g</span>
             </div>
-            <div className="w-full h-1.5 bg-[#EEE9DD] rounded-full overflow-hidden">
+            <div className="w-full h-1.5 bg-[#E4EEF0] rounded-full overflow-hidden">
               <div
-                className="h-full bg-[#C4501F] rounded-full transition-all duration-300"
+                className="h-full bg-[#FF5B04] rounded-full transition-all duration-300"
                 style={{ width: `${Math.min(100, (dailyLog.carbs / 250) * 100)}%` }}
               />
             </div>
@@ -275,12 +287,12 @@ export const TodayTab: React.FC<TodayTabProps> = ({
 
           <div>
             <div className="flex justify-between items-baseline mb-1">
-              <span className="font-caption text-[#8A5A00] font-bold">Fat</span>
-              <span className="font-stat text-xs text-[#2B2324]">{dailyLog.fat} / 70 g</span>
+              <span className="font-caption text-[11px] text-[#B25E00] font-bold">Fat</span>
+              <span className="font-caption text-[11px] text-[#16232B] font-semibold">{dailyLog.fat}/70g</span>
             </div>
-            <div className="w-full h-1.5 bg-[#EEE9DD] rounded-full overflow-hidden">
+            <div className="w-full h-1.5 bg-[#E4EEF0] rounded-full overflow-hidden">
               <div
-                className="h-full bg-[#8A5A00] rounded-full transition-all duration-300"
+                className="h-full bg-[#B25E00] rounded-full transition-all duration-300"
                 style={{ width: `${Math.min(100, (dailyLog.fat / 70) * 100)}%` }}
               />
             </div>
@@ -289,65 +301,54 @@ export const TodayTab: React.FC<TodayTabProps> = ({
 
       </div>
 
-      {/* 2. Quick-Log Action Row (L4 & Wireframe 4) */}
-      <div className="grid grid-cols-4 gap-2">
+      {/* 2. CORE METRICS GLANCE CARDS: Training & Work Overview */}
+      <div className="grid grid-cols-2 gap-2.5">
+        {/* Fitness / Training Tile */}
         <button
           type="button"
           onClick={() => {
-            triggerHaptic(10);
-            onOpenAddModal?.('food');
+            triggerHaptic(12);
+            onNavigateTab('fitness');
           }}
-          className="py-2.5 px-1 rounded-xl bg-white border border-[#E2DACB] hover:bg-[#EEE9DD] shadow-2xs flex flex-col items-center justify-center transition-all active:scale-95 text-[#2B2324]"
+          className="p-3.5 rounded-2xl bg-white border border-[#CADCE0] hover:border-[#FF5B04] text-left transition-all group shadow-2xs"
         >
-          <div className="p-1 rounded-lg bg-[#F5F2EA] text-[#C4501F] mb-1">
-            <UtensilsCrossed className="w-3.5 h-3.5" />
+          <div className="flex items-center justify-between mb-1.5">
+            <div className="p-1.5 rounded-xl bg-[#FFF0E8] text-[#FF5B04]">
+              <Dumbbell className="w-4 h-4" />
+            </div>
+            <ArrowUpRight className="w-3.5 h-3.5 text-[#526673] group-hover:text-[#FF5B04] transition-colors" />
           </div>
-          <span className="font-button-s text-xs">+ Meal</span>
+          <div className="font-title text-xs text-[#16232B]">Training</div>
+          <div className="font-score-m text-sm text-[#FF5B04] mt-0.5">
+            {dailyLog.workoutVolume > 0 ? `${dailyLog.workoutVolume.toLocaleString()} kg` : dailyLog.workoutDone ? 'Done' : 'Rest day'}
+          </div>
+          <div className="font-caption text-[10px] text-[#526673] mt-0.5">Tap to view workouts</div>
         </button>
 
+        {/* Work / Focus Tile */}
         <button
           type="button"
           onClick={() => {
-            triggerHaptic(10);
-            onOpenAddModal?.('workout');
+            triggerHaptic(12);
+            onNavigateTab('work');
           }}
-          className="py-2.5 px-1 rounded-xl bg-white border border-[#E2DACB] hover:bg-[#EEE9DD] shadow-2xs flex flex-col items-center justify-center transition-all active:scale-95 text-[#2B2324]"
+          className="p-3.5 rounded-2xl bg-white border border-[#CADCE0] hover:border-[#16232B] text-left transition-all group shadow-2xs"
         >
-          <div className="p-1 rounded-lg bg-[#F5F2EA] text-[#2F6B2A] mb-1">
-            <Dumbbell className="w-3.5 h-3.5" />
+          <div className="flex items-center justify-between mb-1.5">
+            <div className="p-1.5 rounded-xl bg-[#E6F2F3] text-[#075056]">
+              <Briefcase className="w-4 h-4" />
+            </div>
+            <ArrowUpRight className="w-3.5 h-3.5 text-[#526673] group-hover:text-[#16232B] transition-colors" />
           </div>
-          <span className="font-button-s text-xs">+ Train</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => handleAddWater(0.25)}
-          className="py-2.5 px-1 rounded-xl bg-white border border-[#E2DACB] hover:bg-[#EEE9DD] shadow-2xs flex flex-col items-center justify-center transition-all active:scale-95 text-[#2B2324]"
-        >
-          <div className="p-1 rounded-lg bg-[#F5F2EA] text-[#2F5D8A] mb-1">
-            <Droplets className="w-3.5 h-3.5" />
+          <div className="font-title text-xs text-[#16232B]">Focus Work</div>
+          <div className="font-score-m text-sm text-[#075056] mt-0.5">
+            {dailyLog.workHours > 0 ? `${dailyLog.workHours} hrs` : '0 hrs logged'}
           </div>
-          <span className="font-button-s text-xs">+ Water</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => {
-            triggerHaptic(10);
-            const el = document.getElementById('weight-input-field');
-            el?.focus();
-            el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }}
-          className="py-2.5 px-1 rounded-xl bg-white border border-[#E2DACB] hover:bg-[#EEE9DD] shadow-2xs flex flex-col items-center justify-center transition-all active:scale-95 text-[#2B2324]"
-        >
-          <div className="p-1 rounded-lg bg-[#F5F2EA] text-[#8A5A00] mb-1">
-            <Scale className="w-3.5 h-3.5" />
-          </div>
-          <span className="font-button-s text-xs">+ Weight</span>
+          <div className="font-caption text-[10px] text-[#526673] mt-0.5">Goal: 4 hrs focus</div>
         </button>
       </div>
 
-      {/* 3. Today's Goals (Wireframe 5, I3, V2) */}
+      {/* 3. Actionable Daily Goals (Duolingo style) */}
       <QuestsWidget
         quests={gamification.quests}
         onClaimQuest={onClaimQuest}
@@ -360,29 +361,29 @@ export const TodayTab: React.FC<TodayTabProps> = ({
       />
 
       {/* 4. Hydration Card */}
-      <div className="bg-white rounded-2xl p-4 border border-[#E2DACB] shadow-2xs">
+      <div className="bg-white rounded-2xl p-4 border border-[#CADCE0] shadow-2xs">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center space-x-2">
-            <div className="p-1.5 rounded-lg bg-[#F5F2EA] text-[#2F5D8A]">
+            <div className="p-1.5 rounded-lg bg-[#E6F2F3] text-[#075056]">
               <Droplets className="w-4 h-4" />
             </div>
             <div>
-              <div className="font-title text-sm text-[#2B2324]">Hydration</div>
-              <div className="font-caption text-[11px] text-[#5E5444]">
+              <div className="font-title text-sm text-[#16232B]">Hydration</div>
+              <div className="font-caption text-[11px] text-[#526673]">
                 {waterRemaining > 0 ? `${waterVal} L drank · ${waterRemaining} L to go` : `Target reached (${waterVal} L)`}
               </div>
             </div>
           </div>
           <div className="text-right">
-            <span className="font-score-m text-lg text-[#2B2324]">{waterVal}</span>
-            <span className="font-caption text-[#5E5444]"> / {waterTarget} L</span>
+            <span className="font-score-m text-lg text-[#16232B]">{waterVal}</span>
+            <span className="font-caption text-[#526673]"> / {waterTarget} L</span>
           </div>
         </div>
 
         {/* Track bar */}
-        <div className="w-full h-2 bg-[#EEE9DD] rounded-full overflow-hidden mb-3">
+        <div className="w-full h-2 bg-[#E4EEF0] rounded-full overflow-hidden mb-3">
           <div
-            className="h-full bg-[#2F5D8A] rounded-full transition-all duration-300"
+            className="h-full bg-[#075056] rounded-full transition-all duration-300"
             style={{ width: `${waterPct}%` }}
           />
         </div>
@@ -392,30 +393,32 @@ export const TodayTab: React.FC<TodayTabProps> = ({
           <button
             type="button"
             onClick={() => handleAddWater(-0.25)}
-            className="p-2 btn-cold-foam rounded-xl font-button-s"
+            className="p-2 bg-[#E4EEF0] hover:bg-[#CADCE0] rounded-xl font-button-s transition-colors"
             title="Subtract 250ml"
-            aria-label="Subtract 250ml"
           >
-            <Minus className="w-3.5 h-3.5 text-[#5E5444]" />
+            <Minus className="w-3.5 h-3.5 text-[#526673]" />
           </button>
+
           <button
             type="button"
             onClick={() => handleAddWater(0.25)}
-            className="flex-1 py-2 btn-cold-foam rounded-xl font-button-s text-xs flex items-center justify-center gap-1 text-[#2B2324]"
+            className="flex-1 py-2 bg-[#E4EEF0] hover:bg-[#CADCE0] rounded-xl font-button-s text-xs flex items-center justify-center gap-1 text-[#16232B] transition-colors"
           >
-            <Plus className="w-3 h-3 text-[#2F5D8A]" /> 250 ml
+            <Plus className="w-3 h-3 text-[#075056]" /> 250 ml
           </button>
+
           <button
             type="button"
             onClick={() => handleAddWater(0.5)}
-            className="flex-1 py-2 btn-cold-foam rounded-xl font-button-s text-xs flex items-center justify-center gap-1 text-[#2B2324]"
+            className="flex-1 py-2 bg-[#E4EEF0] hover:bg-[#CADCE0] rounded-xl font-button-s text-xs flex items-center justify-center gap-1 text-[#16232B] transition-colors"
           >
-            <Plus className="w-3 h-3 text-[#2F5D8A]" /> 500 ml
+            <Plus className="w-3 h-3 text-[#075056]" /> 500 ml
           </button>
+
           <button
             type="button"
             onClick={() => handleAddWater(1.0)}
-            className="flex-1 py-2 btn-ember rounded-xl font-button-s text-xs flex items-center justify-center gap-1"
+            className="flex-1 py-2 bg-[#075056] hover:bg-[#09636A] text-white rounded-xl font-button-s text-xs flex items-center justify-center gap-1 transition-colors"
           >
             <Plus className="w-3 h-3 text-white" /> 1.0 L
           </button>
@@ -423,29 +426,29 @@ export const TodayTab: React.FC<TodayTabProps> = ({
       </div>
 
       {/* 5. Movement & Steps Card */}
-      <div className="bg-white rounded-2xl p-4 border border-[#E2DACB] shadow-2xs">
+      <div className="bg-white rounded-2xl p-4 border border-[#CADCE0] shadow-2xs">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center space-x-2">
-            <div className="p-1.5 rounded-lg bg-[#F5F2EA] text-[#C4501F]">
+            <div className="p-1.5 rounded-lg bg-[#FFF0E8] text-[#FF5B04]">
               <Footprints className="w-4 h-4" />
             </div>
             <div>
-              <div className="font-title text-sm text-[#2B2324]">Movement</div>
-              <div className="font-caption text-[11px] text-[#5E5444]">
+              <div className="font-title text-sm text-[#16232B]">Movement</div>
+              <div className="font-caption text-[11px] text-[#526673]">
                 {stepsRemaining > 0 ? `${stepVal.toLocaleString()} steps · ${stepsRemaining.toLocaleString()} to goal` : `Goal Reached!`}
               </div>
             </div>
           </div>
           <div className="text-right">
-            <span className="font-score-m text-lg text-[#2B2324]">{stepVal.toLocaleString()}</span>
-            <span className="font-caption text-[#5E5444]"> / {stepTarget.toLocaleString()}</span>
+            <span className="font-score-m text-lg text-[#16232B]">{stepVal.toLocaleString()}</span>
+            <span className="font-caption text-[#526673]"> / {stepTarget.toLocaleString()}</span>
           </div>
         </div>
 
         {/* Track bar */}
-        <div className="w-full h-2 bg-[#EEE9DD] rounded-full overflow-hidden mb-3">
+        <div className="w-full h-2 bg-[#E4EEF0] rounded-full overflow-hidden mb-3">
           <div
-            className="h-full bg-[#C4501F] rounded-full transition-all duration-300"
+            className="h-full bg-[#FF5B04] rounded-full transition-all duration-300"
             style={{ width: `${stepsPct}%` }}
           />
         </div>
@@ -455,21 +458,21 @@ export const TodayTab: React.FC<TodayTabProps> = ({
           <button
             type="button"
             onClick={() => handleAddSteps(1000)}
-            className="flex-1 py-2 btn-cold-foam rounded-xl font-button-s text-xs text-[#2B2324]"
+            className="flex-1 py-2 bg-[#E4EEF0] hover:bg-[#CADCE0] rounded-xl font-button-s text-xs text-[#16232B] transition-colors"
           >
             +1,000
           </button>
           <button
             type="button"
             onClick={() => handleAddSteps(2500)}
-            className="flex-1 py-2 btn-cold-foam rounded-xl font-button-s text-xs text-[#2B2324]"
+            className="flex-1 py-2 bg-[#E4EEF0] hover:bg-[#CADCE0] rounded-xl font-button-s text-xs text-[#16232B] transition-colors"
           >
             +2,500
           </button>
           <button
             type="button"
             onClick={() => handleAddSteps(5000)}
-            className="flex-1 py-2 btn-ember rounded-xl font-button-s text-xs"
+            className="flex-1 py-2 bg-[#FF5B04] text-white rounded-xl font-button-s text-xs transition-colors"
           >
             +5,000
           </button>
@@ -481,12 +484,12 @@ export const TodayTab: React.FC<TodayTabProps> = ({
             placeholder="Type exact steps..."
             value={stepsInput}
             onChange={(e) => setStepsInput(e.target.value)}
-            className="flex-1 bg-white border border-[#E2DACB] rounded-xl px-3 py-1.5 font-stat text-xs text-[#2B2324] placeholder-[#5E5444]/60"
+            className="flex-1 bg-white border border-[#CADCE0] rounded-xl px-3 py-1.5 font-caption text-xs text-[#16232B]"
           />
           <button
             type="button"
             onClick={handleSaveStepsInput}
-            className="px-4 py-1.5 btn-gold-black font-button-s text-xs rounded-xl"
+            className="px-4 py-1.5 bg-[#16232B] text-white font-button-s text-xs rounded-xl"
           >
             Set
           </button>
@@ -496,21 +499,20 @@ export const TodayTab: React.FC<TodayTabProps> = ({
       {/* 6. Weight & Sleep Two-Column Grid */}
       <div className="grid grid-cols-2 gap-3">
         {/* Morning Weight */}
-        <div className="bg-white rounded-2xl p-3.5 border border-[#E2DACB] shadow-2xs">
+        <div className="bg-white rounded-2xl p-3.5 border border-[#CADCE0] shadow-2xs">
           <div className="flex items-center justify-between mb-1.5">
             <div className="flex items-center space-x-1.5">
-              <div className="p-1 rounded-md bg-[#F5F2EA] text-[#2B2324]">
+              <div className="p-1 rounded-md bg-[#E4EEF0] text-[#16232B]">
                 <Scale className="w-3.5 h-3.5" />
               </div>
-              <span className="font-title text-xs text-[#2B2324]">Weight (kg)</span>
+              <span className="font-title text-xs text-[#16232B]">Weight (kg)</span>
             </div>
             
             <button
               type="button"
               onClick={() => onOpenPhotoUploader('scale')}
-              className="text-[#5E5444] hover:text-[#C4501F] p-1"
+              className="text-[#526673] hover:text-[#FF5B04] p-1"
               title="Snap scale photo"
-              aria-label="Snap scale photo"
             >
               <Camera className="w-3.5 h-3.5" />
             </button>
@@ -524,35 +526,34 @@ export const TodayTab: React.FC<TodayTabProps> = ({
               placeholder="78.0"
               value={weightInput}
               onChange={(e) => setWeightInput(e.target.value)}
-              className="w-full bg-white border border-[#E2DACB] rounded-xl px-2.5 py-1 font-stat text-sm text-[#2B2324]"
+              className="w-full bg-white border border-[#CADCE0] rounded-xl px-2.5 py-1 text-sm font-semibold text-[#16232B]"
             />
             <button
               type="button"
               onClick={handleSaveWeight}
-              className="p-2 btn-gold-black rounded-xl text-white flex items-center justify-center shrink-0"
+              className="p-2 bg-[#16232B] rounded-xl text-white flex items-center justify-center shrink-0"
               title="Save weight"
-              aria-label="Save weight"
             >
               <Check className="w-3.5 h-3.5 stroke-[3]" />
             </button>
           </div>
-          <div className="font-caption text-[11px] text-[#5E5444]">
+          <div className="font-caption text-[11px] text-[#526673]">
             Goal: {settings.goalWeightKg} kg
           </div>
         </div>
 
         {/* Sleep Hours */}
-        <div className="bg-white rounded-2xl p-3.5 border border-[#E2DACB] shadow-2xs">
+        <div className="bg-white rounded-2xl p-3.5 border border-[#CADCE0] shadow-2xs">
           <div className="flex items-center space-x-1.5 mb-1.5">
-            <div className="p-1 rounded-md bg-[#F5F2EA] text-[#5E5444]">
+            <div className="p-1 rounded-md bg-[#E4EEF0] text-[#526673]">
               <Moon className="w-3.5 h-3.5" />
             </div>
-            <span className="font-title text-xs text-[#2B2324]">Sleep</span>
+            <span className="font-title text-xs text-[#16232B]">Sleep</span>
           </div>
 
           <div className="flex items-center justify-between my-1">
-            <span className="font-score-m text-lg text-[#2B2324]">{dailyLog.sleep || 0} h</span>
-            <span className="font-caption text-[11px] text-[#5E5444]">of {settings.dailySleepTarget} h</span>
+            <span className="font-score-m text-lg text-[#16232B]">{dailyLog.sleep || 0} h</span>
+            <span className="font-caption text-[11px] text-[#526673]">of {settings.dailySleepTarget} h</span>
           </div>
 
           <div className="flex gap-1 mt-1">
@@ -561,10 +562,10 @@ export const TodayTab: React.FC<TodayTabProps> = ({
                 key={h}
                 type="button"
                 onClick={() => handleSetSleep(h)}
-                className={`flex-1 py-1 font-stat text-[11px] rounded-lg border transition-all ${
+                className={`flex-1 py-1 font-caption text-[11px] font-bold rounded-lg border transition-all ${
                   dailyLog.sleep === h
-                    ? 'bg-[#2B2324] text-white border-[#2B2324]'
-                    : 'bg-[#F5F2EA] text-[#5E5444] border-[#E2DACB] hover:bg-[#EEE9DD]'
+                    ? 'bg-[#16232B] text-white border-[#16232B]'
+                    : 'bg-[#E4EEF0] text-[#526673] border-[#CADCE0] hover:bg-[#CADCE0]'
                 }`}
               >
                 {h}h
@@ -575,12 +576,12 @@ export const TodayTab: React.FC<TodayTabProps> = ({
       </div>
 
       {/* 7. Daily Mood */}
-      <div className="bg-white rounded-2xl p-3.5 border border-[#E2DACB] shadow-2xs">
+      <div className="bg-white rounded-2xl p-3.5 border border-[#CADCE0] shadow-2xs">
         <div className="flex items-center space-x-2 mb-2.5">
-          <div className="p-1 rounded-md bg-[#F5F2EA] text-[#C4501F]">
+          <div className="p-1 rounded-md bg-[#FFF0E8] text-[#FF5B04]">
             <Smile className="w-3.5 h-3.5" />
           </div>
-          <span className="font-title text-xs text-[#2B2324]">Daily energy & mood</span>
+          <span className="font-title text-xs text-[#16232B]">Daily energy & mood</span>
         </div>
 
         <div className="grid grid-cols-5 gap-1.5">
@@ -593,12 +594,12 @@ export const TodayTab: React.FC<TodayTabProps> = ({
                 onClick={() => handleSetMood(m.value)}
                 className={`flex flex-col items-center py-2 px-1 rounded-xl border transition-all active:scale-95 ${
                   isSelected
-                    ? 'bg-[#FBE8DE] border-2 border-[#C4501F] shadow-xs'
-                    : 'bg-[#F5F2EA] border-[#E2DACB] hover:bg-[#EEE9DD]'
+                    ? 'bg-[#FFF0E8] border-2 border-[#FF5B04] shadow-xs'
+                    : 'bg-[#E4EEF0]/50 border-[#CADCE0] hover:bg-[#E4EEF0]'
                 }`}
               >
                 <span className="text-xl">{m.emoji}</span>
-                <span className={`text-[10px] mt-1 font-caption ${isSelected ? 'text-[#C4501F] font-bold' : 'text-[#5E5444]'}`}>
+                <span className={`text-[10px] mt-1 font-caption ${isSelected ? 'text-[#FF5B04] font-bold' : 'text-[#526673]'}`}>
                   {m.label}
                 </span>
               </button>
@@ -607,15 +608,15 @@ export const TodayTab: React.FC<TodayTabProps> = ({
         </div>
       </div>
 
-      {/* 8. Daily Notes & Observations (V3: Plain copy) */}
-      <div className="bg-white rounded-2xl p-3.5 border border-[#E2DACB] shadow-2xs">
+      {/* 8. Daily Notes & Observations */}
+      <div className="bg-white rounded-2xl p-3.5 border border-[#CADCE0] shadow-2xs">
         <div className="flex items-center justify-between mb-2">
-          <span className="font-title text-xs text-[#2B2324]">Notes & observations</span>
+          <span className="font-title text-xs text-[#16232B]">Notes & observations</span>
           {!isEditingNotes ? (
             <button
               type="button"
               onClick={() => setIsEditingNotes(true)}
-              className="text-xs font-button-s text-[#C4501F] hover:underline"
+              className="text-xs font-button-s text-[#FF5B04] hover:underline"
             >
               Edit
             </button>
@@ -623,7 +624,7 @@ export const TodayTab: React.FC<TodayTabProps> = ({
             <button
               type="button"
               onClick={handleSaveNotes}
-              className="text-xs font-button-s text-white bg-[#2B2324] px-2.5 py-0.5 rounded-lg"
+              className="text-xs font-button-s text-white bg-[#16232B] px-2.5 py-0.5 rounded-lg"
             >
               Save
             </button>
@@ -636,12 +637,12 @@ export const TodayTab: React.FC<TodayTabProps> = ({
             onChange={(e) => setNotesInput(e.target.value)}
             rows={3}
             placeholder="Type your notes here (saved to your Sheet)..."
-            className="w-full bg-white border border-[#E2DACB] rounded-xl p-2.5 text-xs text-[#2B2324] font-body-m focus:border-[#C4501F]"
+            className="w-full bg-white border border-[#CADCE0] rounded-xl p-2.5 text-xs text-[#16232B] font-body-m focus:border-[#FF5B04]"
           />
         ) : (
           <div
             onClick={() => setIsEditingNotes(true)}
-            className="text-xs text-[#5E5444] p-3 bg-[#F5F2EA] rounded-xl border border-[#E2DACB] cursor-pointer min-h-[44px]"
+            className="text-xs text-[#526673] p-3 bg-[#E4EEF0]/50 rounded-xl border border-[#CADCE0] cursor-pointer min-h-[44px]"
           >
             {dailyLog.notes || 'Tap to add personal observations for today...'}
           </div>
