@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import confetti from 'canvas-confetti';
 import { Header } from './components/Header';
 import { BottomNav } from './components/BottomNav';
+import { SplashScreen } from './components/SplashScreen';
 import { TodayTab } from './components/TodayTab';
 import { FitnessTab } from './components/FitnessTab';
 import { WorkTab } from './components/WorkTab';
@@ -68,6 +69,13 @@ import {
 import { toLocalIso, triggerHaptic } from './utils/formatters';
 
 export function App() {
+  const [showSplash, setShowSplash] = useState<boolean>(() => {
+    try {
+      return !sessionStorage.getItem('df_splash_shown');
+    } catch {
+      return true;
+    }
+  });
   const [currentTab, setCurrentTab] = useState<TabType>('dashboard');
   const [isEasyLogOpen, setIsEasyLogOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string>(toLocalIso());
@@ -506,6 +514,19 @@ export function App() {
   return (
     <div className="min-h-screen bg-[#FFFFF0] text-[#16232B] flex flex-col font-body selection:bg-[#FF5B04] selection:text-white">
       
+      {/* Animated Athletic Splash Screen */}
+      {showSplash && (
+        <SplashScreen
+          streak={gamification.streak}
+          onFinish={() => {
+            setShowSplash(false);
+            try {
+              sessionStorage.setItem('df_splash_shown', 'true');
+            } catch {}
+          }}
+        />
+      )}
+
       {/* Toast Notification with Undo */}
       <Toast toast={toastState} onClear={() => setToastState(null)} />
 

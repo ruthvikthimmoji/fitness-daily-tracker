@@ -158,15 +158,14 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="max-w-md mx-auto flex items-center justify-between h-[44px]">
         
         {/* Wordmark & Brand mark */}
-        <div className="flex items-center space-x-2">
-          <div className="w-7 h-7 rounded-lg bg-[#16232B] text-white flex items-center justify-center font-display font-bold text-xs tracking-tight shadow-xs">
-            <span>D</span>
-            <span className="text-[#FF5B04]">F</span>
+        <div className="flex items-center space-x-2.5">
+          <div className="w-8 h-8 rounded-xl bg-[#16232B] p-1.5 flex items-center justify-center shadow-2xs">
+            <img src="/logo-white.png" alt="DAILY/FIT" className="w-full h-full object-contain" />
           </div>
 
           <div className="flex items-baseline space-x-1.5">
-            <span className="font-h3 text-sm tracking-tight text-[#16232B]">DAILY</span>
-            <span className="font-h3 text-sm tracking-tight text-[#FF5B04]">/ FIT</span>
+            <span className="font-h3 text-base tracking-widest text-[#16232B]">DAILY</span>
+            <span className="font-h3 text-base tracking-widest text-[#FF5B04]">/ FIT</span>
           </div>
         </div>
 

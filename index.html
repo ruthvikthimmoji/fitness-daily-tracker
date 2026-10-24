@@ -21,11 +21,42 @@
   </head>
   <body class="bg-[#FFFFF0] text-[#16232B] antialiased selection:bg-[#FF5B04] selection:text-white overscroll-none min-h-screen">
     <div id="root">
-      <div style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Barlow', -apple-system, sans-serif; background-color: #FFFFF0; color: #16232B;">
-        <div style="width: 44px; height: 44px; border: 3px solid #EAE5D9; border-top-color: #FF5B04; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
-        <div style="margin-top: 16px; font-weight: 800; font-size: 18px; letter-spacing: 1px; font-family: 'Bebas Neue', sans-serif; color: #16232B;">DAILY / FIT</div>
-        <div style="margin-top: 4px; font-size: 12px; color: #526673; letter-spacing: 0.3px; font-family: 'Barlow', sans-serif;">Show up daily. Progress, not perfection.</div>
-        <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+      <div style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Barlow', -apple-system, sans-serif; background-color: #FFFFF0; color: #16232B; position: relative; overflow: hidden;">
+        <!-- Background Radial Halo -->
+        <div style="position: absolute; width: 320px; height: 320px; border-radius: 50%; background: radial-gradient(circle, rgba(255,91,4,0.12) 0%, rgba(255,255,240,0) 70%); pointer-events: none;"></div>
+
+        <!-- Logo Emblem -->
+        <div style="position: relative; width: 80px; height: 80px; border-radius: 24px; background: #16232B; padding: 14px; box-shadow: 0 16px 36px rgba(22,35,43,0.18); display: flex; align-items: center; justify-content: center; animation: logoFloat 2s ease-in-out infinite alternate;">
+          <img src="/logo-white.png" alt="DAILY/FIT" style="width: 100%; height: 100%; object-fit: contain;" />
+        </div>
+
+        <!-- Title -->
+        <div style="margin-top: 20px; font-weight: 800; font-size: 26px; letter-spacing: 2px; font-family: 'Bebas Neue', -apple-system, sans-serif; color: #16232B; display: flex; align-items: baseline; gap: 6px;">
+          <span>DAILY</span>
+          <span style="color: #FF5B04;">/ FIT</span>
+        </div>
+
+        <!-- Tagline Pill -->
+        <div style="margin-top: 8px; padding: 4px 12px; border-radius: 999px; background: #FFFFFF; border: 1px solid #E8E3D5; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #56646E; font-family: 'Barlow Condensed', sans-serif;">
+          Progress, Not Perfection
+        </div>
+
+        <!-- Progress Loading Bar -->
+        <div style="margin-top: 28px; width: 140px; height: 3px; border-radius: 999px; background: #E8E3D5; overflow: hidden; position: relative;">
+          <div style="position: absolute; height: 100%; width: 50%; background: linear-gradient(90deg, #FF5B04, #FF7529); border-radius: 999px; animation: progressAnim 1.4s ease-in-out infinite;"></div>
+        </div>
+
+        <style>
+          @keyframes logoFloat {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(-4px) scale(1.02); }
+          }
+          @keyframes progressAnim {
+            0% { left: -50%; width: 40%; }
+            50% { left: 25%; width: 60%; }
+            100% { left: 100%; width: 40%; }
+          }
+        </style>
       </div>
     </div>
     <script type="module" src="/src/main.tsx"></script>
