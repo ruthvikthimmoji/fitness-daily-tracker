@@ -120,7 +120,7 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
     <div className="space-y-4 pb-28 animate-in fade-in duration-150 relative">
       
       {/* 1. TOP SEGMENTED CONTROL: Training | Nutrition | Stats */}
-      <div className="bg-white rounded-2xl p-1.5 border border-[#CADCE0] shadow-xs flex items-center gap-1">
+      <div className="bg-white rounded-2xl p-1.5 border border-[#E8E3D5] shadow-xs flex items-center gap-1">
         <button
           type="button"
           onClick={() => {
@@ -130,14 +130,14 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
           className={`flex-1 py-2 px-3 rounded-xl font-button-s text-xs transition-all flex items-center justify-center gap-1.5 ${
             activeSegment === 'training'
               ? 'bg-[#FF5B04] text-white shadow-sm font-bold'
-              : 'text-[#526673] hover:text-[#16232B] hover:bg-[#E4EEF0]'
+              : 'text-[#526673] hover:text-[#16232B] hover:bg-[#FFFFF0]'
           }`}
         >
           <Dumbbell className="w-3.5 h-3.5" />
           <span>Training</span>
           {workoutItems.length > 0 && (
             <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-              activeSegment === 'training' ? 'bg-white/25 text-white' : 'bg-[#E4EEF0] text-[#16232B]'
+              activeSegment === 'training' ? 'bg-white/25 text-white' : 'bg-[#FFFFF0] text-[#16232B]'
             }`}>
               {workoutItems.length}
             </span>
@@ -153,14 +153,14 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
           className={`flex-1 py-2 px-3 rounded-xl font-button-s text-xs transition-all flex items-center justify-center gap-1.5 ${
             activeSegment === 'nutrition'
               ? 'bg-[#075056] text-white shadow-sm font-bold'
-              : 'text-[#526673] hover:text-[#16232B] hover:bg-[#E4EEF0]'
+              : 'text-[#526673] hover:text-[#16232B] hover:bg-[#FFFFF0]'
           }`}
         >
           <UtensilsCrossed className="w-3.5 h-3.5" />
           <span>Nutrition</span>
           {foodItems.length > 0 && (
             <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-              activeSegment === 'nutrition' ? 'bg-white/25 text-white' : 'bg-[#E4EEF0] text-[#16232B]'
+              activeSegment === 'nutrition' ? 'bg-white/25 text-white' : 'bg-[#FFFFF0] text-[#16232B]'
             }`}>
               {foodItems.length}
             </span>
@@ -176,7 +176,7 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
           className={`flex-1 py-2 px-3 rounded-xl font-button-s text-xs transition-all flex items-center justify-center gap-1.5 ${
             activeSegment === 'stats'
               ? 'bg-[#16232B] text-white shadow-sm font-bold'
-              : 'text-[#526673] hover:text-[#16232B] hover:bg-[#E4EEF0]'
+              : 'text-[#526673] hover:text-[#16232B] hover:bg-[#FFFFF0]'
           }`}
         >
           <BarChart3 className="w-3.5 h-3.5" />
@@ -191,7 +191,7 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
         <div className="space-y-3.5 animate-in fade-in duration-150">
           
           {/* Summary Strip */}
-          <div className="bg-white rounded-2xl p-3.5 border border-[#CADCE0] shadow-2xs flex items-center justify-between gap-2">
+          <div className="bg-white rounded-2xl p-3.5 border border-[#E8E3D5] shadow-2xs flex items-center justify-between gap-2">
             <div className="flex items-center space-x-2.5">
               <div className="p-2 rounded-xl bg-[#FFF0E8] text-[#FF5B04]">
                 <Dumbbell className="w-4 h-4" />
@@ -223,7 +223,7 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
           </div>
 
           {/* Quick Add Presets First */}
-          <div className="bg-white rounded-2xl p-3.5 border border-[#CADCE0] shadow-2xs">
+          <div className="bg-white rounded-2xl p-3.5 border border-[#E8E3D5] shadow-2xs">
             <div className="flex items-center justify-between mb-2">
               <span className="font-label text-[10px] text-[#526673] tracking-wider uppercase">
                 Quick Add Presets
@@ -241,7 +241,7 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
               {visibleWorkoutPresets.map((preset, idx) => (
                 <div
                   key={idx}
-                  className="p-2.5 rounded-xl border border-[#CADCE0] bg-[#E4EEF0]/40 hover:bg-[#E4EEF0] transition-colors flex items-center justify-between gap-1.5"
+                  className="p-2.5 rounded-xl border border-[#E8E3D5] bg-[#FFFFF0]/40 hover:bg-[#FFFFF0] transition-colors flex items-center justify-between gap-1.5"
                 >
                   <div className="min-w-0 flex-1">
                     <div className="font-caption text-[11px] text-[#FF5B04] font-bold">
@@ -261,7 +261,7 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
                       onQuickAddWorkout(preset);
                       onShowToast(`Logged ${preset.exercise}`, 'UNDO', () => {});
                     }}
-                    className="w-7 h-7 rounded-lg bg-white border border-[#CADCE0] hover:border-[#FF5B04] hover:bg-[#FFF0E8] text-[#16232B] hover:text-[#FF5B04] flex items-center justify-center shrink-0 transition-transform active:scale-90"
+                    className="w-7 h-7 rounded-lg bg-white border border-[#E8E3D5] hover:border-[#FF5B04] hover:bg-[#FFF0E8] text-[#16232B] hover:text-[#FF5B04] flex items-center justify-center shrink-0 transition-transform active:scale-90"
                     title={`Quick add ${preset.exercise}`}
                   >
                     <Plus className="w-3.5 h-3.5" />
@@ -286,7 +286,7 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
                   className={`chip px-3 py-1.5 rounded-xl font-button-s text-xs transition-all whitespace-nowrap ${
                     isSel
                       ? 'bg-[#16232B] text-white shadow-xs font-bold'
-                      : 'bg-white text-[#526673] border border-[#CADCE0] hover:border-[#16232B]'
+                      : 'bg-white text-[#526673] border border-[#E8E3D5] hover:border-[#16232B]'
                   }`}
                 >
                   {cat}
@@ -297,7 +297,7 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
 
           {/* Workout Items List */}
           {filteredWorkouts.length === 0 ? (
-            <div className="bg-white rounded-2xl p-8 border border-[#CADCE0] text-center space-y-3">
+            <div className="bg-white rounded-2xl p-8 border border-[#E8E3D5] text-center space-y-3">
               <div className="w-12 h-12 rounded-2xl bg-[#FFF0E8] text-[#FF5B04] flex items-center justify-center mx-auto">
                 <Dumbbell className="w-6 h-6" />
               </div>
@@ -328,10 +328,10 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
                       triggerHaptic(10);
                       onSelectWorkoutDetail(item);
                     }}
-                    className="bg-white rounded-2xl p-3.5 border border-[#CADCE0] hover:border-[#16232B] transition-all flex items-center justify-between cursor-pointer group shadow-2xs"
+                    className="bg-white rounded-2xl p-3.5 border border-[#E8E3D5] hover:border-[#16232B] transition-all flex items-center justify-between cursor-pointer group shadow-2xs"
                   >
                     <div className="flex items-center space-x-3 min-w-0">
-                      <div className="p-2 rounded-xl bg-[#E4EEF0] text-[#16232B] group-hover:bg-[#FF5B04] group-hover:text-white transition-colors">
+                      <div className="p-2 rounded-xl bg-[#FFFFF0] text-[#16232B] group-hover:bg-[#FF5B04] group-hover:text-white transition-colors">
                         <Dumbbell className="w-4 h-4" />
                       </div>
                       <div className="min-w-0">
@@ -357,12 +357,12 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
                           triggerHaptic(10);
                           onDeleteWorkout(item);
                         }}
-                        className="p-1.5 text-[#526673] hover:text-[#D32F2F] rounded-lg hover:bg-[#E4EEF0] transition-colors"
+                        className="p-1.5 text-[#526673] hover:text-[#D32F2F] rounded-lg hover:bg-[#FFFFF0] transition-colors"
                         title="Delete"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
-                      <ChevronRight className="w-4 h-4 text-[#CADCE0] group-hover:text-[#16232B] transition-colors" />
+                      <ChevronRight className="w-4 h-4 text-[#E8E3D5] group-hover:text-[#16232B] transition-colors" />
                     </div>
                   </div>
                 );
@@ -395,7 +395,7 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
         <div className="space-y-3.5 animate-in fade-in duration-150">
           
           {/* Summary Strip */}
-          <div className="bg-white rounded-2xl p-3.5 border border-[#CADCE0] shadow-2xs flex items-center justify-between gap-2">
+          <div className="bg-white rounded-2xl p-3.5 border border-[#E8E3D5] shadow-2xs flex items-center justify-between gap-2">
             <div className="flex items-center space-x-2.5">
               <div className="p-2 rounded-xl bg-[#E6F2F3] text-[#075056]">
                 <UtensilsCrossed className="w-4 h-4" />
@@ -421,7 +421,7 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
           </div>
 
           {/* Quick Add Presets First */}
-          <div className="bg-white rounded-2xl p-3.5 border border-[#CADCE0] shadow-2xs">
+          <div className="bg-white rounded-2xl p-3.5 border border-[#E8E3D5] shadow-2xs">
             <div className="flex items-center justify-between mb-2">
               <span className="font-label text-[10px] text-[#526673] tracking-wider uppercase">
                 Quick Add Presets
@@ -439,7 +439,7 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
               {visibleFoodPresets.map((preset, idx) => (
                 <div
                   key={idx}
-                  className="p-2.5 rounded-xl border border-[#CADCE0] bg-[#E4EEF0]/40 hover:bg-[#E4EEF0] transition-colors flex items-center justify-between gap-1.5"
+                  className="p-2.5 rounded-xl border border-[#E8E3D5] bg-[#FFFFF0]/40 hover:bg-[#FFFFF0] transition-colors flex items-center justify-between gap-1.5"
                 >
                   <div className="min-w-0 flex-1">
                     <div className="font-caption text-[11px] text-[#075056] font-bold">
@@ -459,7 +459,7 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
                       onQuickAddFood(preset);
                       onShowToast(`Logged ${preset.foodItem}`, 'UNDO', () => {});
                     }}
-                    className="w-7 h-7 rounded-lg bg-white border border-[#CADCE0] hover:border-[#075056] hover:bg-[#E6F2F3] text-[#16232B] hover:text-[#075056] flex items-center justify-center shrink-0 transition-transform active:scale-90"
+                    className="w-7 h-7 rounded-lg bg-white border border-[#E8E3D5] hover:border-[#075056] hover:bg-[#E6F2F3] text-[#16232B] hover:text-[#075056] flex items-center justify-center shrink-0 transition-transform active:scale-90"
                     title={`Quick add ${preset.foodItem}`}
                   >
                     <Plus className="w-3.5 h-3.5" />
@@ -484,7 +484,7 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
                   className={`chip px-3 py-1.5 rounded-xl font-button-s text-xs transition-all whitespace-nowrap ${
                     isSel
                       ? 'bg-[#075056] text-white shadow-xs font-bold'
-                      : 'bg-white text-[#526673] border border-[#CADCE0] hover:border-[#075056]'
+                      : 'bg-white text-[#526673] border border-[#E8E3D5] hover:border-[#075056]'
                   }`}
                 >
                   {meal}
@@ -495,7 +495,7 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
 
           {/* Food Items List */}
           {filteredFood.length === 0 ? (
-            <div className="bg-white rounded-2xl p-8 border border-[#CADCE0] text-center space-y-3">
+            <div className="bg-white rounded-2xl p-8 border border-[#E8E3D5] text-center space-y-3">
               <div className="w-12 h-12 rounded-2xl bg-[#E6F2F3] text-[#075056] flex items-center justify-center mx-auto">
                 <UtensilsCrossed className="w-6 h-6" />
               </div>
@@ -524,10 +524,10 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
                     triggerHaptic(10);
                     onSelectFoodDetail(item);
                   }}
-                  className="bg-white rounded-2xl p-3.5 border border-[#CADCE0] hover:border-[#16232B] transition-all flex items-center justify-between cursor-pointer group shadow-2xs"
+                  className="bg-white rounded-2xl p-3.5 border border-[#E8E3D5] hover:border-[#16232B] transition-all flex items-center justify-between cursor-pointer group shadow-2xs"
                 >
                   <div className="flex items-center space-x-3 min-w-0">
-                    <div className="p-2 rounded-xl bg-[#E4EEF0] text-[#16232B] group-hover:bg-[#075056] group-hover:text-white transition-colors">
+                    <div className="p-2 rounded-xl bg-[#FFFFF0] text-[#16232B] group-hover:bg-[#075056] group-hover:text-white transition-colors">
                       <UtensilsCrossed className="w-4 h-4" />
                     </div>
                     <div className="min-w-0">
@@ -552,12 +552,12 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
                         triggerHaptic(10);
                         onDeleteFood(item);
                       }}
-                      className="p-1.5 text-[#526673] hover:text-[#D32F2F] rounded-lg hover:bg-[#E4EEF0] transition-colors"
+                      className="p-1.5 text-[#526673] hover:text-[#D32F2F] rounded-lg hover:bg-[#FFFFF0] transition-colors"
                       title="Delete"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
-                    <ChevronRight className="w-4 h-4 text-[#CADCE0] group-hover:text-[#16232B] transition-colors" />
+                    <ChevronRight className="w-4 h-4 text-[#E8E3D5] group-hover:text-[#16232B] transition-colors" />
                   </div>
                 </div>
               ))}
@@ -594,7 +594,7 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
               <h2 className="font-h2 text-base text-[#16232B]">Workout Analytics</h2>
               <p className="font-caption text-xs text-[#526673]">Volume, consistency & performance</p>
             </div>
-            <div className="flex rounded-xl bg-white border border-[#CADCE0] p-0.5 text-xs">
+            <div className="flex rounded-xl bg-white border border-[#E8E3D5] p-0.5 text-xs">
               {(['7D', '14D', '30D'] as const).map(tf => (
                 <button
                   key={tf}
@@ -617,7 +617,7 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
 
           {/* KPI Cards Row */}
           <div className="grid grid-cols-3 gap-2.5">
-            <div className="bg-white rounded-2xl p-3 border border-[#CADCE0] shadow-2xs">
+            <div className="bg-white rounded-2xl p-3 border border-[#E8E3D5] shadow-2xs">
               <div className="font-caption text-[11px] text-[#526673]">Total Volume</div>
               <div className="font-score-m text-base text-[#FF5B04] mt-1">
                 {totalHistoryVolume > 0 ? `${(totalHistoryVolume / 1000).toFixed(1)}k` : '0'} <span className="text-[10px] text-[#526673]">kg</span>
@@ -625,7 +625,7 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
               <div className="font-caption text-[10px] text-[#526673] mt-0.5">In {daysLimit} days</div>
             </div>
 
-            <div className="bg-white rounded-2xl p-3 border border-[#CADCE0] shadow-2xs">
+            <div className="bg-white rounded-2xl p-3 border border-[#E8E3D5] shadow-2xs">
               <div className="font-caption text-[11px] text-[#526673]">Active Days</div>
               <div className="font-score-m text-base text-[#075056] mt-1">
                 {activeWorkoutDays} <span className="text-[10px] text-[#526673]">/ {daysLimit}</span>
@@ -635,7 +635,7 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-3 border border-[#CADCE0] shadow-2xs">
+            <div className="bg-white rounded-2xl p-3 border border-[#E8E3D5] shadow-2xs">
               <div className="font-caption text-[11px] text-[#526673]">Today Burned</div>
               <div className="font-score-m text-base text-[#16232B] mt-1">
                 {totalWorkoutCalories} <span className="text-[10px] text-[#526673]">kcal</span>
@@ -647,7 +647,7 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
           </div>
 
           {/* Volume Progression Chart */}
-          <div className="bg-white rounded-2xl p-4 border border-[#CADCE0] shadow-2xs">
+          <div className="bg-white rounded-2xl p-4 border border-[#E8E3D5] shadow-2xs">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <TrendingUp className="w-4 h-4 text-[#FF5B04]" />
@@ -657,7 +657,7 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
             </div>
 
             {/* Bars */}
-            <div className="h-36 flex items-end justify-between gap-1.5 pt-4 pb-1 border-b border-[#CADCE0]">
+            <div className="h-36 flex items-end justify-between gap-1.5 pt-4 pb-1 border-b border-[#E8E3D5]">
               {recentHistory.map((day, idx) => {
                 const vol = day.workoutVolume || 0;
                 const heightPct = Math.max(8, Math.round((vol / maxVolume) * 100));
@@ -674,7 +674,7 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
                       className={`w-full rounded-t-lg transition-all ${
                         hasLifted
                           ? 'bg-gradient-to-t from-[#FF5B04] to-[#FF7529] shadow-2xs'
-                          : 'bg-[#CADCE0]/40'
+                          : 'bg-[#E8E3D5]/40'
                       }`}
                     />
                     <span className="font-caption text-[9px] text-[#526673] mt-1.5 block">
@@ -687,7 +687,7 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
           </div>
 
           {/* Training Split Breakdown */}
-          <div className="bg-white rounded-2xl p-4 border border-[#CADCE0] shadow-2xs">
+          <div className="bg-white rounded-2xl p-4 border border-[#E8E3D5] shadow-2xs">
             <div className="flex items-center gap-2 mb-3">
               <Target className="w-4 h-4 text-[#075056]" />
               <span className="font-title text-sm text-[#16232B]">Workout Category Distribution</span>
@@ -707,7 +707,7 @@ export const FitnessTab: React.FC<FitnessTabProps> = ({
                         <span className="text-[#16232B] font-bold">{cat}</span>
                         <span className="text-[#526673]">{count} exercises ({pct}%)</span>
                       </div>
-                      <div className="w-full h-2 rounded-full bg-[#E4EEF0] overflow-hidden">
+                      <div className="w-full h-2 rounded-full bg-[#FFFFF0] overflow-hidden">
                         <div
                           style={{ width: `${pct}%` }}
                           className="h-full rounded-full bg-[#075056]"

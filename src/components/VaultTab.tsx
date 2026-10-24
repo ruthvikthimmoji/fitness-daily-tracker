@@ -203,7 +203,7 @@ export const VaultTab: React.FC<VaultTabProps> = ({
     return (
       <div className="space-y-6 pb-28 max-w-sm mx-auto pt-6 animate-in fade-in duration-200">
         <div className="text-center">
-          <div className="w-14 h-14 rounded-2xl bg-[#E4EEF0] border border-[#CADCE0] mx-auto flex items-center justify-center text-[#16232B] shadow-2xs mb-3">
+          <div className="w-14 h-14 rounded-2xl bg-[#FFFFF0] border border-[#E8E3D5] mx-auto flex items-center justify-center text-[#16232B] shadow-2xs mb-3">
             <Lock className="w-6 h-6 text-[#FF5B04]" />
           </div>
           <span className="font-label text-[11px] text-[#526673] block">
@@ -235,7 +235,7 @@ export const VaultTab: React.FC<VaultTabProps> = ({
                 className={`w-4 h-4 rounded-full border transition-all duration-150 ${
                   isFilled
                     ? 'bg-[#FF5B04] border-[#FF5B04] scale-110 shadow-xs'
-                    : 'bg-white border-[#CADCE0]'
+                    : 'bg-white border-[#E8E3D5]'
                 }`}
               />
             );
@@ -263,7 +263,7 @@ export const VaultTab: React.FC<VaultTabProps> = ({
               type="button"
               disabled={lockoutTimer > 0}
               onClick={() => handleKeyClick(digit)}
-              className="h-14 rounded-2xl bg-white border border-[#CADCE0] font-timer text-2xl text-[#16232B] tabular-nums shadow-2xs hover:bg-[#E4EEF0] active:scale-95 transition-all flex items-center justify-center disabled:opacity-50"
+              className="h-14 rounded-2xl bg-white border border-[#E8E3D5] font-timer text-2xl text-[#16232B] tabular-nums shadow-2xs hover:bg-[#FFFFF0] active:scale-95 transition-all flex items-center justify-center disabled:opacity-50"
             >
               {digit}
             </button>
@@ -273,7 +273,7 @@ export const VaultTab: React.FC<VaultTabProps> = ({
             type="button"
             disabled={lockoutTimer > 0}
             onClick={() => handleKeyClick('0')}
-            className="h-14 rounded-2xl bg-white border border-[#CADCE0] font-timer text-2xl text-[#16232B] tabular-nums shadow-2xs hover:bg-[#E4EEF0] active:scale-95 transition-all flex items-center justify-center disabled:opacity-50"
+            className="h-14 rounded-2xl bg-white border border-[#E8E3D5] font-timer text-2xl text-[#16232B] tabular-nums shadow-2xs hover:bg-[#FFFFF0] active:scale-95 transition-all flex items-center justify-center disabled:opacity-50"
           >
             0
           </button>
@@ -285,7 +285,7 @@ export const VaultTab: React.FC<VaultTabProps> = ({
             onMouseUp={handleBackspaceMouseUp}
             onTouchStart={handleBackspaceMouseDown}
             onTouchEnd={handleBackspaceMouseUp}
-            className="h-14 rounded-2xl bg-[#DCE8EB] border border-[#CADCE0] font-button-s text-base text-[#526673] hover:bg-[#CADCE0] active:scale-95 transition-all flex items-center justify-center disabled:opacity-50"
+            className="h-14 rounded-2xl bg-[#DCE8EB] border border-[#E8E3D5] font-button-s text-base text-[#526673] hover:bg-[#E8E3D5] active:scale-95 transition-all flex items-center justify-center disabled:opacity-50"
             title="Backspace (Hold to clear)"
             aria-label="Backspace"
           >
@@ -324,7 +324,7 @@ export const VaultTab: React.FC<VaultTabProps> = ({
     <div className="space-y-4 pb-28 animate-in fade-in duration-200">
       
       {/* Unlocked Header */}
-      <div className="bg-white rounded-2xl p-4 border border-[#CADCE0] shadow-2xs flex items-center justify-between">
+      <div className="bg-white rounded-2xl p-4 border border-[#E8E3D5] shadow-2xs flex items-center justify-between">
         <div className="flex items-center space-x-2.5">
           <div className="p-2 rounded-xl bg-[#E6F2F3] text-[#075056]">
             <Unlock className="w-4 h-4" />
@@ -372,7 +372,7 @@ export const VaultTab: React.FC<VaultTabProps> = ({
             className={`chip px-3 py-1.5 font-button-s text-xs rounded-xl border transition-all ${
               activeCategory === cat
                 ? 'bg-[#16232B] text-white border-[#16232B] shadow-xs'
-                : 'bg-white text-[#526673] border-[#CADCE0] hover:bg-[#DCE8EB]'
+                : 'bg-white text-[#526673] border-[#E8E3D5] hover:bg-[#DCE8EB]'
             }`}
           >
             {cat}
@@ -383,12 +383,12 @@ export const VaultTab: React.FC<VaultTabProps> = ({
       {/* Photos Grid */}
       {isLoading ? (
         <div className="py-12 text-center text-[#526673]">
-          <div className="w-6 h-6 border-2 border-[#CADCE0] border-t-[#FF5B04] rounded-full animate-spin mx-auto mb-2" />
+          <div className="w-6 h-6 border-2 border-[#E8E3D5] border-t-[#FF5B04] rounded-full animate-spin mx-auto mb-2" />
           <span className="font-caption text-xs">Loading photos...</span>
         </div>
       ) : filteredPhotos.length === 0 ? (
-        <div className="bg-white rounded-2xl p-8 border border-[#CADCE0] text-center shadow-2xs">
-          <div className="w-12 h-12 rounded-xl bg-[#E4EEF0] mx-auto flex items-center justify-center text-[#526673] mb-2 border border-[#CADCE0]">
+        <div className="bg-white rounded-2xl p-8 border border-[#E8E3D5] text-center shadow-2xs">
+          <div className="w-12 h-12 rounded-xl bg-[#FFFFF0] mx-auto flex items-center justify-center text-[#526673] mb-2 border border-[#E8E3D5]">
             <ImageIcon className="w-6 h-6 stroke-[1.8]" />
           </div>
           <div className="font-title text-sm text-[#16232B]">
@@ -404,7 +404,7 @@ export const VaultTab: React.FC<VaultTabProps> = ({
             <div
               key={photo.id}
               onClick={() => onSelectPhotoDetail(photo)}
-              className="bg-white rounded-xl overflow-hidden border border-[#CADCE0] group relative aspect-4/5 shadow-2xs cursor-pointer"
+              className="bg-white rounded-xl overflow-hidden border border-[#E8E3D5] group relative aspect-4/5 shadow-2xs cursor-pointer"
             >
               <img
                 src={photo.dataUrl}

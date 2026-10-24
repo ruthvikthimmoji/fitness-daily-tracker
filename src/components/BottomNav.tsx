@@ -24,20 +24,20 @@ export const BottomNav: React.FC<BottomNavProps> = ({ currentTab, onSelectTab, o
           }}
           aria-current={currentTab === 'dashboard' || currentTab === 'today' ? 'page' : undefined}
           className={`nav-item flex-1 flex flex-col items-center justify-center py-1 rounded-xl transition-all select-none ${
-            currentTab === 'dashboard' || currentTab === 'today' ? 'text-white' : 'text-[#E4EEF0]/60 hover:text-white'
+            currentTab === 'dashboard' || currentTab === 'today' ? 'text-white' : 'text-[#FFFFF0]/60 hover:text-white'
           }`}
         >
           <div
             className={`px-3 py-1 rounded-xl transition-all duration-200 flex items-center justify-center ${
               currentTab === 'dashboard' || currentTab === 'today'
                 ? 'bg-[#FF5B04] text-white shadow-[0_2px_10px_rgba(255,91,4,0.4)] scale-105'
-                : 'text-[#E4EEF0]/70'
+                : 'text-[#FFFFF0]/70'
             }`}
           >
             <LayoutDashboard className="w-4 h-4 stroke-[2.2]" />
           </div>
           <span className={`text-[10px] mt-0.5 font-button-s leading-tight ${
-            currentTab === 'dashboard' || currentTab === 'today' ? 'text-white font-bold' : 'text-[#E4EEF0]/60 font-medium'
+            currentTab === 'dashboard' || currentTab === 'today' ? 'text-white font-bold' : 'text-[#FFFFF0]/60 font-medium'
           }`}>
             Dashboard
           </span>
@@ -52,20 +52,20 @@ export const BottomNav: React.FC<BottomNavProps> = ({ currentTab, onSelectTab, o
           }}
           aria-current={currentTab === 'fitness' || currentTab === 'workout' || currentTab === 'food' ? 'page' : undefined}
           className={`nav-item flex-1 flex flex-col items-center justify-center py-1 rounded-xl transition-all select-none ${
-            currentTab === 'fitness' || currentTab === 'workout' || currentTab === 'food' ? 'text-white' : 'text-[#E4EEF0]/60 hover:text-white'
+            currentTab === 'fitness' || currentTab === 'workout' || currentTab === 'food' ? 'text-white' : 'text-[#FFFFF0]/60 hover:text-white'
           }`}
         >
           <div
             className={`px-3 py-1 rounded-xl transition-all duration-200 flex items-center justify-center ${
               currentTab === 'fitness' || currentTab === 'workout' || currentTab === 'food'
                 ? 'bg-[#FF5B04] text-white shadow-[0_2px_10px_rgba(255,91,4,0.4)] scale-105'
-                : 'text-[#E4EEF0]/70'
+                : 'text-[#FFFFF0]/70'
             }`}
           >
             <Dumbbell className="w-4 h-4 stroke-[2.2]" />
           </div>
           <span className={`text-[10px] mt-0.5 font-button-s leading-tight ${
-            currentTab === 'fitness' || currentTab === 'workout' || currentTab === 'food' ? 'text-white font-bold' : 'text-[#E4EEF0]/60 font-medium'
+            currentTab === 'fitness' || currentTab === 'workout' || currentTab === 'food' ? 'text-white font-bold' : 'text-[#FFFFF0]/60 font-medium'
           }`}>
             Fitness
           </span>
@@ -99,20 +99,20 @@ export const BottomNav: React.FC<BottomNavProps> = ({ currentTab, onSelectTab, o
           }}
           aria-current={currentTab === 'work' ? 'page' : undefined}
           className={`nav-item flex-1 flex flex-col items-center justify-center py-1 rounded-xl transition-all select-none ${
-            currentTab === 'work' ? 'text-white' : 'text-[#E4EEF0]/60 hover:text-white'
+            currentTab === 'work' ? 'text-white' : 'text-[#FFFFF0]/60 hover:text-white'
           }`}
         >
           <div
             className={`px-3 py-1 rounded-xl transition-all duration-200 flex items-center justify-center ${
               currentTab === 'work'
                 ? 'bg-[#FF5B04] text-white shadow-[0_2px_10px_rgba(255,91,4,0.4)] scale-105'
-                : 'text-[#E4EEF0]/70'
+                : 'text-[#FFFFF0]/70'
             }`}
           >
             <Briefcase className="w-4 h-4 stroke-[2.2]" />
           </div>
           <span className={`text-[10px] mt-0.5 font-button-s leading-tight ${
-            currentTab === 'work' ? 'text-white font-bold' : 'text-[#E4EEF0]/60 font-medium'
+            currentTab === 'work' ? 'text-white font-bold' : 'text-[#FFFFF0]/60 font-medium'
           }`}>
             Work
           </span>
@@ -127,20 +127,20 @@ export const BottomNav: React.FC<BottomNavProps> = ({ currentTab, onSelectTab, o
           }}
           aria-current={currentTab === 'personal' || currentTab === 'vault' ? 'page' : undefined}
           className={`nav-item flex-1 flex flex-col items-center justify-center py-1 rounded-xl transition-all select-none ${
-            currentTab === 'personal' || currentTab === 'vault' ? 'text-white' : 'text-[#E4EEF0]/60 hover:text-white'
+            currentTab === 'personal' || currentTab === 'vault' ? 'text-white' : 'text-[#FFFFF0]/60 hover:text-white'
           }`}
         >
           <div
             className={`px-3 py-1 rounded-xl transition-all duration-200 flex items-center justify-center ${
               currentTab === 'personal' || currentTab === 'vault'
                 ? 'bg-[#FF5B04] text-white shadow-[0_2px_10px_rgba(255,91,4,0.4)] scale-105'
-                : 'text-[#E4EEF0]/70'
+                : 'text-[#FFFFF0]/70'
             }`}
           >
             <User className="w-4 h-4 stroke-[2.2]" />
           </div>
           <span className={`text-[10px] mt-0.5 font-button-s leading-tight ${
-            currentTab === 'personal' || currentTab === 'vault' ? 'text-white font-bold' : 'text-[#E4EEF0]/60 font-medium'
+            currentTab === 'personal' || currentTab === 'vault' ? 'text-white font-bold' : 'text-[#FFFFF0]/60 font-medium'
           }`}>
             Personal
           </span>

@@ -92,7 +92,7 @@ export const Header: React.FC<HeaderProps> = ({
     }
 
     return (
-      <div className="max-w-md mx-auto mt-2 pt-2 border-t border-[#CADCE0]/60 flex items-center justify-between gap-1">
+      <div className="max-w-md mx-auto mt-2 pt-2 border-t border-[#E8E3D5]/60 flex items-center justify-between gap-1">
         {weekDays.map((w) => (
           <button
             key={w.dateStr}
@@ -105,11 +105,11 @@ export const Header: React.FC<HeaderProps> = ({
             className={`flex-1 py-1.5 px-0.5 rounded-xl flex flex-col items-center transition-all ${
               w.isSelected
                 ? 'bg-[#16232B] text-white shadow-xs font-bold scale-105'
-                : 'bg-white/60 hover:bg-white text-[#526673] border border-[#CADCE0]/60'
+                : 'bg-white/60 hover:bg-white text-[#526673] border border-[#E8E3D5]/60'
             }`}
           >
             <span className={`text-[9px] font-caption uppercase leading-none ${
-              w.isSelected ? 'text-[#E4EEF0]/80' : 'text-[#526673]'
+              w.isSelected ? 'text-[#FFFFF0]/80' : 'text-[#526673]'
             }`}>
               {w.dayLetter}
             </span>
@@ -153,7 +153,7 @@ export const Header: React.FC<HeaderProps> = ({
   });
 
   return (
-    <header className="sticky top-0 z-40 bg-[#E4EEF0]/95 backdrop-blur-md border-b border-[#CADCE0] px-4 pt-2.5 pb-2 safe-top shadow-xs">
+    <header className="sticky top-0 z-40 bg-[#FFFFF0]/95 backdrop-blur-md border-b border-[#E8E3D5] px-4 pt-2.5 pb-2 safe-top shadow-xs">
       {/* 56px App Bar */}
       <div className="max-w-md mx-auto flex items-center justify-between h-[44px]">
         
@@ -176,7 +176,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={onSync}
-            className="px-2 py-1 rounded-lg bg-white border border-[#CADCE0] hover:bg-[#E4EEF0] text-[11px] font-caption font-semibold transition-colors flex items-center shadow-2xs"
+            className="px-2 py-1 rounded-lg bg-white border border-[#E8E3D5] hover:bg-[#FFFFF0] text-[11px] font-caption font-semibold transition-colors flex items-center shadow-2xs"
             title="Tap to sync with Google Sheet"
           >
             {renderSyncLabel()}
@@ -190,7 +190,7 @@ export const Header: React.FC<HeaderProps> = ({
                 triggerHaptic(10);
                 onOpenBadgesModal();
               }}
-              className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white border border-[#CADCE0] hover:bg-[#FFF0E8] text-[#FF5B04] text-xs font-number font-bold transition-all active:scale-95 shadow-2xs"
+              className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white border border-[#E8E3D5] hover:bg-[#FFF0E8] text-[#FF5B04] text-xs font-number font-bold transition-all active:scale-95 shadow-2xs"
               title={`Streak: ${gamification.streak} days. Tap to view achievements.`}
             >
               <Flame className="w-3.5 h-3.5 text-[#FF5B04] fill-[#FF5B04]" />
@@ -218,7 +218,7 @@ export const Header: React.FC<HeaderProps> = ({
       {(currentTab === 'dashboard' || currentTab === 'today') && renderWeekStrip()}
 
       {(currentTab === 'fitness' || currentTab === 'workout' || currentTab === 'food' || currentTab === 'work') && (
-        <div className="max-w-md mx-auto mt-2 pt-2 border-t border-[#CADCE0]/60 flex items-center justify-between text-xs">
+        <div className="max-w-md mx-auto mt-2 pt-2 border-t border-[#E8E3D5]/60 flex items-center justify-between text-xs">
           <button
             type="button"
             onClick={handlePrevDay}
@@ -229,7 +229,7 @@ export const Header: React.FC<HeaderProps> = ({
             <ChevronLeft className="w-4 h-4" />
           </button>
 
-          <label className="relative cursor-pointer flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-white border border-[#CADCE0] hover:border-[#16232B] font-title text-xs text-[#16232B] transition-colors shadow-2xs">
+          <label className="relative cursor-pointer flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-white border border-[#E8E3D5] hover:border-[#16232B] font-title text-xs text-[#16232B] transition-colors shadow-2xs">
             <Calendar className="w-3.5 h-3.5 text-[#FF5B04]" />
             <span>{isToday ? 'Today · ' : ''}{friendlyDate}</span>
             <input
@@ -245,7 +245,7 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 type="button"
                 onClick={() => onSelectDate(todayStr)}
-                className="font-button-s text-[10px] text-[#FF5B04] hover:text-[#16232B] px-2 py-1 rounded-lg bg-white border border-[#CADCE0]"
+                className="font-button-s text-[10px] text-[#FF5B04] hover:text-[#16232B] px-2 py-1 rounded-lg bg-white border border-[#E8E3D5]"
               >
                 TODAY
               </button>

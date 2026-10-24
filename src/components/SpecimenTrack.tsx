@@ -19,7 +19,7 @@ export const SpecimenTrack: React.FC<SpecimenTrackProps> = ({
   const clampedPct = percent !== undefined ? Math.max(4, Math.min(96, percent)) : undefined;
 
   return (
-    <div className="flex items-center justify-between py-1.5 border-b border-[#CADCE0]/60">
+    <div className="flex items-center justify-between py-1.5 border-b border-[#E8E3D5]/60">
       {/* Property Name */}
       <div className="w-28 shrink-0 font-label text-[10px] text-[#526673]">
         {label}
@@ -33,7 +33,7 @@ export const SpecimenTrack: React.FC<SpecimenTrackProps> = ({
       {/* Precision Track & Dot Indicator */}
       {clampedPct !== undefined ? (
         <div className="flex-1 max-w-[100px] flex items-center px-1">
-          <div className="w-full relative h-[1.5px] bg-[#CADCE0] rounded-full">
+          <div className="w-full relative h-[1.5px] bg-[#E8E3D5] rounded-full">
             <div
               className="absolute top-1/2 -translate-y-1/2 w-2 h-2 rounded-full transition-all duration-300"
               style={{

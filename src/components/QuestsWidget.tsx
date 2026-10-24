@@ -73,7 +73,7 @@ export const QuestsWidget: React.FC<QuestsWidgetProps> = ({
             triggerHaptic(15);
             onQuickAddWater(0.25);
           }}
-          className="px-2.5 py-1 rounded-xl bg-white hover:bg-[#E4EEF0] text-[#16232B] font-button-s text-xs shrink-0 border border-[#CADCE0] shadow-2xs transition-colors"
+          className="px-2.5 py-1 rounded-xl bg-white hover:bg-[#FFFFF0] text-[#16232B] font-button-s text-xs shrink-0 border border-[#E8E3D5] shadow-2xs transition-colors"
         >
           +250 ml
         </button>
@@ -88,7 +88,7 @@ export const QuestsWidget: React.FC<QuestsWidgetProps> = ({
             triggerHaptic(15);
             onQuickAddSteps(1000);
           }}
-          className="px-2.5 py-1 rounded-xl bg-white hover:bg-[#E4EEF0] text-[#16232B] font-button-s text-xs shrink-0 border border-[#CADCE0] shadow-2xs transition-colors"
+          className="px-2.5 py-1 rounded-xl bg-white hover:bg-[#FFFFF0] text-[#16232B] font-button-s text-xs shrink-0 border border-[#E8E3D5] shadow-2xs transition-colors"
         >
           +1k
         </button>
@@ -103,7 +103,7 @@ export const QuestsWidget: React.FC<QuestsWidgetProps> = ({
             triggerHaptic(10);
             onQuickLogMeal();
           }}
-          className="px-2.5 py-1 rounded-xl bg-white hover:bg-[#E4EEF0] text-[#16232B] font-button-s text-xs shrink-0 border border-[#CADCE0] shadow-2xs transition-colors"
+          className="px-2.5 py-1 rounded-xl bg-white hover:bg-[#FFFFF0] text-[#16232B] font-button-s text-xs shrink-0 border border-[#E8E3D5] shadow-2xs transition-colors"
         >
           Log
         </button>
@@ -111,20 +111,20 @@ export const QuestsWidget: React.FC<QuestsWidgetProps> = ({
     }
 
     return (
-      <span className="font-caption text-[11px] text-[#526673] bg-white px-2 py-0.5 rounded-md border border-[#CADCE0] tabular-nums shrink-0">
+      <span className="font-caption text-[11px] text-[#526673] bg-white px-2 py-0.5 rounded-md border border-[#E8E3D5] tabular-nums shrink-0">
         +{quest.xp} XP
       </span>
     );
   };
 
   return (
-    <div className="bg-white rounded-3xl p-4 border border-[#CADCE0] shadow-2xs">
+    <div className="bg-white rounded-3xl p-4 border border-[#E8E3D5] shadow-2xs">
       {/* Widget Header */}
       <div className="flex items-center justify-between pb-2 mb-2">
         <div className="flex items-center space-x-2">
           <div className="font-h3 text-sm text-[#16232B] flex items-center gap-2">
             <span>Today's Goals</span>
-            <span className="font-label text-[10px] px-2 py-0.5 rounded-full bg-[#E4EEF0] text-[#16232B] border border-[#CADCE0] font-bold">
+            <span className="font-label text-[10px] px-2 py-0.5 rounded-full bg-[#FFFFF0] text-[#16232B] border border-[#E8E3D5] font-bold">
               {completedCount}/{quests.length}
             </span>
           </div>
@@ -149,11 +149,11 @@ export const QuestsWidget: React.FC<QuestsWidgetProps> = ({
             return (
               <div
                 key={quest.id}
-                className="p-2.5 rounded-2xl bg-[#E4EEF0]/40 border border-[#CADCE0] transition-all"
+                className="p-2.5 rounded-2xl bg-[#FFFFF0]/40 border border-[#E8E3D5] transition-all"
               >
                 <div className="flex items-center justify-between gap-2 mb-1.5">
                   <div className="flex items-center space-x-2.5 min-w-0 flex-1">
-                    <div className="p-1.5 rounded-xl bg-white border border-[#CADCE0] shrink-0 text-[#16232B]">
+                    <div className="p-1.5 rounded-xl bg-white border border-[#E8E3D5] shrink-0 text-[#16232B]">
                       {quest.icon === 'water' && <Droplets className="w-3.5 h-3.5 text-[#075056]" />}
                       {quest.icon === 'steps' && <Footprints className="w-3.5 h-3.5 text-[#FF5B04]" />}
                       {quest.icon === 'food' && <UtensilsCrossed className="w-3.5 h-3.5 text-[#075056]" />}
@@ -170,7 +170,7 @@ export const QuestsWidget: React.FC<QuestsWidgetProps> = ({
                 </div>
 
                 {/* Progress bar */}
-                <div className="w-full h-1.5 bg-white rounded-full overflow-hidden border border-[#CADCE0]/60">
+                <div className="w-full h-1.5 bg-white rounded-full overflow-hidden border border-[#E8E3D5]/60">
                   <div
                     className="h-full rounded-full transition-all duration-300"
                     style={{
@@ -190,7 +190,7 @@ export const QuestsWidget: React.FC<QuestsWidgetProps> = ({
 
           {/* Mystery Chest Box */}
           {(allCompleted || chestClaimed) && (
-            <div className="mt-2 pt-2 border-t border-[#CADCE0]">
+            <div className="mt-2 pt-2 border-t border-[#E8E3D5]">
               <div className="bg-[#FFF0E8] p-3 rounded-2xl border border-[#FF5B04]/30 flex items-center justify-between">
                 <div className="flex items-center space-x-2.5">
                   <div className="w-8 h-8 rounded-xl bg-white border border-[#FF5B04]/30 flex items-center justify-center text-base shadow-2xs">
@@ -219,7 +219,7 @@ export const QuestsWidget: React.FC<QuestsWidgetProps> = ({
                     <span>Open (+50 XP)</span>
                   </button>
                 ) : (
-                  <span className="font-label text-[10px] text-[#075056] bg-white px-2.5 py-1 rounded-xl border border-[#CADCE0] font-bold">
+                  <span className="font-label text-[10px] text-[#075056] bg-white px-2.5 py-1 rounded-xl border border-[#E8E3D5] font-bold">
                     Opened
                   </span>
                 )}

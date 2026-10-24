@@ -111,7 +111,7 @@ export const WorkTab: React.FC<WorkTabProps> = ({
     <div className="space-y-4 pb-28 animate-in fade-in duration-150 relative">
       
       {/* 1. TOP SEGMENTED CONTROL: Tasks & Focus | Work Stats */}
-      <div className="bg-white rounded-2xl p-1.5 border border-[#CADCE0] shadow-xs flex items-center gap-1">
+      <div className="bg-white rounded-2xl p-1.5 border border-[#E8E3D5] shadow-xs flex items-center gap-1">
         <button
           type="button"
           onClick={() => {
@@ -121,14 +121,14 @@ export const WorkTab: React.FC<WorkTabProps> = ({
           className={`flex-1 py-2 px-3 rounded-xl font-button-s text-xs transition-all flex items-center justify-center gap-1.5 ${
             activeSegment === 'tasks'
               ? 'bg-[#16232B] text-white shadow-sm font-bold'
-              : 'text-[#526673] hover:text-[#16232B] hover:bg-[#E4EEF0]'
+              : 'text-[#526673] hover:text-[#16232B] hover:bg-[#FFFFF0]'
           }`}
         >
           <Briefcase className="w-3.5 h-3.5" />
           <span>Tasks & Focus</span>
           {workItems.length > 0 && (
             <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-              activeSegment === 'tasks' ? 'bg-white/25 text-white' : 'bg-[#E4EEF0] text-[#16232B]'
+              activeSegment === 'tasks' ? 'bg-white/25 text-white' : 'bg-[#FFFFF0] text-[#16232B]'
             }`}>
               {workItems.length}
             </span>
@@ -144,7 +144,7 @@ export const WorkTab: React.FC<WorkTabProps> = ({
           className={`flex-1 py-2 px-3 rounded-xl font-button-s text-xs transition-all flex items-center justify-center gap-1.5 ${
             activeSegment === 'stats'
               ? 'bg-[#FF5B04] text-white shadow-sm font-bold'
-              : 'text-[#526673] hover:text-[#16232B] hover:bg-[#E4EEF0]'
+              : 'text-[#526673] hover:text-[#16232B] hover:bg-[#FFFFF0]'
           }`}
         >
           <BarChart3 className="w-3.5 h-3.5" />
@@ -159,7 +159,7 @@ export const WorkTab: React.FC<WorkTabProps> = ({
         <div className="space-y-3.5 animate-in fade-in duration-150">
           
           {/* Summary Strip */}
-          <div className="bg-white rounded-2xl p-3.5 border border-[#CADCE0] shadow-2xs flex items-center justify-between gap-2">
+          <div className="bg-white rounded-2xl p-3.5 border border-[#E8E3D5] shadow-2xs flex items-center justify-between gap-2">
             <div className="flex items-center space-x-2.5">
               <div className="p-2 rounded-xl bg-[#E6F2F3] text-[#075056]">
                 <Briefcase className="w-4 h-4" />
@@ -186,9 +186,9 @@ export const WorkTab: React.FC<WorkTabProps> = ({
           </div>
 
           {/* Focus Timer Strip */}
-          <div className="bg-white rounded-2xl p-3.5 border border-[#CADCE0] shadow-2xs flex items-center justify-between">
+          <div className="bg-white rounded-2xl p-3.5 border border-[#E8E3D5] shadow-2xs flex items-center justify-between">
             <div className="flex items-center space-x-2.5">
-              <div className={`p-2 rounded-xl ${timerRunning ? 'bg-[#FFF0E8] text-[#FF5B04]' : 'bg-[#E4EEF0] text-[#526673]'}`}>
+              <div className={`p-2 rounded-xl ${timerRunning ? 'bg-[#FFF0E8] text-[#FF5B04]' : 'bg-[#FFFFF0] text-[#526673]'}`}>
                 <Clock className="w-4 h-4" />
               </div>
               <div>
@@ -226,7 +226,7 @@ export const WorkTab: React.FC<WorkTabProps> = ({
           </div>
 
           {/* Quick Add Presets First */}
-          <div className="bg-white rounded-2xl p-3.5 border border-[#CADCE0] shadow-2xs">
+          <div className="bg-white rounded-2xl p-3.5 border border-[#E8E3D5] shadow-2xs">
             <div className="flex items-center justify-between mb-2">
               <span className="font-label text-[10px] text-[#526673] tracking-wider uppercase">
                 Quick Add Presets
@@ -244,7 +244,7 @@ export const WorkTab: React.FC<WorkTabProps> = ({
               {visiblePresets.map((preset, i) => (
                 <div
                   key={i}
-                  className="flex items-center justify-between p-2.5 bg-[#E4EEF0]/40 hover:bg-[#E4EEF0] rounded-xl border border-[#CADCE0] transition-colors gap-2"
+                  className="flex items-center justify-between p-2.5 bg-[#FFFFF0]/40 hover:bg-[#FFFFF0] rounded-xl border border-[#E8E3D5] transition-colors gap-2"
                 >
                   <div className="min-w-0 flex-1">
                     <div className="font-title text-xs text-[#16232B] truncate">{preset.task}</div>
@@ -262,7 +262,7 @@ export const WorkTab: React.FC<WorkTabProps> = ({
                         onShowToast(`Logged ${preset.task}`, 'UNDO', () => {});
                       }
                     }}
-                    className="w-7 h-7 rounded-lg bg-white border border-[#CADCE0] hover:border-[#FF5B04] hover:bg-[#FFF0E8] text-[#16232B] hover:text-[#FF5B04] flex items-center justify-center shrink-0 transition-transform active:scale-90"
+                    className="w-7 h-7 rounded-lg bg-white border border-[#E8E3D5] hover:border-[#FF5B04] hover:bg-[#FFF0E8] text-[#16232B] hover:text-[#FF5B04] flex items-center justify-center shrink-0 transition-transform active:scale-90"
                     title={`Log ${preset.task}`}
                   >
                     <Plus className="w-3.5 h-3.5" />
@@ -287,7 +287,7 @@ export const WorkTab: React.FC<WorkTabProps> = ({
                   className={`chip px-3 py-1.5 font-button-s text-xs rounded-xl border transition-all whitespace-nowrap ${
                     isSel
                       ? 'bg-[#16232B] text-white border-[#16232B] shadow-xs font-bold'
-                      : 'bg-white text-[#526673] border-[#CADCE0] hover:bg-[#E4EEF0]'
+                      : 'bg-white text-[#526673] border-[#E8E3D5] hover:bg-[#FFFFF0]'
                   }`}
                 >
                   {cat}
@@ -303,7 +303,7 @@ export const WorkTab: React.FC<WorkTabProps> = ({
             </div>
 
             {filteredItems.length === 0 ? (
-              <div className="bg-white rounded-2xl p-6 border border-[#CADCE0] text-center shadow-2xs">
+              <div className="bg-white rounded-2xl p-6 border border-[#E8E3D5] text-center shadow-2xs">
                 <p className="font-body-m text-xs text-[#526673]">
                   Nothing logged yet. Tap + to add a task.
                 </p>
@@ -316,9 +316,9 @@ export const WorkTab: React.FC<WorkTabProps> = ({
                   <div
                     key={idx}
                     onClick={() => onSelectDetail(item)}
-                    className="bg-white rounded-2xl p-3.5 border border-[#CADCE0] cursor-pointer hover:border-[#16232B] transition-all shadow-2xs group"
+                    className="bg-white rounded-2xl p-3.5 border border-[#E8E3D5] cursor-pointer hover:border-[#16232B] transition-all shadow-2xs group"
                   >
-                    <div className="flex items-center justify-between pb-1.5 border-b border-[#CADCE0]/60 mb-2">
+                    <div className="flex items-center justify-between pb-1.5 border-b border-[#E8E3D5]/60 mb-2">
                       <div className="flex items-center space-x-2">
                         <span className="font-label text-[10px] bg-[#16232B] text-white px-1.5 py-0.5 rounded">
                           #{idx + 1}
@@ -340,7 +340,7 @@ export const WorkTab: React.FC<WorkTabProps> = ({
                             triggerHaptic(10);
                             onDeleteWork(item);
                           }}
-                          className="text-[#CADCE0] hover:text-[#D32F2F] p-1 transition-colors"
+                          className="text-[#E8E3D5] hover:text-[#D32F2F] p-1 transition-colors"
                           title="Delete"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -359,7 +359,7 @@ export const WorkTab: React.FC<WorkTabProps> = ({
                         className={`mt-0.5 w-5 h-5 rounded-lg border flex items-center justify-center transition-all shrink-0 ${
                           isDone
                             ? 'bg-[#075056] border-[#075056] text-white'
-                            : 'border-[#CADCE0] hover:border-[#075056] bg-white'
+                            : 'border-[#E8E3D5] hover:border-[#075056] bg-white'
                         }`}
                         title="Toggle Status"
                       >
@@ -383,7 +383,7 @@ export const WorkTab: React.FC<WorkTabProps> = ({
                         </div>
 
                         {item.notes && (
-                          <div className="text-[11px] font-body-s text-[#526673] italic mt-1.5 pt-1 border-t border-[#CADCE0]/40 truncate">
+                          <div className="text-[11px] font-body-s text-[#526673] italic mt-1.5 pt-1 border-t border-[#E8E3D5]/40 truncate">
                             {item.notes}
                           </div>
                         )}
@@ -425,7 +425,7 @@ export const WorkTab: React.FC<WorkTabProps> = ({
               <h2 className="font-h2 text-base text-[#16232B]">Focus Analytics</h2>
               <p className="font-caption text-xs text-[#526673]">Deep work, study & task velocity</p>
             </div>
-            <div className="flex rounded-xl bg-white border border-[#CADCE0] p-0.5 text-xs">
+            <div className="flex rounded-xl bg-white border border-[#E8E3D5] p-0.5 text-xs">
               {(['7D', '14D', '30D'] as const).map(tf => (
                 <button
                   key={tf}
@@ -448,7 +448,7 @@ export const WorkTab: React.FC<WorkTabProps> = ({
 
           {/* KPI Cards */}
           <div className="grid grid-cols-3 gap-2.5">
-            <div className="bg-white rounded-2xl p-3 border border-[#CADCE0] shadow-2xs">
+            <div className="bg-white rounded-2xl p-3 border border-[#E8E3D5] shadow-2xs">
               <div className="font-caption text-[11px] text-[#526673]">Total Focus</div>
               <div className="font-score-m text-base text-[#16232B] mt-1">
                 {totalHistoryWorkHours.toFixed(1)} <span className="text-[10px] text-[#526673]">hrs</span>
@@ -456,7 +456,7 @@ export const WorkTab: React.FC<WorkTabProps> = ({
               <div className="font-caption text-[10px] text-[#526673] mt-0.5">In {daysLimit} days</div>
             </div>
 
-            <div className="bg-white rounded-2xl p-3 border border-[#CADCE0] shadow-2xs">
+            <div className="bg-white rounded-2xl p-3 border border-[#E8E3D5] shadow-2xs">
               <div className="font-caption text-[11px] text-[#526673]">Avg Daily</div>
               <div className="font-score-m text-base text-[#FF5B04] mt-1">
                 {avgHoursPerActiveDay} <span className="text-[10px] text-[#526673]">hrs</span>
@@ -464,7 +464,7 @@ export const WorkTab: React.FC<WorkTabProps> = ({
               <div className="font-caption text-[10px] text-[#526673] mt-0.5">per active day</div>
             </div>
 
-            <div className="bg-white rounded-2xl p-3 border border-[#CADCE0] shadow-2xs">
+            <div className="bg-white rounded-2xl p-3 border border-[#E8E3D5] shadow-2xs">
               <div className="font-caption text-[11px] text-[#526673]">Task Rate</div>
               <div className="font-score-m text-base text-[#075056] mt-1">
                 {completionRate}%
@@ -474,7 +474,7 @@ export const WorkTab: React.FC<WorkTabProps> = ({
           </div>
 
           {/* Focus Hours Trend Chart */}
-          <div className="bg-white rounded-2xl p-4 border border-[#CADCE0] shadow-2xs">
+          <div className="bg-white rounded-2xl p-4 border border-[#E8E3D5] shadow-2xs">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <TrendingUp className="w-4 h-4 text-[#075056]" />
@@ -483,7 +483,7 @@ export const WorkTab: React.FC<WorkTabProps> = ({
               <span className="font-caption text-[11px] text-[#526673]">Hours / Day</span>
             </div>
 
-            <div className="h-36 flex items-end justify-between gap-1.5 pt-4 pb-1 border-b border-[#CADCE0]">
+            <div className="h-36 flex items-end justify-between gap-1.5 pt-4 pb-1 border-b border-[#E8E3D5]">
               {recentHistory.map((day, idx) => {
                 const hrs = day.workHours || 0;
                 const heightPct = Math.max(8, Math.round((hrs / maxWorkHours) * 100));
@@ -500,7 +500,7 @@ export const WorkTab: React.FC<WorkTabProps> = ({
                       className={`w-full rounded-t-lg transition-all ${
                         hasHours
                           ? 'bg-gradient-to-t from-[#075056] to-[#0E7780] shadow-2xs'
-                          : 'bg-[#CADCE0]/40'
+                          : 'bg-[#E8E3D5]/40'
                       }`}
                     />
                     <span className="font-caption text-[9px] text-[#526673] mt-1.5 block">
@@ -513,7 +513,7 @@ export const WorkTab: React.FC<WorkTabProps> = ({
           </div>
 
           {/* Time Allocation By Category */}
-          <div className="bg-white rounded-2xl p-4 border border-[#CADCE0] shadow-2xs">
+          <div className="bg-white rounded-2xl p-4 border border-[#E8E3D5] shadow-2xs">
             <div className="flex items-center gap-2 mb-3">
               <Target className="w-4 h-4 text-[#FF5B04]" />
               <span className="font-title text-sm text-[#16232B]">Time Allocation by Category</span>
@@ -533,7 +533,7 @@ export const WorkTab: React.FC<WorkTabProps> = ({
                         <span className="text-[#16232B] font-bold">{cat}</span>
                         <span className="text-[#526673]">{hrs} hrs ({pct}%)</span>
                       </div>
-                      <div className="w-full h-2 rounded-full bg-[#E4EEF0] overflow-hidden">
+                      <div className="w-full h-2 rounded-full bg-[#FFFFF0] overflow-hidden">
                         <div
                           style={{ width: `${pct}%` }}
                           className="h-full rounded-full bg-[#FF5B04]"

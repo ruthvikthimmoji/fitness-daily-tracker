@@ -88,10 +88,10 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-[#16232B]/60 backdrop-blur-sm animate-in fade-in duration-150">
-      <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-[#CADCE0] p-5 shadow-2xl max-h-[90vh] overflow-y-auto">
+      <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-[#E8E3D5] p-5 shadow-2xl max-h-[90vh] overflow-y-auto">
         
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-[#CADCE0]">
+        <div className="flex items-center justify-between pb-3 border-b border-[#E8E3D5]">
           <div>
             <div className="font-label text-[10px] text-[#FF5B04] font-bold">
               PHOTO LOG · {selectedDate}
@@ -103,7 +103,7 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 text-[#526673] hover:text-[#16232B] rounded-xl hover:bg-[#E4EEF0] transition-colors"
+            className="p-1.5 text-[#526673] hover:text-[#16232B] rounded-xl hover:bg-[#FFFFF0] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -119,7 +119,7 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
         <div className="mt-4 space-y-4">
           
           {/* Photo Preview / Picker Box */}
-          <div className="w-full aspect-4/3 rounded-2xl border-2 border-dashed border-[#CADCE0] overflow-hidden bg-[#E4EEF0]/40 flex flex-col items-center justify-center relative">
+          <div className="w-full aspect-4/3 rounded-2xl border-2 border-dashed border-[#E8E3D5] overflow-hidden bg-[#FFFFF0]/40 flex flex-col items-center justify-center relative">
             {previewUrl ? (
               <div className="relative w-full h-full group">
                 <img
@@ -139,7 +139,7 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
               </div>
             ) : isProcessing ? (
               <div className="flex flex-col items-center text-[#526673]">
-                <div className="w-8 h-8 border-2 border-[#CADCE0] border-t-[#FF5B04] rounded-full animate-spin" />
+                <div className="w-8 h-8 border-2 border-[#E8E3D5] border-t-[#FF5B04] rounded-full animate-spin" />
                 <span className="font-caption text-xs mt-2">Compressing photo...</span>
               </div>
             ) : (
@@ -148,7 +148,7 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
                   <button
                     type="button"
                     onClick={() => cameraInputRef.current?.click()}
-                    className="p-3.5 rounded-2xl bg-white text-[#FF5B04] border border-[#CADCE0] shadow-2xs hover:scale-105 active:scale-95 transition-all"
+                    className="p-3.5 rounded-2xl bg-white text-[#FF5B04] border border-[#E8E3D5] shadow-2xs hover:scale-105 active:scale-95 transition-all"
                     title="Take photo with camera"
                   >
                     <Camera className="w-5 h-5" />
@@ -156,7 +156,7 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="p-3.5 rounded-2xl bg-white text-[#16232B] border border-[#CADCE0] shadow-2xs hover:scale-105 active:scale-95 transition-all"
+                    className="p-3.5 rounded-2xl bg-white text-[#16232B] border border-[#E8E3D5] shadow-2xs hover:scale-105 active:scale-95 transition-all"
                     title="Upload from gallery"
                   >
                     <Upload className="w-5 h-5" />
@@ -203,7 +203,7 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
                     className={`py-2 px-1 rounded-xl text-center border font-button-s transition-all ${
                       isSelected
                         ? 'bg-[#16232B] text-white border-[#16232B] shadow-xs font-bold'
-                        : 'bg-white text-[#526673] border-[#CADCE0] hover:bg-[#E4EEF0]'
+                        : 'bg-white text-[#526673] border-[#E8E3D5] hover:bg-[#FFFFF0]'
                     }`}
                   >
                     <div className="text-[11px] leading-tight font-semibold">{c.label}</div>
@@ -224,7 +224,7 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
               placeholder="e.g. Post-workout pump, healthy lunch..."
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl font-body-m text-xs text-[#16232B] border border-[#CADCE0] focus:border-[#FF5B04] bg-white"
+              className="w-full px-3 py-2 rounded-xl font-body-m text-xs text-[#16232B] border border-[#E8E3D5] focus:border-[#FF5B04] bg-white"
             />
           </div>
 
@@ -237,7 +237,7 @@ export const PhotoUploaderModal: React.FC<PhotoUploaderModalProps> = ({
               className={`w-full py-3 rounded-2xl font-button-l text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all ${
                 previewUrl && !isProcessing
                   ? 'bg-[#FF5B04] text-white shadow-md hover:scale-[1.01] active:scale-[0.99]'
-                  : 'bg-[#E4EEF0] text-[#526673]/50 border border-[#CADCE0] cursor-not-allowed'
+                  : 'bg-[#FFFFF0] text-[#526673]/50 border border-[#E8E3D5] cursor-not-allowed'
               }`}
             >
               <Check className="w-4 h-4 stroke-[2.5]" />

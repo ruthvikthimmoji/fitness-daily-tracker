@@ -125,10 +125,10 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
-      <div className="w-full max-w-md bg-white rounded-t-2xl sm:rounded-2xl border border-[#CADCE0] p-5 shadow-2xl max-h-[92vh] overflow-y-auto">
+      <div className="w-full max-w-md bg-white rounded-t-2xl sm:rounded-2xl border border-[#E8E3D5] p-5 shadow-2xl max-h-[92vh] overflow-y-auto">
         
         {/* Header bar */}
-        <div className="flex items-center justify-between pb-3 border-b border-[#CADCE0]">
+        <div className="flex items-center justify-between pb-3 border-b border-[#E8E3D5]">
           <div className="flex items-center space-x-2">
             <span className="font-label text-[10px] bg-[#16232B] text-white px-2 py-0.5 rounded uppercase tracking-wider">
               {getCatalogCode()}
@@ -144,7 +144,7 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
               <button
                 type="button"
                 onClick={handleDownload}
-                className="p-1.5 text-[#FF5B04] hover:bg-[#E4EEF0] rounded-lg transition-colors"
+                className="p-1.5 text-[#FF5B04] hover:bg-[#FFFFF0] rounded-lg transition-colors"
                 title="Download photo"
               >
                 <Download className="w-4 h-4 stroke-[2.5]" />
@@ -165,7 +165,7 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="p-1.5 text-[#526673] hover:text-[#16232B] rounded-lg hover:bg-[#E4EEF0] transition-colors"
+              className="p-1.5 text-[#526673] hover:text-[#16232B] rounded-lg hover:bg-[#FFFFF0] transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -175,7 +175,7 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
         {/* Hero Visual */}
         <div className="mt-3.5">
           {selectedPhoto ? (
-            <div className="relative w-full aspect-16/10 rounded-xl overflow-hidden border border-[#CADCE0] bg-[#16232B] group">
+            <div className="relative w-full aspect-16/10 rounded-xl overflow-hidden border border-[#E8E3D5] bg-[#16232B] group">
               <img
                 src={selectedPhoto.dataUrl}
                 alt={getTitle()}
@@ -193,7 +193,7 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
               </div>
             </div>
           ) : (
-            <div className="w-full h-24 rounded-xl border border-[#CADCE0] bg-[#E4EEF0] flex items-center justify-between px-5">
+            <div className="w-full h-24 rounded-xl border border-[#E8E3D5] bg-[#FFFFF0] flex items-center justify-between px-5">
               <div>
                 <span className="font-label text-[9px] uppercase tracking-wider text-[#526673] block">
                   {getSubtitle()}
@@ -217,7 +217,7 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
                         : 'other';
                     onOpenPhotoUploader(cat);
                   }}
-                  className="p-2.5 rounded-xl bg-white border border-[#CADCE0] text-[#16232B] shadow-xs hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5 font-button-s text-xs"
+                  className="p-2.5 rounded-xl bg-white border border-[#E8E3D5] text-[#16232B] shadow-xs hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5 font-button-s text-xs"
                   title="Attach Photo"
                 >
                   <Camera className="w-4 h-4 text-[#FF5B04]" />
@@ -229,7 +229,7 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
         </div>
 
         {/* Title */}
-        <div className="mt-3 pb-2 border-b border-[#CADCE0]/60 flex items-baseline justify-between">
+        <div className="mt-3 pb-2 border-b border-[#E8E3D5]/60 flex items-baseline justify-between">
           <div>
             <h1 className="font-h2 text-lg text-[#16232B] tracking-tight">
               {getTitle()}
@@ -240,7 +240,7 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
           </div>
 
           <div className="text-right">
-            <span className="font-label text-[10px] text-[#075056] px-2 py-0.5 bg-[#E6F2F3] border border-[#CADCE0] rounded">
+            <span className="font-label text-[10px] text-[#075056] px-2 py-0.5 bg-[#E6F2F3] border border-[#E8E3D5] rounded">
               VERIFIED
             </span>
           </div>
@@ -318,7 +318,7 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
         (detail.type === 'daily' && detail.item.notes) ||
         (detail.type === 'work' && detail.item.notes) ||
         (detail.type === 'photo' && detail.item.caption) ? (
-          <div className="mt-3.5 p-3 rounded-xl bg-[#E4EEF0] border border-[#CADCE0]">
+          <div className="mt-3.5 p-3 rounded-xl bg-[#FFFFF0] border border-[#E8E3D5]">
             <div className="font-label text-[10px] text-[#526673] mb-1">
               Notes & observations
             </div>
@@ -332,7 +332,7 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
 
         {/* Photos strip */}
         {associatedPhotos.length > 1 && (
-          <div className="mt-3.5 pt-3 border-t border-[#CADCE0]">
+          <div className="mt-3.5 pt-3 border-t border-[#E8E3D5]">
             <div className="font-label text-[10px] text-[#526673] mb-2 flex items-center gap-1">
               <Tag className="w-3 h-3 text-[#FF5B04]" />
               <span>Related Photos ({associatedPhotos.length})</span>
@@ -346,7 +346,7 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
                   className={`w-14 h-14 rounded-lg overflow-hidden border shrink-0 transition-all ${
                     selectedPhoto?.id === p.id
                       ? 'border-[#FF5B04] ring-2 ring-[#FF5B04]/30 scale-105'
-                      : 'border-[#CADCE0] opacity-70 hover:opacity-100'
+                      : 'border-[#E8E3D5] opacity-70 hover:opacity-100'
                   }`}
                 >
                   <img src={p.dataUrl} alt="Thumbnail" className="w-full h-full object-cover" />
@@ -357,7 +357,7 @@ export const SpecimenDetailModal: React.FC<SpecimenDetailModalProps> = ({
         )}
 
         {/* Action Controls */}
-        <div className="mt-4 pt-3 border-t border-[#CADCE0] flex items-center gap-2">
+        <div className="mt-4 pt-3 border-t border-[#E8E3D5] flex items-center gap-2">
           {selectedPhoto && (
             <button
               type="button"

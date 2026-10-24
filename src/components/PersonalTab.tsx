@@ -147,7 +147,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
     <div className="space-y-4 pb-28 animate-in fade-in duration-150 relative">
       
       {/* 1. TOP SEGMENTED CONTROL: Overview | Body | Vault | Settings */}
-      <div className="bg-white rounded-2xl p-1.5 border border-[#CADCE0] shadow-xs flex items-center gap-1 overflow-x-auto no-scrollbar">
+      <div className="bg-white rounded-2xl p-1.5 border border-[#E8E3D5] shadow-xs flex items-center gap-1 overflow-x-auto no-scrollbar">
         <button
           type="button"
           onClick={() => {
@@ -157,7 +157,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
           className={`flex-1 py-2 px-2.5 rounded-xl font-button-s text-xs transition-all flex items-center justify-center gap-1.5 whitespace-nowrap ${
             activeSegment === 'overview'
               ? 'bg-[#FF5B04] text-white shadow-sm font-bold'
-              : 'text-[#526673] hover:text-[#16232B] hover:bg-[#E4EEF0]'
+              : 'text-[#526673] hover:text-[#16232B] hover:bg-[#FFFFF0]'
           }`}
         >
           <Award className="w-3.5 h-3.5" />
@@ -173,7 +173,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
           className={`flex-1 py-2 px-2.5 rounded-xl font-button-s text-xs transition-all flex items-center justify-center gap-1.5 whitespace-nowrap ${
             activeSegment === 'body'
               ? 'bg-[#075056] text-white shadow-sm font-bold'
-              : 'text-[#526673] hover:text-[#16232B] hover:bg-[#E4EEF0]'
+              : 'text-[#526673] hover:text-[#16232B] hover:bg-[#FFFFF0]'
           }`}
         >
           <Scale className="w-3.5 h-3.5" />
@@ -189,7 +189,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
           className={`flex-1 py-2 px-2.5 rounded-xl font-button-s text-xs transition-all flex items-center justify-center gap-1.5 whitespace-nowrap ${
             activeSegment === 'vault'
               ? 'bg-[#16232B] text-white shadow-sm font-bold'
-              : 'text-[#526673] hover:text-[#16232B] hover:bg-[#E4EEF0]'
+              : 'text-[#526673] hover:text-[#16232B] hover:bg-[#FFFFF0]'
           }`}
         >
           <Lock className="w-3.5 h-3.5" />
@@ -205,7 +205,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
           className={`flex-1 py-2 px-2.5 rounded-xl font-button-s text-xs transition-all flex items-center justify-center gap-1.5 whitespace-nowrap ${
             activeSegment === 'settings'
               ? 'bg-[#16232B] text-white shadow-sm font-bold'
-              : 'text-[#526673] hover:text-[#16232B] hover:bg-[#E4EEF0]'
+              : 'text-[#526673] hover:text-[#16232B] hover:bg-[#FFFFF0]'
           }`}
         >
           <SettingsIcon className="w-3.5 h-3.5" />
@@ -220,7 +220,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
         <div className="space-y-4 animate-in fade-in duration-150">
           
           {/* User Profile Card */}
-          <div className="bg-white rounded-3xl p-4 border border-[#CADCE0] shadow-xs flex items-center justify-between">
+          <div className="bg-white rounded-3xl p-4 border border-[#E8E3D5] shadow-xs flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#FF5B04] to-[#FF7529] text-white font-bold text-lg flex items-center justify-center shadow-sm">
                 {(settings.name || 'A').slice(0, 2).toUpperCase()}
@@ -247,12 +247,12 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
 
           {/* XP Progress Bar */}
           {gamification && (
-            <div className="bg-white rounded-2xl p-4 border border-[#CADCE0] shadow-2xs">
+            <div className="bg-white rounded-2xl p-4 border border-[#E8E3D5] shadow-2xs">
               <div className="flex justify-between font-caption text-xs mb-1.5">
                 <span className="text-[#16232B] font-bold">XP Progress</span>
                 <span className="text-[#526673]">{gamification.currentLevelXp} / {gamification.nextLevelXp} XP</span>
               </div>
-              <div className="w-full h-3 rounded-full bg-[#E4EEF0] overflow-hidden p-0.5">
+              <div className="w-full h-3 rounded-full bg-[#FFFFF0] overflow-hidden p-0.5">
                 <div
                   style={{ width: `${Math.min(100, Math.round((gamification.currentLevelXp / gamification.nextLevelXp) * 100))}%` }}
                   className="h-full rounded-full bg-gradient-to-r from-[#FF5B04] to-[#FF7529] transition-all duration-300"
@@ -263,7 +263,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
 
           {/* All-Time Stats Highlights */}
           <div className="grid grid-cols-2 gap-2.5">
-            <div className="bg-white rounded-2xl p-3.5 border border-[#CADCE0] shadow-2xs">
+            <div className="bg-white rounded-2xl p-3.5 border border-[#E8E3D5] shadow-2xs">
               <div className="font-caption text-[11px] text-[#526673]">Total Days Tracked</div>
               <div className="font-score-m text-xl text-[#16232B] mt-1">
                 {history.length || 1} <span className="text-xs text-[#526673]">days</span>
@@ -271,7 +271,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
               <div className="font-caption text-[10px] text-[#075056] font-bold mt-0.5">Consistent discipline</div>
             </div>
 
-            <div className="bg-white rounded-2xl p-3.5 border border-[#CADCE0] shadow-2xs">
+            <div className="bg-white rounded-2xl p-3.5 border border-[#E8E3D5] shadow-2xs">
               <div className="font-caption text-[11px] text-[#526673]">Best Streak</div>
               <div className="font-score-m text-xl text-[#FF5B04] mt-1">
                 {gamification?.bestStreak || gamification?.streak || 0} <span className="text-xs text-[#526673]">days</span>
@@ -282,7 +282,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
 
           {/* Badges Collection Showcase */}
           {gamification?.badges && gamification.badges.length > 0 && (
-            <div className="bg-white rounded-2xl p-4 border border-[#CADCE0] shadow-2xs">
+            <div className="bg-white rounded-2xl p-4 border border-[#E8E3D5] shadow-2xs">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <Award className="w-4 h-4 text-[#FF5B04]" />
@@ -309,7 +309,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
                     className={`p-2.5 rounded-xl border text-center transition-all ${
                       badge.unlocked
                         ? 'bg-gradient-to-b from-[#FFF0E8] to-white border-[#FF5B04]/40 shadow-2xs'
-                        : 'bg-[#E4EEF0]/40 border-[#CADCE0] opacity-50'
+                        : 'bg-[#FFFFF0]/40 border-[#E8E3D5] opacity-50'
                     }`}
                   >
                     <div className="text-xl mb-1">{badge.icon}</div>
@@ -333,7 +333,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
         <div className="space-y-4 animate-in fade-in duration-150">
           
           {/* Weight Goal Progress Card */}
-          <div className="bg-white rounded-2xl p-4 border border-[#CADCE0] shadow-2xs">
+          <div className="bg-white rounded-2xl p-4 border border-[#E8E3D5] shadow-2xs">
             <div className="flex items-center justify-between mb-2">
               <span className="font-label text-[10px] text-[#526673] tracking-wider uppercase">
                 Goal Progress
@@ -355,7 +355,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
             </div>
 
             {/* Progress Bar */}
-            <div className="w-full h-3 rounded-full bg-[#E4EEF0] overflow-hidden p-0.5">
+            <div className="w-full h-3 rounded-full bg-[#FFFFF0] overflow-hidden p-0.5">
               <div
                 style={{ width: `${weightProgressPct}%` }}
                 className="h-full rounded-full bg-gradient-to-r from-[#075056] to-[#FF5B04] transition-all"
@@ -364,7 +364,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
           </div>
 
           {/* Quick Weight Logger Bar */}
-          <div className="bg-white rounded-2xl p-3.5 border border-[#CADCE0] shadow-2xs flex items-center justify-between">
+          <div className="bg-white rounded-2xl p-3.5 border border-[#E8E3D5] shadow-2xs flex items-center justify-between">
             <div className="flex items-center space-x-2.5">
               <div className="p-2 rounded-xl bg-[#FFF0E8] text-[#FF5B04]">
                 <Scale className="w-4 h-4" />
@@ -385,14 +385,14 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
           </div>
 
           {showQuickWeight && (
-            <form onSubmit={handleQuickWeightSubmit} className="bg-white rounded-2xl p-3 border border-[#CADCE0] flex gap-2 animate-in fade-in">
+            <form onSubmit={handleQuickWeightSubmit} className="bg-white rounded-2xl p-3 border border-[#E8E3D5] flex gap-2 animate-in fade-in">
               <input
                 type="number"
                 step="0.1"
                 placeholder="Weight in kg (e.g. 74.5)"
                 value={quickWeightInput}
                 onChange={(e) => setQuickWeightInput(e.target.value)}
-                className="flex-1 px-3 py-2 rounded-xl bg-[#E4EEF0]/40 border border-[#CADCE0] text-xs font-semibold text-[#16232B]"
+                className="flex-1 px-3 py-2 rounded-xl bg-[#FFFFF0]/40 border border-[#E8E3D5] text-xs font-semibold text-[#16232B]"
                 autoFocus
               />
               <button
@@ -405,7 +405,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
           )}
 
           {/* BMI Card */}
-          <div className="bg-white rounded-2xl p-4 border border-[#CADCE0] shadow-2xs flex items-center justify-between">
+          <div className="bg-white rounded-2xl p-4 border border-[#E8E3D5] shadow-2xs flex items-center justify-between">
             <div>
               <div className="font-caption text-[11px] text-[#526673]">Body Mass Index</div>
               <div className="font-score-m text-xl text-[#16232B] mt-1">
@@ -421,7 +421,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
           </div>
 
           {/* Body Measurements Section */}
-          <div className="bg-white rounded-2xl p-4 border border-[#CADCE0] shadow-2xs">
+          <div className="bg-white rounded-2xl p-4 border border-[#E8E3D5] shadow-2xs">
             <div className="flex items-center justify-between mb-3">
               <span className="font-title text-sm text-[#16232B]">Circumference & Body Fat</span>
               <button
@@ -444,7 +444,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
                       placeholder="e.g. 15.5"
                       value={bodyFat}
                       onChange={(e) => setBodyFat(e.target.value)}
-                      className="w-full px-3 py-1.5 rounded-xl border border-[#CADCE0] text-xs font-semibold text-[#16232B]"
+                      className="w-full px-3 py-1.5 rounded-xl border border-[#E8E3D5] text-xs font-semibold text-[#16232B]"
                     />
                   </div>
                   <div>
@@ -455,7 +455,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
                       placeholder="e.g. 98"
                       value={chest}
                       onChange={(e) => setChest(e.target.value)}
-                      className="w-full px-3 py-1.5 rounded-xl border border-[#CADCE0] text-xs font-semibold text-[#16232B]"
+                      className="w-full px-3 py-1.5 rounded-xl border border-[#E8E3D5] text-xs font-semibold text-[#16232B]"
                     />
                   </div>
                   <div>
@@ -466,7 +466,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
                       placeholder="e.g. 82"
                       value={waist}
                       onChange={(e) => setWaist(e.target.value)}
-                      className="w-full px-3 py-1.5 rounded-xl border border-[#CADCE0] text-xs font-semibold text-[#16232B]"
+                      className="w-full px-3 py-1.5 rounded-xl border border-[#E8E3D5] text-xs font-semibold text-[#16232B]"
                     />
                   </div>
                   <div>
@@ -477,7 +477,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
                       placeholder="e.g. 36"
                       value={arms}
                       onChange={(e) => setArms(e.target.value)}
-                      className="w-full px-3 py-1.5 rounded-xl border border-[#CADCE0] text-xs font-semibold text-[#16232B]"
+                      className="w-full px-3 py-1.5 rounded-xl border border-[#E8E3D5] text-xs font-semibold text-[#16232B]"
                     />
                   </div>
                   <div>
@@ -488,7 +488,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
                       placeholder="e.g. 95"
                       value={hips}
                       onChange={(e) => setHips(e.target.value)}
-                      className="w-full px-3 py-1.5 rounded-xl border border-[#CADCE0] text-xs font-semibold text-[#16232B]"
+                      className="w-full px-3 py-1.5 rounded-xl border border-[#E8E3D5] text-xs font-semibold text-[#16232B]"
                     />
                   </div>
                   <div>
@@ -499,7 +499,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
                       placeholder="e.g. 56"
                       value={thighs}
                       onChange={(e) => setThighs(e.target.value)}
-                      className="w-full px-3 py-1.5 rounded-xl border border-[#CADCE0] text-xs font-semibold text-[#16232B]"
+                      className="w-full px-3 py-1.5 rounded-xl border border-[#E8E3D5] text-xs font-semibold text-[#16232B]"
                     />
                   </div>
                 </div>
@@ -543,7 +543,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
           <form onSubmit={handleSaveSettings} className="space-y-4">
             
             {/* Google Sheets Connection */}
-            <div className="bg-white rounded-2xl p-4 border border-[#CADCE0] shadow-2xs space-y-3">
+            <div className="bg-white rounded-2xl p-4 border border-[#E8E3D5] shadow-2xs space-y-3">
               <div className="flex items-center justify-between">
                 <span className="font-title text-sm text-[#16232B]">Google Sheet Sync</span>
                 <span className="font-label text-[10px] text-[#075056] font-bold">2-Way Live Sync</span>
@@ -558,7 +558,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
                   value={urlInput}
                   onChange={(e) => setUrlInput(e.target.value)}
                   placeholder="https://script.google.com/macros/s/.../exec"
-                  className="w-full px-3 py-2 rounded-xl border border-[#CADCE0] text-xs font-mono text-[#16232B]"
+                  className="w-full px-3 py-2 rounded-xl border border-[#E8E3D5] text-xs font-mono text-[#16232B]"
                 />
               </div>
 
@@ -590,7 +590,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
             </div>
 
             {/* Daily Targets Configuration */}
-            <div className="bg-white rounded-2xl p-4 border border-[#CADCE0] shadow-2xs space-y-3">
+            <div className="bg-white rounded-2xl p-4 border border-[#E8E3D5] shadow-2xs space-y-3">
               <span className="font-title text-sm text-[#16232B] block">Daily Targets</span>
 
               <div className="grid grid-cols-2 gap-2.5">
@@ -600,7 +600,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
                     type="number"
                     value={calTargetInput}
                     onChange={(e) => setCalTargetInput(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border border-[#CADCE0] text-xs font-semibold text-[#16232B]"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E8E3D5] text-xs font-semibold text-[#16232B]"
                   />
                 </div>
                 <div>
@@ -609,7 +609,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
                     type="number"
                     value={proTargetInput}
                     onChange={(e) => setProTargetInput(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border border-[#CADCE0] text-xs font-semibold text-[#16232B]"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E8E3D5] text-xs font-semibold text-[#16232B]"
                   />
                 </div>
                 <div>
@@ -619,7 +619,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
                     step="0.1"
                     value={waterTargetInput}
                     onChange={(e) => setWaterTargetInput(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border border-[#CADCE0] text-xs font-semibold text-[#16232B]"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E8E3D5] text-xs font-semibold text-[#16232B]"
                   />
                 </div>
                 <div>
@@ -628,14 +628,14 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
                     type="number"
                     value={stepsTargetInput}
                     onChange={(e) => setStepsTargetInput(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border border-[#CADCE0] text-xs font-semibold text-[#16232B]"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E8E3D5] text-xs font-semibold text-[#16232B]"
                   />
                 </div>
               </div>
             </div>
 
             {/* Profile Config */}
-            <div className="bg-white rounded-2xl p-4 border border-[#CADCE0] shadow-2xs space-y-3">
+            <div className="bg-white rounded-2xl p-4 border border-[#E8E3D5] shadow-2xs space-y-3">
               <span className="font-title text-sm text-[#16232B] block">Personal Profile</span>
               <div>
                 <label className="font-caption text-[11px] text-[#526673] block mb-1">Your Name</label>
@@ -643,7 +643,7 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
                   type="text"
                   value={userNameInput}
                   onChange={(e) => setUserNameInput(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-[#CADCE0] text-xs font-semibold text-[#16232B]"
+                  className="w-full px-3 py-2 rounded-xl border border-[#E8E3D5] text-xs font-semibold text-[#16232B]"
                 />
               </div>
             </div>

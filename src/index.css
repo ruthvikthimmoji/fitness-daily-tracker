@@ -1,44 +1,45 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: 'Instagram Sans', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-body: 'Instagram Sans', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-sans: 'Instagram Sans', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-mono: 'IBM Plex Mono', 'Plus Jakarta Sans', monospace, sans-serif;
-  --font-number: 'Plus Jakarta Sans', system-ui, monospace, sans-serif;
+  --font-display: 'Bebas Neue', 'Barlow Condensed', system-ui, -apple-system, sans-serif;
+  --font-body: 'Barlow', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Barlow', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Barlow Condensed', monospace, sans-serif;
+  --font-number: 'Bebas Neue', 'Barlow Condensed', monospace, sans-serif;
 }
 
 @layer base {
   :root {
-    /* BRAND COLOR PALETTE (Flame Orange + Deep Sea Green + Dark Slate Blue + Wild Sand) */
-    --primary: #FF5B04;        /* 02: Flame Orange (Primary) */
+    /* BRAND COLOR PALETTE (Flame Orange + Deep Sea Green + Dark Slate Blue + Warm Ivory) */
+    --primary: #FF5B04;        /* Flame Orange (Primary) */
     --flame-orange: #FF5B04;
     --flame-hover: #E04B00;
     --flame-tint: #FFF0E8;
     --flame-glow: rgba(255, 91, 4, 0.35);
 
-    --secondary: #075056;      /* 03: Deep Sea Green (Secondary) */
+    --secondary: #075056;      /* Deep Sea Green (Secondary) */
     --deep-sea: #075056;
     --deep-sea-tint: #E6F2F3;
     --deep-sea-hover: #09636A;
 
-    --tertiary: #16232B;       /* 01: Dark Slate Blue (Tertiary) */
+    --tertiary: #16232B;       /* Dark Slate Blue (Tertiary) */
     --dark-slate: #16232B;
-    --slate-muted: #526673;
+    --slate-muted: #56646E;
 
-    --wild-sand: #E4EEF0;      /* 04: Wild Sand (Page Background) */
-    --bg-page: #E4EEF0;
+    --ivory: #FFFFF0;          /* Ivory Page Background */
+    --wild-sand: #FFFFF0;
+    --bg-page: #FFFFF0;
     --surface: #FFFFFF;
-    --surface-tint: #F3F7F8;
-    --border-subtle: #CADCE0;
+    --surface-tint: #FAF8EE;
+    --border-subtle: #E8E3D5;
 
     /* Semantic Compatibility Tokens */
-    --cream: #E4EEF0;       /* Page background (Wild Sand) */
+    --cream: #FFFFF0;       /* Page background (Ivory) */
     --paper: #FFFFFF;       /* Cards (Pure white) */
-    --tint: #DCE8EB;        /* Subtle inputs / active chips */
-    --line: #CADCE0;        /* 1 px borders */
+    --tint: #F5F3E9;        /* Subtle inputs / active chips */
+    --line: #E8E3D5;        /* 1 px borders */
     --ink: #16232B;         /* Text, nav, primary dark (Dark Slate Blue) */
-    --muted: #526673;       /* Secondary text */
+    --muted: #56646E;       /* Secondary text */
     --ember: #FF5B04;       /* Primary CTA / Flame Orange */
     --ember-text: #E04B00;  /* High-contrast Flame Orange for small text */
     --ember-bright: #FF7529;/* Accent bright */
@@ -67,12 +68,12 @@
     --tap: 48px;
     --shadow: 0 1px 3px rgba(22, 35, 43, 0.05), 0 8px 24px rgba(22, 35, 43, 0.06);
 
-    /* Typography font families (Instagram Sans first) */
-    --font-display: 'Instagram Sans', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    --font-body: 'Instagram Sans', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    --font-sans: 'Instagram Sans', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    --font-mono: 'IBM Plex Mono', 'Plus Jakarta Sans', monospace, sans-serif;
-    --font-number: 'Plus Jakarta Sans', system-ui, monospace, sans-serif;
+    /* Typography font families (Standard Fitness Industry Stack) */
+    --font-display: 'Bebas Neue', 'Barlow Condensed', system-ui, -apple-system, sans-serif;
+    --font-body: 'Barlow', system-ui, -apple-system, sans-serif;
+    --font-sans: 'Barlow', system-ui, -apple-system, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'Barlow Condensed', monospace, sans-serif;
+    --font-number: 'Bebas Neue', 'Barlow Condensed', system-ui, monospace, sans-serif;
 
     /* Compatibility aliases */
     --color-santiago: var(--ember);
@@ -89,7 +90,7 @@
       --paper: #16232B;
       --tint: #1F2E38;
       --line: #2A3C47;
-      --ink: #E4EEF0;
+      --ink: #FFFFF0;
       --muted: #95AAB5;
       --ember: #FF5B04;
       --ember-text: #FF7529;
@@ -176,54 +177,61 @@
    TYPOGRAPHY SPEC V1.0 TOKENS (Fredoka + Nunito + Rubik)
    ========================================================================== */
 
-/* Headings & Display (Fredoka) */
+/* ==========================================================================
+   ATHLETIC FITNESS TYPOGRAPHY SPEC (Bebas Neue + Barlow + Barlow Condensed)
+   ========================================================================== */
+
+/* Headings & Display (Bebas Neue Athletic) */
 .font-display-xl {
   font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 40px;
+  font-weight: 400;
+  font-size: 44px;
   line-height: 46px;
-  letter-spacing: 0;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .font-display-l {
   font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 32px;
+  font-weight: 400;
+  font-size: 34px;
   line-height: 38px;
-  letter-spacing: 0;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
 }
 
 .font-h1 {
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 28px;
+  font-weight: 400;
+  font-size: 30px;
   line-height: 34px;
-  letter-spacing: 0;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
 }
 
 .font-h2 {
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 22px;
+  font-weight: 400;
+  font-size: 24px;
   line-height: 28px;
-  letter-spacing: 0;
+  letter-spacing: 0.03em;
 }
 
 .font-h3 {
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 18px;
+  font-weight: 400;
+  font-size: 20px;
   line-height: 24px;
-  letter-spacing: 0;
+  letter-spacing: 0.02em;
 }
 
-/* Body & UI Text (Nunito) */
+/* Body & UI Text (Barlow Athletic) */
 .font-title {
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 22px;
-  letter-spacing: 0;
+  letter-spacing: 0.01em;
 }
 
 .font-body-l {
@@ -231,7 +239,7 @@
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  letter-spacing: 0.1px;
+  letter-spacing: 0.01em;
 }
 
 .font-body-m {
@@ -239,7 +247,7 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: 0.1px;
+  letter-spacing: 0.01em;
 }
 
 .font-body-s {
@@ -247,31 +255,33 @@
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.02em;
 }
 
-/* Buttons (Fredoka) */
+/* Buttons (Barlow Condensed Athletic) */
 .font-button-l {
-  font-family: var(--font-display);
-  font-weight: 600;
+  font-family: 'Barlow Condensed', var(--font-display);
+  font-weight: 700;
   font-size: 16px;
   line-height: 20px;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .font-button-s {
-  font-family: var(--font-display);
-  font-weight: 600;
+  font-family: 'Barlow Condensed', var(--font-display);
+  font-weight: 700;
   font-size: 14px;
   line-height: 18px;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
-/* Meta / Tags / Badges (Mono & Nunito) */
+/* Meta / Tags / Badges (Barlow Condensed & Mono) */
 .font-label {
-  font-family: var(--font-mono);
-  font-weight: 600;
-  font-size: 11px;
+  font-family: 'Barlow Condensed', var(--font-mono);
+  font-weight: 700;
+  font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -282,54 +292,55 @@
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.01em;
 }
 
 .font-badge {
-  font-family: var(--font-display);
+  font-family: 'Barlow Condensed', var(--font-display);
   font-weight: 700;
   font-size: 12px;
   line-height: 14px;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
-/* Numbers (Rubik with Tabular Figures) */
+/* Numbers (Bebas Neue Tabular) */
 .font-score-xl {
   font-family: var(--font-number);
-  font-weight: 800;
-  font-size: 40px;
+  font-weight: 400;
+  font-size: 42px;
   line-height: 44px;
-  letter-spacing: -0.5px;
+  letter-spacing: 0.03em;
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum";
 }
 
 .font-score-m {
   font-family: var(--font-number);
-  font-weight: 700;
-  font-size: 24px;
+  font-weight: 400;
+  font-size: 26px;
   line-height: 28px;
-  letter-spacing: 0;
+  letter-spacing: 0.03em;
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum";
 }
 
 .font-timer {
   font-family: var(--font-number);
-  font-weight: 600;
-  font-size: 30px;
+  font-weight: 400;
+  font-size: 32px;
   line-height: 36px;
-  letter-spacing: 0;
+  letter-spacing: 0.05em;
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum";
 }
 
 .font-stat {
   font-family: var(--font-number);
-  font-weight: 600;
-  font-size: 15px;
-  line-height: 20px;
-  letter-spacing: 0;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  letter-spacing: 0.02em;
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum";
 }

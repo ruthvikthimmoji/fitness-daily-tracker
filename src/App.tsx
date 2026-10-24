@@ -504,7 +504,7 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#E4EEF0] text-[#16232B] flex flex-col font-body selection:bg-[#FF5B04] selection:text-white">
+    <div className="min-h-screen bg-[#FFFFF0] text-[#16232B] flex flex-col font-body selection:bg-[#FF5B04] selection:text-white">
       
       {/* Toast Notification with Undo */}
       <Toast toast={toastState} onClear={() => setToastState(null)} />

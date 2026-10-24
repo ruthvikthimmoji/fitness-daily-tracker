@@ -66,18 +66,18 @@ export const EasyLogModal: React.FC<EasyLogModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-[#16232B]/60 backdrop-blur-sm animate-in fade-in duration-200">
       <div 
-        className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border-t sm:border border-[#CADCE0] shadow-2xl overflow-hidden max-h-[92vh] flex flex-col"
+        className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border-t sm:border border-[#E8E3D5] shadow-2xl overflow-hidden max-h-[92vh] flex flex-col"
         role="dialog"
         aria-modal="true"
         aria-label="Easy Log"
       >
         {/* Top Drag Handle for Mobile */}
         <div className="pt-3 pb-1 flex justify-center sm:hidden">
-          <div className="w-10 h-1 rounded-full bg-[#CADCE0]" />
+          <div className="w-10 h-1 rounded-full bg-[#E8E3D5]" />
         </div>
 
         {/* Modal Header */}
-        <div className="px-5 pt-3 pb-3 flex items-center justify-between border-b border-[#CADCE0]">
+        <div className="px-5 pt-3 pb-3 flex items-center justify-between border-b border-[#E8E3D5]">
           <div>
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-[#FF5B04] animate-pulse" />
@@ -91,7 +91,7 @@ export const EasyLogModal: React.FC<EasyLogModalProps> = ({
               triggerHaptic(10);
               onClose();
             }}
-            className="p-2 rounded-xl text-[#526673] hover:text-[#16232B] hover:bg-[#E4EEF0] transition-colors"
+            className="p-2 rounded-xl text-[#526673] hover:text-[#16232B] hover:bg-[#FFFFF0] transition-colors"
             aria-label="Close"
           >
             <X className="w-5 h-5" />
@@ -139,7 +139,7 @@ export const EasyLogModal: React.FC<EasyLogModalProps> = ({
           </div>
 
           {/* Quick Water Logger Section */}
-          <div className="p-3.5 rounded-2xl bg-[#E4EEF0]/60 border border-[#CADCE0]">
+          <div className="p-3.5 rounded-2xl bg-[#FFFFF0]/60 border border-[#E8E3D5]">
             <div className="flex items-center justify-between mb-2.5">
               <div className="flex items-center gap-2">
                 <div className="p-1.5 rounded-lg bg-[#075056] text-white">
@@ -164,28 +164,28 @@ export const EasyLogModal: React.FC<EasyLogModalProps> = ({
                 <button
                   type="button"
                   onClick={() => handleWaterQuick(0.25)}
-                  className="py-2 px-1 rounded-xl bg-white border border-[#CADCE0] hover:border-[#075056] text-center font-button-s text-xs text-[#16232B] hover:text-[#075056] transition-all active:scale-95 shadow-2xs"
+                  className="py-2 px-1 rounded-xl bg-white border border-[#E8E3D5] hover:border-[#075056] text-center font-button-s text-xs text-[#16232B] hover:text-[#075056] transition-all active:scale-95 shadow-2xs"
                 >
                   +250 ml
                 </button>
                 <button
                   type="button"
                   onClick={() => handleWaterQuick(0.5)}
-                  className="py-2 px-1 rounded-xl bg-white border border-[#CADCE0] hover:border-[#075056] text-center font-button-s text-xs text-[#16232B] hover:text-[#075056] transition-all active:scale-95 shadow-2xs"
+                  className="py-2 px-1 rounded-xl bg-white border border-[#E8E3D5] hover:border-[#075056] text-center font-button-s text-xs text-[#16232B] hover:text-[#075056] transition-all active:scale-95 shadow-2xs"
                 >
                   +500 ml
                 </button>
                 <button
                   type="button"
                   onClick={() => handleWaterQuick(0.75)}
-                  className="py-2 px-1 rounded-xl bg-white border border-[#CADCE0] hover:border-[#075056] text-center font-button-s text-xs text-[#16232B] hover:text-[#075056] transition-all active:scale-95 shadow-2xs"
+                  className="py-2 px-1 rounded-xl bg-white border border-[#E8E3D5] hover:border-[#075056] text-center font-button-s text-xs text-[#16232B] hover:text-[#075056] transition-all active:scale-95 shadow-2xs"
                 >
                   +750 ml
                 </button>
                 <button
                   type="button"
                   onClick={() => handleWaterQuick(1.0)}
-                  className="py-2 px-1 rounded-xl bg-white border border-[#CADCE0] hover:border-[#075056] text-center font-button-s text-xs text-[#16232B] hover:text-[#075056] transition-all active:scale-95 shadow-2xs"
+                  className="py-2 px-1 rounded-xl bg-white border border-[#E8E3D5] hover:border-[#075056] text-center font-button-s text-xs text-[#16232B] hover:text-[#075056] transition-all active:scale-95 shadow-2xs"
                 >
                   +1.0 L
                 </button>
@@ -198,7 +198,7 @@ export const EasyLogModal: React.FC<EasyLogModalProps> = ({
                   placeholder="Litres (e.g. 0.35)"
                   value={customWater}
                   onChange={(e) => setCustomWater(e.target.value)}
-                  className="flex-1 px-3 py-2 rounded-xl bg-white border border-[#CADCE0] text-xs font-semibold text-[#16232B]"
+                  className="flex-1 px-3 py-2 rounded-xl bg-white border border-[#E8E3D5] text-xs font-semibold text-[#16232B]"
                   autoFocus
                 />
                 <button
@@ -212,7 +212,7 @@ export const EasyLogModal: React.FC<EasyLogModalProps> = ({
           </div>
 
           {/* Quick Weight Logger Section */}
-          <div className="p-3.5 rounded-2xl bg-[#E4EEF0]/60 border border-[#CADCE0]">
+          <div className="p-3.5 rounded-2xl bg-[#FFFFF0]/60 border border-[#E8E3D5]">
             <div className="flex items-center justify-between mb-2.5">
               <div className="flex items-center gap-2">
                 <div className="p-1.5 rounded-lg bg-[#FF5B04] text-white">
@@ -242,7 +242,7 @@ export const EasyLogModal: React.FC<EasyLogModalProps> = ({
                   placeholder="kg (e.g. 74.5)"
                   value={weightValue}
                   onChange={(e) => setWeightValue(e.target.value)}
-                  className="flex-1 px-3 py-2 rounded-xl bg-white border border-[#CADCE0] text-xs font-semibold text-[#16232B]"
+                  className="flex-1 px-3 py-2 rounded-xl bg-white border border-[#E8E3D5] text-xs font-semibold text-[#16232B]"
                   autoFocus
                 />
                 <button
@@ -273,7 +273,7 @@ export const EasyLogModal: React.FC<EasyLogModalProps> = ({
                 onClose();
                 onOpenWork();
               }}
-              className="p-3 rounded-2xl bg-white border border-[#CADCE0] hover:border-[#16232B] text-left transition-all hover:scale-[1.02] active:scale-[0.98] shadow-2xs flex items-center gap-2.5"
+              className="p-3 rounded-2xl bg-white border border-[#E8E3D5] hover:border-[#16232B] text-left transition-all hover:scale-[1.02] active:scale-[0.98] shadow-2xs flex items-center gap-2.5"
             >
               <div className="p-2 rounded-xl bg-[#16232B] text-white">
                 <Briefcase className="w-4 h-4" />
@@ -292,7 +292,7 @@ export const EasyLogModal: React.FC<EasyLogModalProps> = ({
                 onClose();
                 onOpenPhoto('workout');
               }}
-              className="p-3 rounded-2xl bg-white border border-[#CADCE0] hover:border-[#16232B] text-left transition-all hover:scale-[1.02] active:scale-[0.98] shadow-2xs flex items-center gap-2.5"
+              className="p-3 rounded-2xl bg-white border border-[#E8E3D5] hover:border-[#16232B] text-left transition-all hover:scale-[1.02] active:scale-[0.98] shadow-2xs flex items-center gap-2.5"
             >
               <div className="p-2 rounded-xl bg-[#16232B] text-white">
                 <Camera className="w-4 h-4" />
