@@ -41,21 +41,23 @@ class ErrorBoundary extends Component<Props, State> {
   public render() {
     if (this.state.hasError) {
       return (
-        <div style={{ minHeight: '100vh', backgroundColor: '#EFECE3', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', fontFamily: 'Inter, sans-serif' }}>
-          <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #D8D3C8', borderRadius: '16px', padding: '24px', maxWidth: '400px', width: '100%', textAlign: 'center', boxShadow: '0 10px 25px rgba(44,35,36,0.08)' }}>
-            <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: '#EFECE3', color: '#EB5E28', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px auto', fontSize: '24px', fontWeight: 'bold' }}>!</div>
-            <h2 style={{ fontSize: '18px', fontWeight: 'bold', color: '#2C2324', margin: '0 0 8px 0' }}>DAILY/FIT Recovery</h2>
-            <p style={{ fontSize: '13px', color: '#766754', margin: '0 0 16px 0', lineHeight: '1.4' }}>
+        <div style={{ minHeight: '100vh', backgroundColor: '#FFFFF0', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', fontFamily: "'Barlow', -apple-system, sans-serif" }}>
+          <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E3D5', borderRadius: '24px', padding: '28px 24px', maxWidth: '380px', width: '100%', textAlign: 'center', boxShadow: '0 16px 36px rgba(22,35,43,0.08)' }}>
+            <div style={{ width: '56px', height: '56px', borderRadius: '18px', backgroundColor: '#16232B', padding: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto', boxShadow: '0 8px 20px rgba(22,35,43,0.15)' }}>
+              <img src="/logo-white.png" alt="DAILY/FIT" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+            </div>
+            <h2 style={{ fontSize: '20px', fontWeight: 'bold', color: '#16232B', margin: '0 0 8px 0', fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '1px' }}>DAILY/FIT RECOVERY</h2>
+            <p style={{ fontSize: '13px', color: '#526673', margin: '0 0 16px 0', lineHeight: '1.5' }}>
               Something prevented the page from rendering properly. Tap below to reset your cache and reload.
             </p>
             {this.state.error && (
-              <pre style={{ fontSize: '10px', color: '#EB5E28', backgroundColor: '#EFECE3', padding: '8px', borderRadius: '8px', overflowX: 'auto', textAlign: 'left', marginBottom: '16px' }}>
+              <pre style={{ fontSize: '10px', color: '#D32F2F', backgroundColor: '#FFF0E8', padding: '10px', borderRadius: '12px', overflowX: 'auto', textAlign: 'left', marginBottom: '16px', border: '1px solid #FF5B04/20' }}>
                 {this.state.error.message}
               </pre>
             )}
             <button
               onClick={this.handleReset}
-              style={{ width: '100%', padding: '12px', backgroundColor: '#EB5E28', color: '#FFFFFF', border: 'none', borderRadius: '12px', fontWeight: 'bold', cursor: 'pointer', fontSize: '13px' }}
+              style={{ width: '100%', padding: '12px', backgroundColor: '#FF5B04', color: '#FFFFFF', border: 'none', borderRadius: '14px', fontWeight: 'bold', cursor: 'pointer', fontSize: '14px', letterSpacing: '0.5px' }}
             >
               Reset Cache & Reload
             </button>

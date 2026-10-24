@@ -658,6 +658,18 @@ export const PersonalTab: React.FC<PersonalTabProps> = ({
 
           </form>
 
+          {/* App Info & Splash Screen Emblem Footer */}
+          <div className="pt-6 pb-4 text-center flex flex-col items-center">
+            <div className="w-12 h-12 rounded-2xl bg-[#16232B] p-2.5 flex items-center justify-center shadow-xs border border-white/10 mb-2">
+              <img src="/logo-white.png" alt="DAILY/FIT" className="w-full h-full object-contain filter drop-shadow-2xs" />
+            </div>
+            <div className="flex items-baseline space-x-1.5 justify-center">
+              <span className="font-display text-lg tracking-widest text-[#16232B]">DAILY</span>
+              <span className="font-display text-lg tracking-widest text-[#FF5B04]">/ FIT</span>
+            </div>
+            <p className="font-caption text-xs text-[#526673] mt-0.5">Version 2.4 · Progress, not perfection.</p>
+          </div>
+
         </div>
       )}
 

@@ -61,26 +61,26 @@ export const AddFoodModal: React.FC<AddFoodModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
-      <div className="w-full max-w-md bg-white rounded-t-2xl sm:rounded-2xl border border-[#D8D3C8] p-5 shadow-2xl max-h-[90vh] overflow-y-auto">
+      <div className="w-full max-w-md bg-white rounded-t-2xl sm:rounded-2xl border border-[#E8E3D5] p-5 shadow-2xl max-h-[90vh] overflow-y-auto">
         
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-[#D8D3C8]/70">
+        <div className="flex items-center justify-between pb-3 border-b border-[#E8E3D5]/70">
           <div className="flex items-center space-x-2">
-            <div className="p-2 rounded-xl bg-[#EFECE3] text-[#FF5B04] border border-[#D8D3C8]">
+            <div className="p-2 rounded-xl bg-[#FFFFF0] text-[#FF5B04] border border-[#E8E3D5]">
               <UtensilsCrossed className="w-4 h-4 stroke-[2.5]" />
             </div>
             <div>
               <div className="font-label text-[#FF5B04]">
                 // ARCHIVE // NUTRITION SPECIMEN
               </div>
-              <h2 className="font-h2 text-[#2C2324]">
+              <h2 className="font-h2 text-[#16232B]">
                 Log Food Item
               </h2>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-[#766754] hover:text-[#2C2324] rounded-lg hover:bg-[#EFECE3] transition-colors"
+            className="p-1.5 text-[#526673] hover:text-[#16232B] rounded-lg hover:bg-[#FFFFF0] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -91,7 +91,7 @@ export const AddFoodModal: React.FC<AddFoodModalProps> = ({
           
           {/* Meal selector */}
           <div>
-            <label className="font-label text-[#766754] block mb-1">Meal</label>
+            <label className="font-label text-[#526673] block mb-1">Meal</label>
             <div className="grid grid-cols-4 gap-1">
               {meals.map((m) => (
                 <button
@@ -100,8 +100,8 @@ export const AddFoodModal: React.FC<AddFoodModalProps> = ({
                   onClick={() => setMeal(m)}
                   className={`py-1.5 font-button-s text-xs rounded-xl border transition-all ${
                     meal === m
-                      ? 'bg-[#2C2324] text-white border-[#2C2324] shadow-xs'
-                      : 'bg-[#EFECE3] text-[#766754] border-[#D8D3C8] hover:bg-[#E5E0D5]'
+                      ? 'bg-[#16232B] text-white border-[#16232B] shadow-xs'
+                      : 'bg-[#FFFFF0] text-[#526673] border-[#E8E3D5] hover:bg-[#EFECE3]'
                   }`}
                 >
                   {m}
@@ -112,26 +112,26 @@ export const AddFoodModal: React.FC<AddFoodModalProps> = ({
 
           {/* Food Item Name */}
           <div>
-            <label className="font-label text-[#766754] block mb-1">Food / Meal Item *</label>
+            <label className="font-label text-[#526673] block mb-1">Food / Meal Item *</label>
             <input
               type="text"
               required
               placeholder="e.g. Oats with banana"
               value={foodItem}
               onChange={(e) => setFoodItem(e.target.value)}
-              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-2 font-body-m text-[#2C2324] font-bold placeholder-[#766754]/50 focus:outline-none focus:border-[#FF5B04]"
+              className="w-full bg-white border border-[#E8E3D5] rounded-xl px-3 py-2 font-body-m text-[#16232B] font-bold placeholder-[#526673]/50 focus:outline-none focus:border-[#FF5B04]"
             />
           </div>
 
           {/* Quantity */}
           <div>
-            <label className="font-label text-[#766754] block mb-1">Portion / Quantity</label>
+            <label className="font-label text-[#526673] block mb-1">Portion / Quantity</label>
             <input
               type="text"
               placeholder="e.g. 1 bowl, 200g, 2 eggs"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
-              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-1.5 font-body-m text-[#2C2324] font-bold placeholder-[#766754]/50 focus:outline-none focus:border-[#FF5B04]"
+              className="w-full bg-white border border-[#E8E3D5] rounded-xl px-3 py-1.5 font-body-m text-[#16232B] font-bold placeholder-[#526673]/50 focus:outline-none focus:border-[#FF5B04]"
             />
           </div>
 
@@ -144,18 +144,18 @@ export const AddFoodModal: React.FC<AddFoodModalProps> = ({
                 placeholder="kcal"
                 value={calories}
                 onChange={(e) => setCalories(e.target.value)}
-                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#FF5B04]"
+                className="w-full bg-white border border-[#E8E3D5] rounded-xl px-2 py-1.5 font-stat tabular-nums text-sm text-[#16232B] focus:outline-none focus:border-[#FF5B04]"
               />
             </div>
             <div>
-              <label className="font-label text-[#2C2324] block mb-0.5">Protein (g)</label>
+              <label className="font-label text-[#16232B] block mb-0.5">Protein (g)</label>
               <input
                 type="number"
                 step="0.5"
                 placeholder="g"
                 value={protein}
                 onChange={(e) => setProtein(e.target.value)}
-                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#FF5B04]"
+                className="w-full bg-white border border-[#E8E3D5] rounded-xl px-2 py-1.5 font-stat tabular-nums text-sm text-[#16232B] focus:outline-none focus:border-[#FF5B04]"
               />
             </div>
             <div>
@@ -166,31 +166,31 @@ export const AddFoodModal: React.FC<AddFoodModalProps> = ({
                 placeholder="g"
                 value={carbs}
                 onChange={(e) => setCarbs(e.target.value)}
-                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#FF5B04]"
+                className="w-full bg-white border border-[#E8E3D5] rounded-xl px-2 py-1.5 font-stat tabular-nums text-sm text-[#16232B] focus:outline-none focus:border-[#FF5B04]"
               />
             </div>
             <div>
-              <label className="font-label text-[#766754] block mb-0.5">Fat (g)</label>
+              <label className="font-label text-[#526673] block mb-0.5">Fat (g)</label>
               <input
                 type="number"
                 step="0.5"
                 placeholder="g"
                 value={fat}
                 onChange={(e) => setFat(e.target.value)}
-                className="w-full bg-white border border-[#D8D3C8] rounded-xl px-2 py-1.5 font-stat tabular-nums text-sm text-[#2C2324] focus:outline-none focus:border-[#FF5B04]"
+                className="w-full bg-white border border-[#E8E3D5] rounded-xl px-2 py-1.5 font-stat tabular-nums text-sm text-[#16232B] focus:outline-none focus:border-[#FF5B04]"
               />
             </div>
           </div>
 
           {/* Notes */}
           <div>
-            <label className="font-label text-[#766754] block mb-1">Notes (optional)</label>
+            <label className="font-label text-[#526673] block mb-1">Notes (optional)</label>
             <input
               type="text"
               placeholder="e.g. post-workout breakfast"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full bg-white border border-[#D8D3C8] rounded-xl px-3 py-1.5 font-body-m text-[#2C2324] placeholder-[#766754]/50 focus:outline-none focus:border-[#FF5B04]"
+              className="w-full bg-white border border-[#E8E3D5] rounded-xl px-3 py-1.5 font-body-m text-[#16232B] placeholder-[#526673]/50 focus:outline-none focus:border-[#FF5B04]"
             />
           </div>
 

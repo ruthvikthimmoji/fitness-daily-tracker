@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Settings as SettingsIcon, Link2, CheckCircle2, AlertCircle, RefreshCw, QrCode, ExternalLink, Copy, Check, Smartphone } from 'lucide-react';
+import { X, Link2, CheckCircle2, AlertCircle, RefreshCw, QrCode, ExternalLink, Copy, Check, Smartphone } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { UserSettings } from '../types';
 import { pingGoogleSheet } from '../services/api';
@@ -93,24 +93,24 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
       <div className="w-full max-w-lg bg-white rounded-t-2xl sm:rounded-2xl border border-[#E8E3D5] p-5 shadow-2xl max-h-[90vh] overflow-y-auto">
         
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-[#E8E3D5]/70">
-          <div className="flex items-center space-x-2">
-            <div className="p-2 rounded-xl bg-[#FFFFF0] text-[#FF5B04] border border-[#E8E3D5]">
-              <SettingsIcon className="w-4 h-4 stroke-[2.5]" />
+        <div className="flex items-center justify-between pb-3 border-b border-[#E8E3D5]">
+          <div className="flex items-center space-x-2.5">
+            <div className="w-9 h-9 rounded-xl bg-[#16232B] p-1.5 flex items-center justify-center shadow-xs border border-white/10 shrink-0">
+              <img src="/logo-white.png" alt="DAILY/FIT" className="w-full h-full object-contain filter drop-shadow-2xs" />
             </div>
             <div>
-              <div className="font-label text-[10px] text-[#FF5B04]">
-                SETTINGS
+              <div className="font-caption text-[10px] font-bold text-[#FF5B04] uppercase tracking-wider">
+                DAILY/FIT SYSTEM
               </div>
               <h2 className="font-h2 text-base text-[#16232B]">
-                Settings & Sheet Link
+                Settings & Cloud Sync
               </h2>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 text-[#526673] hover:text-[#16232B] rounded-lg hover:bg-[#FFFFF0] transition-colors"
+            className="p-1.5 text-[#526673] hover:text-[#16232B] rounded-xl hover:bg-[#FFFFF0] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -149,7 +149,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 type="button"
                 onClick={handleTestConnection}
                 disabled={isTesting || !scriptUrl.trim()}
-                className="w-full py-2 btn-gold-black font-button-s text-xs rounded-xl transition-all flex items-center justify-center space-x-1.5"
+                className="w-full py-2 bg-[#16232B] text-white hover:bg-[#16232B]/90 font-button-s text-xs rounded-xl transition-all flex items-center justify-center space-x-1.5 shadow-xs"
               >
                 {isTesting ? (
                   <>
@@ -247,7 +247,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               <button
                 type="button"
                 onClick={copyAppUrl}
-                className="p-2 btn-gold-black rounded-xl transition-all"
+                className="p-2 bg-[#16232B] text-white hover:bg-[#16232B]/90 rounded-xl transition-all shadow-xs"
                 title="Copy URL"
               >
                 {copied ? <Check className="w-4 h-4 text-[#FF5B04]" /> : <Copy className="w-4 h-4" />}

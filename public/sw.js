@@ -1,4 +1,4 @@
-const CACHE_NAME = 'daily-fit-v3';
+const CACHE_NAME = 'daily-fit-v4';
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();

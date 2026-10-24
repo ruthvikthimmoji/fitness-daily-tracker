@@ -159,8 +159,8 @@ export const Header: React.FC<HeaderProps> = ({
         
         {/* Wordmark & Brand mark */}
         <div className="flex items-center space-x-2.5">
-          <div className="w-8 h-8 rounded-xl bg-[#16232B] p-1.5 flex items-center justify-center shadow-2xs">
-            <img src="/logo-white.png" alt="DAILY/FIT" className="w-full h-full object-contain" />
+          <div className="w-8 h-8 rounded-xl bg-[#16232B] p-1.5 flex items-center justify-center shadow-2xs border border-white/10 shrink-0">
+            <img src="/logo-white.png" alt="DAILY/FIT" className="w-full h-full object-contain filter drop-shadow-2xs" />
           </div>
 
           <div className="flex items-baseline space-x-1.5">
